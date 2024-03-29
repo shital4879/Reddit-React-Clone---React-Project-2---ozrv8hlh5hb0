@@ -1,14 +1,15 @@
 import React from 'react'
+import PopData from "../Component/PopData"
 import Navbar from '../Component/Navbar/Navbar'
-import PostData from '../Component/Navbar/PostData'
 
-const Home = () => {
+const Popular = () => {
   return (
     <div>
       <Navbar/>
-      <PostData/>
+      <PopData/>
+
     </div>
   )
 }
 
-export default Home
+export default Popular
