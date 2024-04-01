@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const LogIn = (props) => {
+const AppLink = (props) => {
     // const showAppLink = props;
     const navigate = useNavigate();
     
@@ -15,7 +15,7 @@ const LogIn = (props) => {
                 className="text-3xl p-3 rounded-md bg-gray-100"
                 onClick={() => {
                 //   setShowAppLink(!showAppLink);
-                navigate("/");
+                navigate(-1);
                 }}
               >
                 {" "}
@@ -56,4 +56,4 @@ const LogIn = (props) => {
   )
 }
 
-export default LogIn
+export default AppLink

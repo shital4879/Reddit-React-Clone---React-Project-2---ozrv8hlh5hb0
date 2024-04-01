@@ -1,4 +1,4 @@
-import React, { Children, useEffect, useRef, useState } from "react";
+import React, { Children, useContext, useEffect, useRef, useState } from "react";
 import { Button, IconButton } from "@mui/material";
 // import { IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -13,34 +13,45 @@ import VisibilitySharpIcon from "@mui/icons-material/VisibilitySharp";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import TrendingUpSharpIcon from "@mui/icons-material/TrendingUpSharp";
+import ArrowBackSharpIcon from '@mui/icons-material/ArrowBackSharp';
+import MenuSharpIcon from '@mui/icons-material/MenuSharp';
 import SignOut from "../SignIn/SignOut";
-import LogIn from "../SignIn/LogIn";
 import PostData from "./PostData";
-// import logo from "../../../public/logo.png"
+import { Mycontext } from "../../components/App"
 
 const Navbar = () => {
+ const{showLogIn,setShowLogIn,darkMode,setDarkMode,toggleDarkMode} = useContext(Mycontext);
+ console.log(showLogIn);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [showApp, setShowApp] = useState(false);
   const [showopt, setShowopt] = useState(false);
   const [showAppLink, setShowAppLink] = useState(false);
-  const [showLogIn, setShowLogIn] = useState(false);
+  
   const [search, setSearch] = useState("");
   const [openSearch, setOpenSearch] = useState(false);
   const [fetchingData, setFetchingData] = useState();
-  const [fetching, setFetching] = useState();
-  const [showSignUp, setShowSignUp] = useState(false);
   const searchinput = useRef();
   const [hotelInputPopUp, setHotelInputPopUp] = useState(false);
-  const [openSignUp, setOpenSignUp] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  // const [darkMode, setDarkMode] = useState(false);
+  const [signUpPage1, setSignUpPage1] = useState(false);
+  const [signUpPage2, setSignUpPage2] = useState(false);
+  const [showHam,setShowHam] = useState(false);
   const [registerData, setRegisterData] = useState({
+    email: "",
+    password: "",
+  });
+  const [signUpData, setSignUpData] = useState({
     name: "",
     email: "",
     password: "",
   });
   const [valid, setValid] = useState(true);
   const [error, setError] = useState({});
+  const [validsign, setValidSign] = useState(true);
+  const [errorsign, setErrorSign] = useState({});
 
   function hotelInputFocus() {
     setHotelInputPopUp(true);
@@ -64,7 +75,7 @@ const Navbar = () => {
       );
       const result = await responce.json();
       setFetchingData(result.data);
-      console.log("lo", result);
+      // console.log("lo", result);
     } catch (error) {
       console.log(error);
     }
@@ -72,24 +83,10 @@ const Navbar = () => {
   useEffect(() => {
     searchData();
   }, [search]);
-  // function handleSearch() {
-  //   searchData()
-  //     .then((response) => {
-  //       if (response) {
-  //         setFetching(response.data);
-
-  //         console.log("hanlde", response.data);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
   // -------------------------------------------------------------------------------------------------------------
 
   // ----------------SIGN UP API ----------------------------------------------------------------------------
-  const SignUpData = async () => {
-    console.log(registerData);
+  const SignUpApi = async () => {
     try {
       const responce = await fetch(
         `https://academics.newtonschool.co/api/v1/user/signup`,
@@ -100,9 +97,9 @@ const Navbar = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: registerData.name,
-            email: registerData.email,
-            password: registerData.password,
+            name: signUpData.name,
+            email: signUpData.email,
+            password: signUpData.password,
             appType: "reddit",
           }),
         }
@@ -111,15 +108,66 @@ const Navbar = () => {
       console.log(result);
       if (result.status === "success") {
         localStorage.setItem("token", result.token);
+        navigateDetail()
+        localStorage.setItem(
+          "UserInfo",
+          JSON.stringify({
+            id: result.data._id,
+            name: result.data.name,
+            email: result.data.email,
+          })
+        );
       }
     } catch (error) {
       console.log(error);
     }
   };
-  const handleSubmit = (e) => {
+
+
+  const handleEmail =(e)=>{
     e.preventDefault();
-    SignUpData();
+    let isValid = true;
+    let validationError = {};
+    if (signUpData.email === "" || signUpData.email === null) {
+      isValid = false;
+      validationError.email = "Email is required!";
+    } else if (!/\S+@\S+\.\S+/.test(signUpData.email)) {
+      isValid = false;
+      validationError.email = "Invalid EmailId!";
+    }
+    else{
+      setSignUpPage2(!signUpPage2)
+    }
+  }
+  const handleSubmitSignUp = (e) => {
+    e.preventDefault();
+    let isValid = true;
+    let validationError = {};
+    if (signUpData.email === "" || signUpData.email === null) {
+      isValid = false;
+      validationError.email = "Email is required!";
+    } else if (!/\S+@\S+\.\S+/.test(signUpData.email)) {
+      isValid = false;
+      validationError.email = "Invalid EmailId!";
+    }
+    if (signUpData.name === "" || signUpData.name === null) {
+      isValid = false;
+      validationError.name = "name is required!";
+    }
+    if (signUpData.password === "" || signUpData.password === null) {
+      isValid = false;
+      validationError.password = "password is required!";
+    } else if (signUpData.password.length < 4) {
+      isValid = false;
+      validationError.password = "password should be atleast 4 character!";
+    }
+    setValidSign(isValid);
+    setErrorSign(validationError);
+    if (isValid) {
+      SignUpApi();
+    }
   };
+
   // ----------------------------------------------------------------------------------------------------------------------------
 
   // ------------------------------SIGN IN API---------------------------------------------------------------------------------
@@ -145,7 +193,8 @@ const Navbar = () => {
       console.log(result);
       if (result.status === "success") {
         localStorage.setItem("token", result.token);
-        setShowLogIn(false);
+        navigateDetail()
+
         localStorage.setItem(
           "UserInfo",
           JSON.stringify({
@@ -196,30 +245,61 @@ const Navbar = () => {
     window.localStorage.removeItem("token");
     navigate("/");
   };
+
+  const navigateDetail = () => {
+    navigate(`/Detail`,{state:{
+      fetchingData:fetchingData
+    }});
+  };
+
+  // const toggleDarkMode = () => {
+  //   setDarkMode(!darkMode);
+  // };
+
   return (
-    <div  >
-      {/* <button onClick={() => searchData()}>ki</button> */}
-     
-      <div className="flex justify-between pl-12 pr-12 pt-2 pb-10 relative h-14 border-b-2">
-        <div className="flex">
-          <img src="/1.webp" alt=""  className="h-9 w-9 mr-3"/>
-          <h2 className="text-3xl text-orange-500 font-bold">reddit</h2>
+    <div>
+      <div className="flex justify-between pl-12 pr-12 pt-2 pb-10 relative h-14 border-b border-gray-200 dark:border-gray-800 dark:bg-gray-800 xl:-ml-48">
+        <div className="md:-ml-8 md:visible visible sm:visible lg:invisible xl:invisible 2xl:invisible mr-4 mt-1" onClick={()=>setShowHam(!showHam)}><MenuSharpIcon/></div>
+        {
+          showHam &&
+             <div className="md:flex md:justify-between h-20 p-3  absolute top-14 md:-ml-12 z-10 shadow-xl  md:w-[10rem] md:pl-2 bg-white  ">
+        {!localStorage.getItem("token") && (
+          <div>
+            <ul>
+              <li>
+                <NavLink to="/" className="active:bg-red-600 active:">
+                  <HomeIcon /> Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/popular" className="active:bg-red-600">
+                  <OutboundOutlinedIcon /> Popular
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        )}
+          </div>
+        }
+        <div className="flex xl:mr-44 xl:-ml-8 lg:mr-44 lg:-ml-8">
+          <img src="/1.webp" alt="" className="h-9 w-9 mr-3 xl:ml-20" />
+          <h2 className="text-3xl text-orange-500 font-bold sm:invisible md:visible lg:visible xl:visible invisible ">reddit</h2>
         </div>
-        <div className="bg-gray-200 h-11 w-[40rem] float-start space-x-2 pl-3 rounded-3xl pt-2 ">
-          <SearchIcon />
+        <div className="bg-gray-200 h-11  xl:w-[40rem] float-start space-x-2 pl-3 rounded-3xl pt-2 lg:w-[34rem] md:w-[40rem] md:ml-20 md:-mr-36 xl:-ml-20 lg:-ml-20 lg:mr-4 sm:w-[400px] dark:bg-slate-900">
+          <SearchIcon className="dark:text-slate-400"/>
           <input
             type="search"
             name
             search
             placeholder="Search Reddit"
-            className="bg-gray-200 text-lg border-none outline-none"
+            className="bg-gray-200 text-lg border-none outline-none dark:bg-slate-900"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
             }}
             onClick={(e) => {
               // handleSearch(),
-               setOpenSearch(!openSearch)
+              setOpenSearch(!openSearch);
             }}
             ref={searchinput}
             onBlur={hotelInputBlur}
@@ -265,19 +345,19 @@ const Navbar = () => {
                           {item.author.name}
                         </p>
                       </div>
-                      <hr/>
+                      <hr />
                     </div>
                   ))}
             </div>
           )}
         </div>
-
+{/* <button onClick={toggleDarkMode}>dark</button> */}
         {/* -----------------------------BEFORE LOGIN --------------------------------------------------------------------------------- */}
         {!localStorage.getItem("token") && (
           <div className="flex space-x-7">
             <div>
               <div
-                className="bg-gray-200 pl-3 pr-3 h-11 rounded-3xl space-x-2 pt-2 pb-2"
+                className="bg-gray-200 pl-3 pr-3 h-11 rounded-3xl space-x-2 pt-2 pb-2 md:invisible sm:invisible lg:visible xl:visible invisible"
                 onMouseOver={() => {
                   setShowApp(!showApp);
                 }}
@@ -285,8 +365,8 @@ const Navbar = () => {
                   setShowAppLink(!showAppLink);
                 }}
               >
-                <QrCodeScannerIcon />
-                <button className="text-base">Get app</button>
+                <QrCodeScannerIcon className="h-4 w-4"/>
+                <button className="text-base lg:text-xs">Get app</button>
               </div>
               <br />
               {showApp && (
@@ -297,7 +377,7 @@ const Navbar = () => {
             </div>
             <div>
               <button
-                className="bg-orange-600 pl-4 pr-4 h-11 rounded-3xl space-x-2 pt-2 pb-2 font-semibold text-white text-sm"
+                className="bg-orange-600 pl-4 pr-4 h-11 rounded-3xl space-x-2 pt-2 pb-2 font-semibold text-white text-sm md:text-xs md:invisible sm:invisible lg:visible xl:visible invisible"
                 onMouseOver={() => {
                   setShow(!show);
                 }}
@@ -315,18 +395,23 @@ const Navbar = () => {
             </div>
             <div>
               <div
-                className="pt-1 relative"
+                className="pt-1 relative cursor-pointer -ml-16 xl:ml-4 md:ml-2"
                 onClick={() => setShowopt(!showopt)}
               >
                 <MoreHorizIcon />
               </div>
             </div>
             {showopt && (
-              <span className="absolute top-2/4 m-6 right-14 space-y-2 shadow-xl p-4 rounded-md">
-                <h2 className="text-sm" onClick={()=>{setShowLogIn(!showLogIn)}}>
+              <span className="absolute top-2/4 m-6 right-14 space-y-2 shadow-xl p-4 rounded-md bg-white cursor-pointer">
+                <h2
+                  className="text-sm"
+                  onClick={() => {
+                    setShowLogIn(!showLogIn);
+                  }}
+                >
                   <LoginIcon className="mr-2 text-sm" /> Log In / Sing Up
                 </h2>
-                <h2 className="text-sm">
+                <h2 className="text-sm " onClick={()=>setShowAppLink(!showAppLink)}>
                   <QrCodeScannerIcon className="mr-2" /> Get App
                 </h2>
               </span>
@@ -339,23 +424,23 @@ const Navbar = () => {
           <div>
             <div
               onClick={() => setShowOptions(!showOptions)}
-              className="flex justify-between items-center border-solid h-10 border-gray-400 border-2 rounded-md w-32 pl-2 pr-2"
+              className="flex justify-between items-center border-solid h-10 border-gray-400 border rounded-md w-32 pl-2 pr-2"
             >
               <img
                 className="h-6 w-6 rounded-lg"
                 src="https://www.redditstatic.com/avatars/defaults/v2/avatar_default_3.png"
                 alt=""
               />
-              <KeyboardArrowDownOutlinedIcon />
+              <KeyboardArrowDownOutlinedIcon className="dark:text-white" />
             </div>
             {showOptions && (
-              <div className="absolute w-56 pl-4 pt-3 top-2/4 mt-6 ml-10 right-14 space-y-2 shadow-md p-6 rounded-lg">
+              <div className="bg-white dark:bg-gray-800 absolute w-56 pl-4 pt-3 top-2/4 mt-7 ml-10 right-14 space-y-2 shadow-md p-6 rounded-lg">
                 <div>
                   <div className="flex space-x-2 text-gray-400 text-lg">
                     <AccountCircleSharpIcon className="mr-2 mt-1 h-12 w-12" />
                     My Stuff
                   </div>
-                  <div className="ml-10 mt-3 text-lg">
+                  <div className="ml-10 mt-3 text-lg dark:text-white">
                     Online status
                     <input type="checkbox" id="check" className="ml-2" />
                     <label
@@ -363,7 +448,9 @@ const Navbar = () => {
                       class="h-20 w-20 z-96 relative cursor-pointer bg-gray-500 rounded-2xl"
                     ></label>
                   </div>
-                  <div className="ml-10 mt-3 text-lg">Profile</div>
+                  <div className="ml-10 mt-3 text-lg dark:text-white">
+                    Profile
+                  </div>
                 </div>
                 <hr />
                 <div>
@@ -371,16 +458,19 @@ const Navbar = () => {
                     <VisibilitySharpIcon className="mr-2 mt-1 h-12 w-12" />
                     View Options
                   </div>
-                  <div className="ml-10 mt-3 text-lg w-18">
+                  <button
+                    onClick={toggleDarkMode}
+                    className="ml-10 mt-3 text-lg w-18 dark:text-white"
+                  >
                     Dark Mode
-                    <input type="checkbox" />
-                  </div>
+                    {/* <input type="checkbox" /> */}
+                  </button>
                   <div
                     className="flex ml-10 mt-3 text-lg"
                     onClick={() => signout()}
                   >
-                    <LogoutSharpIcon className="mr-2 mt-1 h-12 w-12" />
-                    <button>Sign Out</button>
+                    <LogoutSharpIcon className="mr-2 mt-1 h-12 w-12 dark:text-white" />
+                    <button className="dark:text-white">Sign Out</button>
                   </div>
                 </div>
               </div>
@@ -389,35 +479,61 @@ const Navbar = () => {
         )}
       </div>
       {/* --------------------------------------------------------------------------------------------------------------------- */}
-{/* 
-      <div className="border-t-2 mt-4 flex justify-between pl-12 pr-12 pt-3 pb-2 relative h-14  border-r-2">
-        <div>
-          <ul>
-            <li className="bg-gray-200 space-x-2 w-60 pl-4 pb-1 mb-1 rounded-sm pt-2">
-              <NavLink to="/">
-                <HomeIcon /> Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/popular">
-                <OutboundOutlinedIcon /> Popular
-              </NavLink>
-            </li>
-          </ul>
-        </div> */}
-        {/* <div> <PostData/></div> */}
-        {/* <div> */}
-          
-        {/* </div> */}
-      {/* </div> */}
+      {/* 
       {/* -------------------- OPEN APP LINK ----------------------------------------------------------------------------- */}
-      {showAppLink && <LogIn state={showAppLink} />}
+      {showAppLink && 
+      
+      <div className="bg-gray-700 bg-opacity-80 h-dvh size-full m-0 fixed top-0 left-0 w-dvw flex justify-center items-center">
+      <div className="bg-white relative w-[30rem] h-[85%] rounded-md">
+        <div className="flex m-5 justify-between">
+          <h1 className="text-3xl font-bold">Get the Reddit app</h1>
+          <button
+            className="text-3xl p-3 rounded-md bg-gray-100"
+            onClick={() => {
+              setShowAppLink(!showAppLink);
+            }}
+          >
+            {" "}
+            X{" "}
+          </button>
+        </div>
+        <div className="flex items-center justify-center">
+          <p className="flex items-center w-[32%] justify-center  text-center font-medium">
+            Scan this QR code to download the app now
+          </p>
+        </div>
+        <div className="flex items-center justify-center text-center font-medium">
+          <img
+            className="h-[14rem] w-[14rem] flex items-center justify-center mt-2 text-center font-medium"
+            src="https://reddit-ten-mocha.vercel.app/QRCode.png"
+            alt=""
+          />
+        </div>
+        <p className="flex items-center justify-center mt-4 text-center font-medium">
+          Or check it out in the app stores
+        </p>
+        <div className="flex items-center justify-center mt-2 text-center font-medium space-x-2">
+          <img
+            className="w-[7rem]"
+            src="https://www.redditstatic.com/shreddit/assets/google-play.svg
+"
+            alt=""
+          />
+          <img
+            className="w-[6rem]"
+            src="https://www.redditstatic.com/shreddit/assets/app-store.svg"
+            alt=""
+          />
+        </div>
+      </div>
+    </div>
+      }
 
       {/* ------------------------OPEN LOG IN FUN [POPUP]------------------------------------------------------------------- */}
       {showLogIn && (
-        <form onSubmit={handleSubmitSignIn}>
+        <div>
           <div className="bg-gray-700 bg-opacity-80 h-dvh size-full m-0 fixed top-0 left-0 w-dvw flex justify-center items-center">
-            <div className="bg-white relative w-[30rem] h-[85%] rounded-md">
+            <div className="bg-white relative w-[30rem] h-[90%] rounded-md ">
               <div className="flex justify-end mt-4 mr-4">
                 <button
                   className="text-2xl pl-2 pr-2 rounded-md bg-gray-400 flex"
@@ -429,109 +545,265 @@ const Navbar = () => {
                   X{" "}
                 </button>
               </div>
-              <div className="ml-16 mt-8 mr-16">
-                <h1 className=" text-2xl">Log in</h1>
-                <p className=" text-sm pt-1">
-                  By continuing, you agree to our User Agreement and acknowledge
-                  that you understand the Privacy Policy.
-                </p>
-              </div>
-              <div>
-                <div className="pl-4 pr-3 ml-16 mt-8 mr-16 shadow-xl h-8 w-[21rem] rounded-xl bg-gray-200 flex justify-between items-center">
-                  <img
-                    src="https://styles.redditmedia.com/t5_3is08/styles/communityIcon_i0bub98epp4a1.png"
-                    alt=""
-                    className="w-4 h-4 rounded-xl"
-                  />
-                  <p className="text-sm text-red-600">
-                    Continue with Google (Feature coming soon)
-                  </p>
-                  {/* <img className="w-4 h-4 z-10" src="https://www.google.com/search?sca_esv=fdae4f9b2d9875c9&sca_upv=1&rlz=1C1FKPE_enIN980IN980&sxsrf=ACQVn0_mVBbV0NZP0f2n9mocGqsmNXWSZQ:1711521421844&q=google+png&tbm=isch&chips=q:google+png,g_1:logo:n7Udw4Q-0Qs%3D&usg=AI4_-kRqTh3RyaHLLXH-erw_4lTU9XqXbw&sa=X&ved=2ahUKEwj3gf-S6pOFAxWia2wGHbqmANQQgIoDKAB6BAgNEA0&biw=1396&bih=639&dpr=1.38#imgrc=ss7cMp9Kx8k3fM" alt="" /> */}
-                </div>
-                <div className="pl-4 pr-3 ml-16 mt-4 mr-16 shadow-xl h-8 w-[21rem] rounded-xl bg-gray-200 flex justify-between items-center">
-                  <img
-                    className="w-4 h-4 rounded-xl"
-                    src="../SignIn/logo"
-                    alt=""
-                  />
-                  <p className="text-sm text-red-600">
-                    Continue with Apple (Feature Coming soon)
-                  </p>
-                </div>
+              {!signUpPage1 && (
+                <form onSubmit={handleSubmitSignIn}>
+                  <div>
+                    <div className="ml-16  mr-16">
+                      <h1 className=" text-2xl">Log in</h1>
+                      <p className=" text-sm pt-1">
+                        By continuing, you agree to our User Agreement and
+                        acknowledge that you understand the Privacy Policy.
+                      </p>
+                    </div>
+                    <div>
+                      <div className="pl-2 pr-1 ml-16 mt-8 mr-16 shadow-xl h-8 w-[21rem] rounded-xl bg-gray-200 flex justify-between items-center">
+                        <img
+                          src="https://styles.redditmedia.com/t5_3is08/styles/communityIcon_i0bub98epp4a1.png"
+                          alt=""
+                          className="w-4 h-4 rounded-xl"
+                        />
+                        <p className="text-sm text-red-600">
+                          Continue with Google (Feature coming soon)
+                        </p>
+                        <img
+                          src="/GLogo.png"
+                          alt=""
+                          className="w-4 h-4 rounded-xl"
+                        />
+                      </div>
+                      <div className="pl-2 pr-7 ml-16 mt-4 mr-16 shadow-xl h-8 w-[21rem] rounded-xl bg-gray-200 flex justify-between items-center">
+                        <img
+                          className="w-5 h-5 rounded-xl"
+                          src="/applelogo.png"
+                          alt=""
+                        />
+                        <p className="text-sm text-red-600">
+                          Continue with Apple (Feature Coming soon)
+                        </p>
+                      </div>
 
-                <div className="relative mt-10 ml-16 w-[21rem] h-[3rem]  rounded-md flex items-center border-solid border-gray-500 border-2">
-                  <input
-                    type="text"
-                    placeholder="email"
-                    className="ml-4 text-xl outline-none border-none"
-                    value={registerData.email}
-                    onChange={(e) => {
-                      setRegisterData({
-                        ...registerData,
-                        email: e.target.value,
-                      });
-                      setError((prev) => {
-                        return { ...prev, email: "" };
-                      });
-                    }}
-                  />
-                  {valid ? (
-                    <></>
-                  ) : (
-                    <span className="absolute top-11 text-red-600 text-sm">
-                      {error.email}
-                    </span>
-                  )}
-                </div>
-                <div className="mt-10 ml-16 w-[21rem] h-[3rem] flex items-center rounded-md border-solid border-gray-500 border-2">
-                  <input
-                    type="password"
-                    placeholder="password"
-                    className="ml-4 text-xl outline-none border-none"
-                    value={registerData.password}
-                    onChange={(e) => {
-                      setRegisterData({
-                        ...registerData,
-                        password: e.target.value,
-                      });
-                      setError((prev) => {
-                        return { ...prev, password: "" };
-                      });
-                    }}
-                  />
-                  {valid ? (
-                    <></>
-                  ) : (
-                    <span className="absolute bottom-[137px] text-red-600 text-sm">
-                      {error.password}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <p className="text-xs ml-16 mt-4">
-                New to Reddit ?{" "}
-                <butt onClick={() => setOpenSignUp(!openSignUp)}>Sign Up</butt>
-              </p>
+                      <div>
+                        <div className="relative mt-10 ml-16 w-[21rem] h-[3rem]  rounded-md flex items-center border-solid border-gray-500 border-2">
+                          <input
+                            type="text"
+                            placeholder="email"
+                            className="ml-4 text-xl outline-none border-none"
+                            value={registerData.email}
+                            onChange={(e) => {
+                              setRegisterData({
+                                ...registerData,
+                                email: e.target.value,
+                              });
+                              setError((prev) => {
+                                return { ...prev, email: "" };
+                              });
+                            }}
+                          />
+                          {valid ? (
+                            <></>
+                          ) : (
+                            <span className="absolute top-11 text-red-600 text-sm">
+                              {error.email}
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-10 ml-16 w-[21rem] h-[3rem] flex items-center rounded-md border-solid border-gray-500 border-2">
+                          <input
+                            type="password"
+                            placeholder="password"
+                            className="ml-4 text-xl outline-none border-none"
+                            value={registerData.password}
+                            onChange={(e) => {
+                              setRegisterData({
+                                ...registerData,
+                                password: e.target.value,
+                              });
+                              setError((prev) => {
+                                return { ...prev, password: "" };
+                              });
+                            }}
+                          />
+                          {valid ? (
+                            <></>
+                          ) : (
+                            <span className="absolute mt-16 text-red-600 text-sm">
+                              {error.password}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs ml-16 mt-6">
+                      New to Reddit ?{" "}
+                      <button
+                        className="cursor-pointer"
+                        onClick={() => setSignUpPage1(!signUpPage1)}
+                      >
+                        Sign Up
+                      </button>
+                    </p>
 
-              <button
-                type="submit"
-                className="mt-5 pt-1 text-white cursor-pointer pb-8 text-xl bg-orange-600 h-[40px] rounded-2xl w-[21rem] ml-16 hover:bg-blue-700 font-bold py-2 px-4 transition-all duration-300"
-              >
-                Log In
-              </button>
+                    <button
+                      type="submit"
+                      className="mt-3 pt-1 text-white cursor-pointer pb-8 text-xl bg-orange-600 h-[40px] rounded-2xl w-[21rem] ml-16 font-bold py-2 px-4 transition-all duration-300"
+                    >
+                      Log In
+                    </button>
+                  </div>
+                </form>
+              )}
+              {signUpPage1 && (
+                <div>
+                  <div className="ml-16 mt-2 mr-16">
+                    <h1 className=" text-2xl">Log in</h1>
+                    <p className=" text-sm pt-1">
+                      By continuing, you agree to our User Agreement and
+                      acknowledge that you understand the Privacy Policy.
+                    </p>
+                  </div>
+                  <div>
+                    <div className="pl-2 pr-1 ml-16 mt-8 mr-16 shadow-xl h-8 w-[21rem] rounded-xl bg-gray-200 flex justify-between items-center">
+                      <img
+                        src="https://styles.redditmedia.com/t5_3is08/styles/communityIcon_i0bub98epp4a1.png"
+                        alt=""
+                        className="w-4 h-4 rounded-xl"
+                      />
+                      <p className="text-sm text-red-600">
+                        Continue with Google (Feature coming soon)
+                      </p>
+                      <img
+                        src="/GLogo.png"
+                        alt=""
+                        className="w-4 h-4 rounded-xl"
+                      />
+                    </div>
+                    <div className="pl-2 pr-7 ml-16 mt-4 mr-16 shadow-xl h-8 w-[21rem] rounded-xl bg-gray-200 flex justify-between items-center">
+                      <img
+                        className="w-5 h-5 rounded-xl"
+                        src="/applelogo.png"
+                        alt=""
+                      />
+                      <p className="text-sm text-red-600">
+                        Continue with Apple (Feature Coming soon)
+                      </p>
+                    </div>
+                    <div>
+                      <form onSubmit={handleSubmitSignUp}>
+                        {!signUpPage2 && (
+                          <div>
+                            <div className="relative mt-10 ml-16 w-[21rem] h-[3rem]  rounded-md flex items-center border-solid border-gray-500 border-2">
+                              <input
+                                type="email"
+                                className="ml-4 text-xl outline-none border-none"
+                                placeholder="email"
+                                value={signUpData.email}
+                                onChange={(e) => {
+                                  setSignUpData({
+                                    ...signUpData,
+                                    email: e.target.value,
+                                  });
+                                  setErrorSign((prev) => {
+                                    return { ...prev, email: "" };
+                                  });
+                                }}
+                                // required
+                              />
+                              {validsign ? (
+                                <></>
+                              ) : (
+                                <span className="absolute top-11 text-red-600 text-sm">
+                                  {errorsign.email}
+                                </span>
+                              )}
+                            </div>
+                            <br />
+                            <p className="text-xs ml-16 ">
+                              Already a Redditor ?{" "}
+                              <button
+                                className="cursor-pointer"
+                                onClick={() => setSignUpPage1(!signUpPage1)}
+                              >
+                                Sign In
+                              </button>
+                            </p>
+
+                            <button
+                              type="submit"
+                              className="mt-5 pt-1 text-white cursor-pointer pb-8 text-xl bg-orange-600 h-[40px] rounded-2xl w-[21rem] ml-16 font-bold py-2 px-4 transition-all duration-300"
+                              onClick={() => 
+                                // setSignUpPage2(!signUpPage2)
+                                handleEmail()
+                              }
+                            >
+                              Continue
+                            </button>
+                          </div>
+                        )} 
+                        {signUpPage2 && 
+                          <div>
+                            <div 
+                            className="absolute top-5 left-4"
+                            onClick={()=>setSignUpPage2(!signUpPage2)}>
+                            <ArrowBackSharpIcon/>
+                            </div>
+                        <div className="relative mt-10 ml-16 w-[21rem] h-[3rem]  rounded-md flex items-center border-solid border-gray-500 border-2">
+                            <input type="text" value={signUpData.name} 
+                            placeholder="name"
+                            className="ml-4 text-xl outline-none border-none"
+                            onChange={(e)=>{setSignUpData({...signUpData,name:e.target.value}),
+                            setErrorSign((prev)=>{
+                              return{
+                                ...prev,name:""
+                              }
+                            })}} />
+                            {
+                              validsign ? (<>
+                              </>):(<span className="absolute mt-16 text-red-600 text-sm">
+                                {errorsign.name}
+                              </span>)
+                            }
+                          </div>
+                          <div className="relative mt-10 ml-16 w-[21rem] h-[3rem]  rounded-md flex items-center border-solid border-gray-500 border-2">
+                            <input type="password" value={signUpData.password} 
+                            placeholder="password"
+                            className="ml-4 text-xl outline-none border-none"
+                            onChange={(e)=>{setSignUpData({...signUpData,password:e.target.value}),
+                            setErrorSign((prev)=>{
+                              return{
+                                ...prev,password:""
+                              }
+                            })}} />
+
+{
+                              validsign ? (<>
+                              </>):(<span className="absolute mt-16 text-red-600 text-sm">
+                                {errorsign.password}
+                              </span>)
+                            }
+                          </div>
+                          <button
+                              type="submit"
+                              className="mt-10 pt-1 text-white cursor-pointer pb-8 text-xl bg-orange-600 h-[40px] rounded-2xl w-[21rem] ml-16 font-bold py-2 px-4 transition-all duration-300"
+                              // onClick={() => setSignUpPage2(!signUpPage2)}
+                            >
+                              Sign Up
+                            </button>
+
+                          
+                          </div>}
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </form>
+        </div>
       )}
-
-      {/* ------------------ OPEN SIGNUP FUN [POPUP] ---------------------------------------------------------------------------- */}
-      {openSignUp && (
-        <form action="">
-          <div>koooo</div>
-        </form>
-      )}
+      
     </div>
   );
 };
 
 export default Navbar;
+

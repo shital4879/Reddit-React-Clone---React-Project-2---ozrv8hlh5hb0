@@ -12,7 +12,8 @@ import { NavLink } from "react-router-dom";
 
 const Pupular = () => {
     const [postData, setPostData] = useState();
-
+    const [fetchingData, setFetchingData] = useState();
+    const [showMore, setShowMore] = useState(false);
     const PostApi = async () => {
         try {
           const responce = await fetch(
@@ -37,6 +38,33 @@ const Pupular = () => {
       }, []);
 
 
+      const toggle = () => {
+        setShowMore(!showMore);
+      };
+// ------------------------------- CHANNEL API ------------------------------------------------------------------
+      const searchData = async () => {
+        try {
+          const responce = await fetch(
+            `https://academics.newtonschool.co/api/v1/reddit/channel/`,
+            {
+              // method: "GET",
+              headers: {
+                projectID: "ozrv8hlh5hb0",
+                // "Content-Type": "application/json",
+              },
+            }
+          );
+          const result = await responce.json();
+          setFetchingData(result.data);
+          console.log("lo", result.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      useEffect(() => {
+        searchData();
+      }, []);
 
 
   return (
@@ -95,14 +123,40 @@ const Pupular = () => {
             ))}
         </div>
 
-        <div className=" w-[20rem] bg-gray-50 rounded-2xl mt-3 ml-12">
+        <div>
+
+          {!localStorage.getItem("token") && (
+        <div className=" w-[21rem] bg-gray-100 rounded-2xl mt-3 ml-12">
           <h1 className="pt-7 pl-5 text-gray-500 text-base">
             POPULAR COMMUNITIES
           </h1>
-          <div>
-            {/* {fetchingData && fetchingData((item) => <div></div>)} */}
-            <button>{"Show More" ? "Show Less" : "Show More"}</button>
+          <div className="w-[17rem] p-4 bg-gray-200 m-4">
+            {fetchingData &&
+              fetchingData
+                .slice(0, showMore ? fetchingData.length : 8)
+                .map((item) => (
+                  <div className="flex space-x-3 ">
+                    <img
+                      src={item.image}
+                      alt=""
+                      className="w-8 h-8 rounded-2xl mb-6 mt-3"
+                    />
+                    <div>
+                      <div className="text-[18px]">{item.name}</div>
+                      <div className="text-xs text-gray-600">
+                        {item.createdAt}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            <button onClick={toggle}>
+              {" "}
+              {showMore ? "Show Less" : "Show More"}
+            </button>
           </div>
+        </div>
+      )}
+         
         </div>
 
     </div>
