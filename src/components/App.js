@@ -6,69 +6,25 @@ import Popular from "../Pages/Popular"
 import Primium from "../Pages/Primium";
 import Detail from "../Pages/Detail"
 import CreatePost from "../Pages/CreatePost";
-
-import { createContext, useEffect, useState } from "react";
-
+import DarkTheme from "../Component/Context/DarkTheme";
+import { createContext, useContext, useEffect, useState } from "react";
+import ChannelPage from "../Pages/ChannelPage";
+import {ThemeContext} from "../Component/Context/DarkTheme"
+import ApiContext from "../Component/Context/ApiContext";
+import AuthorDetail from "../Pages/AuthorDetail";
 
 export const Mycontext = createContext();
 
 function App() {
+const [createCommunity,setCreateCommunity] = useState(false)
 const[showLogIn, setShowLogIn] = useState(false);
-// const [darkMode, setDarkMode] = useState(getDarkMode);
-const [dataChannel,setdataChannel] = useState();
+const [openPopular,setOpenPopular] = useState(false);
 
 
-const searchData = async () => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/channel/`,
-        {
-          // method: "GET",
-          headers: {
-            projectID: "ozrv8hlh5hb0",
-            // "Content-Type": "application/json",
-          },
-        }
-      );
-      const result = await responce.json();
-      setdataChannel(result.data);
-      console.log("lo", result.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
- 
-
-
-
-
-
-
-
-//   const getDarkMode = () =>{
-//     if(darkMode===false){
-      
-//       return json.parse(localStorage.getItem("darkMode"))
-//     }
-//   }
-// useEffect(()=>{
-//  localStorage.setItem("darkMode",JSON.stringify(darkMode))
-// },[darkMode])
-
-  useEffect(() => {
-    searchData();
-  }, []);
-
-
-// const toggleDarkMode = (e) => {
-  // e.preventDefault();
-//   setDarkMode(!darkMode);
-// };
   return <div>
-    {/* <APIcontext.Provider> */}
-    <Mycontext.Provider value={{showLogIn,setShowLogIn,darkMode,setDarkMode,toggleDarkMode,dataChannel}}>
+    <DarkTheme>
+      <ApiContext>
+    <Mycontext.Provider value={{showLogIn,setShowLogIn,createCommunity,setCreateCommunity,openPopular,setOpenPopular}}>
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home/>}></Route>
@@ -77,10 +33,13 @@ const searchData = async () => {
       <Route path="/premium" element={<Primium/>}></Route>
       <Route path="/Detail" element={<Detail/>}></Route>
       <Route path="/CreatePost" element={<CreatePost/>}></Route>
+      <Route path="/ChannelPage/:id" element={<ChannelPage/>}></Route>
+      <Route path="/AuthorDetail/:id" element={<AuthorDetail/>}></Route>
     </Routes> 
     </BrowserRouter>
     </Mycontext.Provider>
-    {/* </APIcontext.Provider> */}
+    </ApiContext>
+    </DarkTheme>
   </div>;
 }
 

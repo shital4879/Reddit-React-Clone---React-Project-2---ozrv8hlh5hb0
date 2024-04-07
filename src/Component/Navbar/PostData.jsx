@@ -12,71 +12,51 @@ import SecurityIcon from "@mui/icons-material/Security";
 import { NavLink } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
 import {Mycontext} from "../../components/App"
+import { contextApi } from "../Context/ApiContext";
 
 
 const PostData = () => {
   const {darkMode,setDarkMode,toggleDarkMode} = useContext(Mycontext);
   const{showLogIn,setShowLogIn} = useContext(Mycontext)
+  const{postData,setPostData,channelApi,setChannelApi} = useContext(contextApi)
   const navigate = useNavigate();
-  const [postData, setPostData] = useState();
+  // console.log(postData,"post");
   const [showMore, setShowMore] = useState(false);
-  const [fetchingData, setFetchingData] = useState();
+  // const [fetchingData, setFetchingData] = useState();
   // const {showLogIn} = props
   // const fetchingData = props
-  console.log(showLogIn);
+  // console.log(showLogIn);
 
-  // --------------------------- API FOR POST ---------------------------------------------------------------------------
-  const PostApi = async () => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/post?limit=100`,
-        {
-          method: "GET",
-          headers: {
-            projectID: "ozrv8hlh5hb0",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const result = await responce.json();
-      setPostData(result.data);
-      // console.log(result.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    PostApi();
-  }, []);
+ 
   // ----------------------------------------------------------------------------------------------------------------
 
   const toggle = () => {
     setShowMore(!showMore);
   };
 
-  const searchData = async () => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/channel/`,
-        {
-          // method: "GET",
-          headers: {
-            projectID: "ozrv8hlh5hb0",
-            // "Content-Type": "application/json",
-          },
-        }
-      );
-      const result = await responce.json();
-      setFetchingData(result.data);
-      console.log("lo", result.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const searchData = async () => {
+  //   try {
+  //     const responce = await fetch(
+  //       `https://academics.newtonschool.co/api/v1/reddit/channel/`,
+  //       {
+  //         // method: "GET",
+  //         headers: {
+  //           projectID: "ozrv8hlh5hb0",
+  //           // "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     const result = await responce.json();
+  //     setFetchingData(result.data);
+  //     console.log("lo", result.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    searchData();
-  }, []);
+  // useEffect(() => {
+  //   searchData();
+  // }, []);
   // function handleSearch() {
   //   searchData()
   //     .then((response) => {
@@ -93,7 +73,7 @@ const PostData = () => {
 
   return (
     <div 
-    // className={`${darkMode && "dark"}`}
+    className={`${darkMode && "dark"}`}
     >
     <div className="xl:flex lg:flex border-r-2 pb-4">
     
@@ -102,12 +82,12 @@ const PostData = () => {
           <div>
             <ul>
               <li>
-                <NavLink to="/" className="active:bg-red-600 active:">
+                <NavLink to="/" className="text-2xl bg-red-950" >
                   <HomeIcon /> Home
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/popular" className="active:bg-red-600">
+                <NavLink to="/popular" className="">
                   <OutboundOutlinedIcon /> Popular
                 </NavLink>
               </li>
@@ -170,7 +150,7 @@ const PostData = () => {
                       </h1>
                     </div>
                     <div className="text-gray-500 text-sm">
-                      .{new Date().toLocaleDateString() - item.createdAt}
+                      {((new Date() - new Date(item.createdAt))/(1000*3600*24)).toFixed(0)} days
                     </div>
                   </div>
                   <div>
@@ -202,8 +182,8 @@ const PostData = () => {
             POPULAR COMMUNITIES
           </h1>
           <div className="xl:w-[16rem] p-4 bg-gray-100 m-4 lg:w-[14rem]">
-            {fetchingData &&
-              fetchingData
+            {channelApi &&
+              channelApi
                 .slice(0, showMore ? fetchingData.length : 8)
                 .map((item) => (
                   <div className="flex space-x-3 ">
@@ -215,7 +195,7 @@ const PostData = () => {
                     <div>
                       <div className="text-[18px]">{item.name}</div>
                       <div className="text-xs text-gray-600">
-                        {item.createdAt}
+                        {((new Date() - new Date(item.createdAt))/1000/3600/24).toFixed(0)} days ago
                       </div>
                     </div>
                   </div>

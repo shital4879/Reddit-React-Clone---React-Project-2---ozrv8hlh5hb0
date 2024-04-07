@@ -18,24 +18,25 @@ import MenuSharpIcon from '@mui/icons-material/MenuSharp';
 import SignOut from "../SignIn/SignOut";
 import PostData from "./PostData";
 import { Mycontext } from "../../components/App"
+import { contextApi } from "../Context/ApiContext";
+import { ThemeContext } from "../Context/DarkTheme";
 
 const Navbar = () => {
- const{showLogIn,setShowLogIn,darkMode,setDarkMode,toggleDarkMode} = useContext(Mycontext);
- console.log(showLogIn);
+  console.log("daa",fetchingData);
+ const{showLogIn,setShowLogIn} = useContext(Mycontext);
+ const{darkMode,setDarkMode,toggleDarkMode} = useContext(ThemeContext);
+ const{search,setSearch,fetchingData,setFetchingData} = useContext(contextApi)
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [showApp, setShowApp] = useState(false);
   const [showopt, setShowopt] = useState(false);
   const [showAppLink, setShowAppLink] = useState(false);
-  
-  const [search, setSearch] = useState("");
   const [openSearch, setOpenSearch] = useState(false);
-  const [fetchingData, setFetchingData] = useState();
+  
   const searchinput = useRef();
   const [hotelInputPopUp, setHotelInputPopUp] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
-  // const [darkMode, setDarkMode] = useState(false);
   const [signUpPage1, setSignUpPage1] = useState(false);
   const [signUpPage2, setSignUpPage2] = useState(false);
   const [showHam,setShowHam] = useState(false);
@@ -60,29 +61,10 @@ const Navbar = () => {
     setHotelInputPopUp(false);
   }
 
-  // --------------SEARCH API ---------------------------------------------------------------------------------------------
-  const searchData = async () => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/post?search={"author.name":"${search}"}`,
-        {
-          method: "GET",
-          headers: {
-            projectID: "ozrv8hlh5hb0",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const result = await responce.json();
-      setFetchingData(result.data);
-      // console.log("lo", result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    searchData();
-  }, [search]);
+
+
+
+  
   // -------------------------------------------------------------------------------------------------------------
 
   // ----------------SIGN UP API ----------------------------------------------------------------------------
@@ -257,7 +239,7 @@ const Navbar = () => {
   // };
 
   return (
-    <div>
+    <div className={darkMode?"dark":""}>
       <div className="flex justify-between pl-12 pr-12 pt-2 pb-10 relative h-14 border-b border-gray-200 dark:border-gray-800 dark:bg-gray-800 xl:-ml-48">
         <div className="md:-ml-8 md:visible visible sm:visible lg:invisible xl:invisible 2xl:invisible mr-4 mt-1" onClick={()=>setShowHam(!showHam)}><MenuSharpIcon/></div>
         {
@@ -286,13 +268,14 @@ const Navbar = () => {
           <h2 className="text-3xl text-orange-500 font-bold sm:invisible md:visible lg:visible xl:visible invisible ">reddit</h2>
         </div>
         <div className="bg-gray-200 h-11  xl:w-[40rem] float-start space-x-2 pl-3 rounded-3xl pt-2 lg:w-[34rem] md:w-[40rem] md:ml-20 md:-mr-36 xl:-ml-20 lg:-ml-20 lg:mr-4 sm:w-[400px] dark:bg-slate-900">
+          <div className="flex items-center">
           <SearchIcon className="dark:text-slate-400"/>
           <input
             type="search"
             name
             search
             placeholder="Search Reddit"
-            className="bg-gray-200 text-lg border-none outline-none dark:bg-slate-900"
+            className="bg-gray-200 text-lg border-none outline-none dark:bg-slate-900 w-[100%] rounded-3xl"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -305,6 +288,7 @@ const Navbar = () => {
             onBlur={hotelInputBlur}
             onFocus={hotelInputFocus}
           />
+          </div>
 
           {openSearch && (
             <div className="w-[100%] mt-4 p-4 shadow-2xl z-50 overflow-auto h-[30rem] bg-white rounded-lg">
@@ -313,11 +297,11 @@ const Navbar = () => {
               </p>
               {fetchingData &&
                 fetchingData
-                  // .filter((item) => {
-                  //   const lower = item.author.name.toLowerCase();
+                  .filter((item) => {
+                    const lower = item.author.name.toLowerCase();
 
-                  //   return lower.startsWith(search);
-                  // })
+                    return lower.startsWith(search);
+                  })
                   .map((item) => (
                     <div
                       onClick={(e) => {
@@ -357,7 +341,7 @@ const Navbar = () => {
           <div className="flex space-x-7">
             <div>
               <div
-                className="bg-gray-200 pl-3 pr-3 h-11 rounded-3xl space-x-2 pt-2 pb-2 md:invisible sm:invisible lg:visible xl:visible invisible"
+                className="flex items-center bg-gray-200 pl-3 pr-3 h-11 rounded-3xl space-x-2 pt-2 pb-2 md:invisible sm:invisible lg:visible xl:visible invisible"
                 onMouseOver={() => {
                   setShowApp(!showApp);
                 }}
@@ -366,7 +350,7 @@ const Navbar = () => {
                 }}
               >
                 <QrCodeScannerIcon className="h-4 w-4"/>
-                <button className="text-base lg:text-xs">Get app</button>
+                <button className="text-base lg:text-xs xl:text-base">Get app</button>
               </div>
               <br />
               {showApp && (
@@ -377,7 +361,7 @@ const Navbar = () => {
             </div>
             <div>
               <button
-                className="bg-orange-600 pl-4 pr-4 h-11 rounded-3xl space-x-2 pt-2 pb-2 font-semibold text-white text-sm md:text-xs md:invisible sm:invisible lg:visible xl:visible invisible"
+                className="xl:text-base bg-orange-600 pl-4 pr-4 h-11 rounded-3xl space-x-2 pt-2 pb-2 font-semibold text-white text-sm md:text-xs md:invisible sm:invisible lg:visible xl:visible invisible"
                 onMouseOver={() => {
                   setShow(!show);
                 }}

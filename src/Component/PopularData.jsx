@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from 'react'
+import React, { useState ,useEffect, useContext} from 'react'
 import RocketSharpIcon from "@mui/icons-material/RocketSharp";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import NewReleasesTwoToneIcon from "@mui/icons-material/NewReleasesTwoTone";
@@ -9,66 +9,25 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import HomeIcon from "@mui/icons-material/Home";
 import OutboundOutlinedIcon from "@mui/icons-material/OutboundOutlined";
 import { NavLink } from "react-router-dom";
+import { contextApi } from './Context/ApiContext';
+import { ThemeContext } from './Context/DarkTheme';
 
 const Pupular = () => {
-    const [postData, setPostData] = useState();
-    const [fetchingData, setFetchingData] = useState();
+  const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
+    const{postData, setPostData,channelApi,setChannelApi} = useContext(contextApi);
     const [showMore, setShowMore] = useState(false);
-    const PostApi = async () => {
-        try {
-          const responce = await fetch(
-            `https://academics.newtonschool.co/api/v1/reddit/post?limit=100`,
-            {
-              method: "GET",
-              headers: {
-                projectID: "ozrv8hlh5hb0",
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          const result = await responce.json();
-          setPostData(result.data);
-          console.log(result.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      useEffect(() => {
-        PostApi();
-      }, []);
-
 
       const toggle = () => {
         setShowMore(!showMore);
       };
-// ------------------------------- CHANNEL API ------------------------------------------------------------------
-      const searchData = async () => {
-        try {
-          const responce = await fetch(
-            `https://academics.newtonschool.co/api/v1/reddit/channel/`,
-            {
-              // method: "GET",
-              headers: {
-                projectID: "ozrv8hlh5hb0",
-                // "Content-Type": "application/json",
-              },
-            }
-          );
-          const result = await responce.json();
-          setFetchingData(result.data);
-          console.log("lo", result.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
+
     
-      useEffect(() => {
-        searchData();
-      }, []);
+  
 
 
   return (
-    <div className='flex'>
+    <div className={darkMode ? "dark" : ""}>
+    <div className='flex dark:bg-black dark:text-gray-200'>
 
 <div className=" mt-4 flex justify-between pl-12 pr-12 pt-3 pb-2 relative h-14  ">
         <div>
@@ -89,12 +48,12 @@ const Pupular = () => {
 
        <div>
           {postData &&
-            postData.filter(item =>{
-               return item.likeCount > 5
-              })
+            postData.filter((item) =>(
+                item.likeCount > 4
+            ))
               .map((item) => (
               <div className="">
-                <div className="shadow-md w-[41rem]  rounded-lg pt-4 pl-2 mb-8 ">
+                <div className="mt-5 shadow-md w-[41rem]  rounded-lg pt-4 pl-2 mb-8 dark:text-gray-200 dark:border-gray-900 dark:bg-black">
                     <div className="flex">
                   <div className="flex">
                     <img
@@ -105,14 +64,14 @@ const Pupular = () => {
                       <h1 className="font-semibold text-base ml-2 mr-2">{item.author.name}</h1>
                      
                   </div>
-                  <div className="text-gray-500 text-sm">.{new Date().toLocaleDateString() - item.createdAt}</div>
+                  <div className="text-gray-500 text-sm">{((new Date() - new Date(item.createdAt))/1000/3600/24).toFixed(0)} days ago</div>
                 </div>
                 <div>
                     <p className="mb-2">{item.content}</p>
                     <img src={item.images} alt="" className="rounded-xl"/>
                 </div>
                 <div className="flex mt-3 pb-5 space-x-4">
-                    <div className="bg-gray-200 rounded-3xl flex space-x-2 p-1 text-sm" >
+                    <div className="bg-gray-200 rounded-3xl flex space-x-2 p-1 text-sm dark:bg-zinc-950" >
                         <ArrowUpwardOutlinedIcon className="hover:text-orange-500 h-1 w-1"/> 
                         <div>{item.likeCount}</div>
                     <ArrowDownwardOutlinedIcon className="hover:text-green-700 h-1 w-1"/></div>
@@ -125,15 +84,15 @@ const Pupular = () => {
 
         <div>
 
-          {!localStorage.getItem("token") && (
+       
         <div className=" w-[21rem] bg-gray-100 rounded-2xl mt-3 ml-12">
           <h1 className="pt-7 pl-5 text-gray-500 text-base">
             POPULAR COMMUNITIES
           </h1>
           <div className="w-[17rem] p-4 bg-gray-200 m-4">
-            {fetchingData &&
-              fetchingData
-                .slice(0, showMore ? fetchingData.length : 8)
+            {channelApi &&
+              channelApi
+                .slice(0, showMore ? channelApi.length : 8)
                 .map((item) => (
                   <div className="flex space-x-3 ">
                     <img
@@ -155,10 +114,11 @@ const Pupular = () => {
             </button>
           </div>
         </div>
-      )}
+
          
         </div>
 
+    </div>
     </div>
   )
 }

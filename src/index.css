@@ -17,3 +17,8 @@ code {
     monospace;
 } */
 
+@layer components {
+  .active {
+    @apply bg-gray-600 text-3xl-
+  }
+}
