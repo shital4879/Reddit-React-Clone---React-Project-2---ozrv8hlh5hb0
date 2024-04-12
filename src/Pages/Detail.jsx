@@ -30,6 +30,9 @@ import { contextApi } from "../Component/Context/ApiContext";
 import NavDetail from "../Component/Navbar/NavDetail";
 
 const Detail = () => {
+  const params = useParams();
+
+  // console.log(name,"name");
   const navigate = useNavigate();
   const {
     search,
@@ -50,6 +53,7 @@ const Detail = () => {
     setCreateCommunity,
     openPopular,
     setOpenPopular,
+    // fetchingData,
   } = useContext(Mycontext);
   const [openSearch, setOpenSearch] = useState(false);
   // const [openPopular,setOpenPopular] = useState(fals;
@@ -62,22 +66,72 @@ const Detail = () => {
   const [inputCount, setInputCount] = useState("");
   const [openInput, setOpenInput] = useState(false);
 
-  const navigatetoAuthordetail = (id) => {
-    navigate(`/AuthorDetail/${id}`);
+  const navigatetoAuthordetail = (id,name) => {
+    navigate(`/AuthorDetail/${id}/${name}`);
   };
+
+
+//   const upvoteApi = async()=>{
+//     try{
+//       const responce = await fetch(`https://academics.newtonschool.co/api/v1/reddit/like/:"64e6003b42b72201a6bcf7ba"`,
+//    { method:"POST",
+//     headers:
+//     {Authorization: `Bearer ${localStorage.getItem('token')}`,
+//     projectID: "ozrv8hlh5hb0"}}
+//     )
+
+//     const result = await responce.json();
+//     console.log(result,"kkkk");
+// }
+// catch (error) {
+// console.log(error);
+// }
+// };
+// useEffect(() => {
+// upvoteApi();
+// }, []);
+  
+
+
+const upvoteApi = async () => {
+    try {
+      const responce = await fetch(
+        `https://academics.newtonschool.co/api/v1/reddit/like/"64e6003942b72201a6bcf774"`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            projectID: "ozrv8hlh5hb0",
+          },
+          // "Content-Type": "application/json",
+        }
+      );
+
+      const result = await responce.json();
+      console.log(result, "kkkk");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    upvoteApi();
+  }, []);
+
+
+
+
 
   return (
     <div className={darkMode ? "dark" : ""}>
-      <div>
+      <div >
         <NavDetail />
+        {name}
 
-        <div className="flex xl:mr-36"></div>
+        <div className="flex xl:mr-36 "></div>
 
-        <div className="flex  pb-4 dark:bg-zinc-950">
-          <div className=" mt-4 flex justify-between pl-12 pr-12 pt-3 pb-2 relative h-14  ">
-            {localStorage.getItem("token") && (
-              <div className="2xl:w-60 xl:w-0"></div>
-            )}
+        <div className="flex  pb-4 dark:bg-zinc-950 2xl:ml-[20rem]">
+          <div className=" mt-4 flex justify-between pl-12 pr-12 pt-3 pb-2 relative h-14 w-56 ">
+
           </div>
           <div className="dark:bg-zinc-950">
             <div>
@@ -129,23 +183,23 @@ const Detail = () => {
             <div>
               {!openPopular && (
                 <div>
-                  {postData &&
-                    postData.map((item) => (
+                  {fetchingData &&
+                    fetchingData.map((item) => (
                       <div className="">
                         <div className="w-dvw -ml-24 shadow-md 2xl:w-[48rem] mt-5 items-center justify-center pt-4 pl-10 pr-8  mb-8  bg-white  border-gray-400 border  rounded-sm dark:bg-black dark:text-gray-200 dark:border-gray-900 sm:-ml-24 sm:w-dvw md:-ml-24 md:w-dvw  lg:-ml-6 lg:w-[35rem] xl:w-[40rem] xl:ml-16 2xl:-ml-28">
                           <div className="flex items-center">
                             <div
                               className="flex"
-                              onClick={() =>
-                                navigatetoAuthordetail(item.author.name)
-                              }
+                             
                             >
                               <img
                                 src={item.author.profileImage}
                                 alt=""
                                 className="h-6 w-6 rounded-3xl"
                               />
-                              <h1 className="font-semibold text-base ml-2 mr-2">
+                              <h1 className="font-semibold text-base ml-2 mr-2"  onClick={() =>
+                                navigatetoAuthordetail(item._id,item.author.name)
+                              }>
                                 {item.author.name}
                               </h1>
                             </div>
@@ -190,8 +244,8 @@ const Detail = () => {
 {/* ---------------------POPULAR---------------------- */}
               {openPopular && (
                 <div>
-                  {postData &&
-                    postData
+                  {fetchingData &&
+                    fetchingData
                       .filter((item) => item.likeCount >= 5)
                       .map((item) => (
                         <div className="">
@@ -200,7 +254,7 @@ const Detail = () => {
                               <div
                                 className="flex"
                                 onClick={() =>
-                                  navigatetoAuthordetail(item.author.name)
+                                  navigatetoAuthordetail(item._id,item.author.name)
                                 }
                               >
                                 <img

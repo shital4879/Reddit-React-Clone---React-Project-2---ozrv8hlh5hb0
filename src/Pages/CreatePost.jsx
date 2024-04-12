@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NavDetail from "../Component/Navbar/NavDetail";
 import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -21,7 +21,7 @@ const CreatePost = () => {
   let maxnum = 100;
   const [community, setCommunity] = useState(false);
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
-  const [postImage,setPostImage] = useState()
+  const [postImage,setPostImage] = useState("")
   const [text, setText] = useState("");
 
   const handleTextChange = (event) => {
@@ -41,25 +41,28 @@ const CreatePost = () => {
   //   postImage: "",
   // })
 
-const createpostdata = async () =>{
+const createpostdata = async (e) =>{
+e.preventDefault();
+
+  const formData = new FormData();
+  formData.append('title', inputvalue);
+  formData.append('content', text);
+  formData.append('images', postImage);
+
   try{
-    const responce = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/`,
+    const responce = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post`,
     {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
         projectID: "ozrv8hlh5hb0",
      
       },
-      body: JSON.stringify({
-        'title': inputvalue,
-        'content': text,
-        'images': postImage,
-     })
-    }
-    
-    )
+      body : formData
+    })
     const result = await responce.json()
     console.log(result);
+    console.log(localStorage.getItem("token"));
 
     if(result.status === "success"){
       console.log(result.message);
@@ -73,6 +76,9 @@ const createpostdata = async () =>{
   }
 }
 
+useEffect(() => {
+  createpostdata;
+}, []);
 
 
 
@@ -81,6 +87,7 @@ const createpostdata = async () =>{
   return (
     <div className={darkMode ? "dark" : ""}>
       <NavDetail />
+      <form onSubmit={createpostdata}>
       <div className="bg-gray-300 h-dvh w-dvw flex pt-8 2xl:pl-40 pr-40 justify-between dark:bg-zinc-950 sm:pl-0 lg:pl-8 xl:pl-24">
         <div className="">
           <div className="flex justify-between border-solid border-white border-b 2xl:w-[50rem] pb-4 dark:text-white dark:border-gray-800 sm:w-[40rem] pr-2 sm:-mt-4 sm:pl-2 md:w-dvw lg:w-[38rem] xl:w-[45rem] w-dvw">
@@ -199,7 +206,8 @@ const createpostdata = async () =>{
                   Drag and drop image or
                 </p>
                 <button className="text-blue-600 mr-4 border border-solid border-blue-600 pl-2 pr-2 rounded-2xl dark:text-gray-400 dark:border-gray-400">
-                  <input type="file" onChange={(e)=>setPostImage(e.target.value)} value={postImage} className="invisible"/>
+                  <input type="file" accept="postImage/*" onChange={(e)=>setPostImage(e.target.files[0])}  className=""/>
+                  {/* <img src="" alt="" onChange={(e)=>setPostImage(e.target.value)} value={postImage}/> */}
                   Upload
                 </button>
               </div>
@@ -235,7 +243,8 @@ const createpostdata = async () =>{
                     : "bg-blue-800 text-white border-blue-800 dark:text-gray-700 dark:bg-gray-400 dark:border-none"
                 }`}
                 disabled={text.trim() === ""}
-                onClick={createpostdata}
+                // onClick={createpostdata}
+                type="submit"
               >
                 POST
               </button>
@@ -281,6 +290,7 @@ const createpostdata = async () =>{
           </p>
         </div>
       </div>
+      </form>
     </div>
   );
 };

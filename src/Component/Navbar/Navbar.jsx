@@ -20,12 +20,13 @@ import PostData from "./PostData";
 import { Mycontext } from "../../components/App"
 import { contextApi } from "../Context/ApiContext";
 import { ThemeContext } from "../Context/DarkTheme";
+import Detail from "../../Pages/Detail";
 
 const Navbar = () => {
   console.log("daa",fetchingData);
  const{showLogIn,setShowLogIn} = useContext(Mycontext);
  const{darkMode,setDarkMode,toggleDarkMode} = useContext(ThemeContext);
- const{search,setSearch,fetchingData,setFetchingData} = useContext(contextApi)
+ const{search,setSearch,fetchingData,setFetchingData,postData} = useContext(contextApi)
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [showApp, setShowApp] = useState(false);
@@ -107,7 +108,7 @@ const Navbar = () => {
 
 
   const handleEmail =(e)=>{
-    e.preventDefault();
+    // e.preventDefault();
     let isValid = true;
     let validationError = {};
     if (signUpData.email === "" || signUpData.email === null) {
@@ -228,8 +229,8 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const navigateDetail = () => {
-    navigate(`/Detail`,{state:{
+  const navigateDetail = (id) => {
+    navigate(`/Detail/${id}`,{state:{
       fetchingData:fetchingData
     }});
   };
@@ -249,12 +250,12 @@ const Navbar = () => {
           <div>
             <ul>
               <li>
-                <NavLink to="/" className="active:bg-red-600 active:">
+                <NavLink to="/" className="bg-gray-300">
                   <HomeIcon /> Home
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/popular" className="active:bg-red-600">
+                <NavLink to="/popular" className="">
                   <OutboundOutlinedIcon /> Popular
                 </NavLink>
               </li>
@@ -516,6 +517,12 @@ const Navbar = () => {
       {/* ------------------------OPEN LOG IN FUN [POPUP]------------------------------------------------------------------- */}
       {showLogIn && (
         <div>
+        {
+          postData &&
+          postData.map((item)=>(
+
+        
+        <div>
           <div className="bg-gray-700 bg-opacity-80 h-dvh size-full m-0 fixed top-0 left-0 w-dvw flex justify-center items-center">
             <div className="bg-white relative w-[30rem] h-[90%] rounded-md ">
               <div className="flex justify-end mt-4 mr-4">
@@ -630,6 +637,8 @@ const Navbar = () => {
                     <button
                       type="submit"
                       className="mt-3 pt-1 text-white cursor-pointer pb-8 text-xl bg-orange-600 h-[40px] rounded-2xl w-[21rem] ml-16 font-bold py-2 px-4 transition-all duration-300"
+                      onClick={()=>navigateDetail(item._id)}
+                      // disabled={registerData.email === "" && registerData.email === null}
                     >
                       Log In
                     </button>
@@ -783,6 +792,10 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+
+      ))
+    }
+</div>
       )}
       
     </div>

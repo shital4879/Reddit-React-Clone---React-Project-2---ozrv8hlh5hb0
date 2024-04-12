@@ -55,7 +55,7 @@ const NavDetail = () => {
                 <li>
                   <NavLink
                     to="/premium"
-                    className="active:bg-red-600 text-base"
+                    className=""
                   >
                     <HomeIcon /> Home
                   </NavLink>
@@ -63,7 +63,7 @@ const NavDetail = () => {
                 <li>
                   <NavLink
                     to="/popular"
-                    className="active:bg-red-600 text-base"
+                    className=""
                   >
                     <OutboundOutlinedIcon /> Popular
                   </NavLink>

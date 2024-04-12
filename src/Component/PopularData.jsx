@@ -32,12 +32,12 @@ const Pupular = () => {
 <div className=" mt-4 flex justify-between pl-12 pr-12 pt-3 pb-2 relative h-14  ">
         <div>
           <ul>
-            <li className="bg-gray-200 space-x-2 w-60 pl-4 pb-1 mb-1 rounded-sm pt-2">
+            <li className="w-96  pb-1 pl-5 pr-5">
               <NavLink to="/">
                 <HomeIcon /> Home
               </NavLink>
             </li>
-            <li>
+            <li className="mb-2 mt-3 bg-gray-300 w-[15rem] pt-1 pb-1 pl-5 pr-5 ">
               <NavLink to="/popular">
                 <OutboundOutlinedIcon /> Popular
               </NavLink>

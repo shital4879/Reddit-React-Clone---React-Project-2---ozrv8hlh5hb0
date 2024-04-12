@@ -79,15 +79,15 @@ const PostData = () => {
     
       <div className=" mt-7 xl:w-[18rem] flex justify-between pl-12 pr-12 pt-3 pb-2 relative h-14 lg:w-[14rem] md:w-[10rem] sm:invisible  md:invisible lg:visible xl:visible invisible">
         {!localStorage.getItem("token") && (
-          <div>
-            <ul>
-              <li>
-                <NavLink to="/" className="text-2xl bg-red-950" >
+          <div >
+            <ul >
+              <li className="mb-2 bg-gray-300 w-[15rem] pt-1 pb-1 pl-5 pr-5 ">
+                <NavLink to="/" className="bg-gray-300 " >
                   <HomeIcon /> Home
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/popular" className="">
+                <NavLink to="/popular" className="w-96 pt-1 pb-1 pl-5 pr-5">
                   <OutboundOutlinedIcon /> Popular
                 </NavLink>
               </li>
@@ -177,14 +177,14 @@ const PostData = () => {
       </div>
 
       {!localStorage.getItem("token") && (
-        <div className=" xl:w-[19rem] bg-gray-50 rounded-2xl mt-9 ml-10 lg:w-[17rem] sm:invisible  md:invisible lg:visible xl:visible">
+        <div className=" xl:w-[19rem] bg-gray-50 rounded-2xl mt-9 ml-10 lg:w-[17rem] sm:invisible  md:invisible lg:visible xl:visible h-[43rem]">
           <h1 className="pt-7 pl-5 text-gray-600 text-base">
             POPULAR COMMUNITIES
           </h1>
           <div className="xl:w-[16rem] p-4 bg-gray-100 m-4 lg:w-[14rem]">
             {channelApi &&
               channelApi
-                .slice(0, showMore ? fetchingData.length : 8)
+                .slice(0, showMore ? channelApi.length : 8)
                 .map((item) => (
                   <div className="flex space-x-3 ">
                     <img

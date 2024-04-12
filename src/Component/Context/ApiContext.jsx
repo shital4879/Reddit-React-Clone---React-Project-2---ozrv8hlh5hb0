@@ -50,7 +50,7 @@ const ApiContext = ({children}) => {
       );
       const result = await responce.json();
       setPostData(result.data);
-      console.log(result.data,"ok");
+      console.log(result.data,"post");
     } catch (error) {
       console.log(error);
     }
@@ -65,6 +65,7 @@ const channelApidata = async () => {
     try {
       const responce = await fetch(
         `https://academics.newtonschool.co/api/v1/reddit/channel/`,
+        
         {
           method: "GET",
           headers: {

@@ -31,10 +31,10 @@ const [openPopular,setOpenPopular] = useState(false);
       <Route path="/SignUp" element={<SignUp/>}></Route>
       <Route path="/Popular" element={<Popular/>}></Route>
       <Route path="/premium" element={<Primium/>}></Route>
-      <Route path="/Detail" element={<Detail/>}></Route>
+      <Route path="/Detail/:id" element={<Detail/>}></Route>
       <Route path="/CreatePost" element={<CreatePost/>}></Route>
       <Route path="/ChannelPage/:id" element={<ChannelPage/>}></Route>
-      <Route path="/AuthorDetail/:id" element={<AuthorDetail/>}></Route>
+      <Route path="/AuthorDetail/:id/:name" element={<AuthorDetail/>}></Route>
     </Routes> 
     </BrowserRouter>
     </Mycontext.Provider>

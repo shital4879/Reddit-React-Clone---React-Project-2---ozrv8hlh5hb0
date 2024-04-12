@@ -19,6 +19,6 @@ code {
 
 @layer components {
   .active {
-    @apply bg-gray-600 text-3xl-
+    /* @apply bg-gray-600 text-3xl- */
   }
 }
