@@ -7,6 +7,7 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import PhoneIcon from '@mui/icons-material/Phone';
 import { ThemeContext } from "../Component/Context/DarkTheme";
+import NavDetail from "../Component/Navbar/NavDetail";
 
 
 const ChannelPage = () => {
@@ -52,7 +53,7 @@ const ChannelPage = () => {
   return (
     <div className={darkMode?"dark":""}>
       <div>
-      <Navbar />
+      <NavDetail />
       {apiId && (
         <div className="">
           <img src={apiId.owner.profileImage} alt="" className="w-dvw h-60" />

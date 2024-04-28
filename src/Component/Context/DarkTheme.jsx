@@ -3,14 +3,14 @@ import React, { createContext, useState } from "react";
 export const ThemeContext = createContext();
 const DarkTheme = ({ children }) => {
   const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("darkMode");
+    return sessionStorage.getItem("darkMode");
   });
 
   const toggleDarkMode = () => {
     const newTheme = darkMode === '' ? 'dark' : '';
     // const newTheme = setDarkMode(!darkMode);
     setDarkMode(!darkMode)
-    localStorage.setItem("darkMode", newTheme);
+    sessionStorage.setItem("darkMode", newTheme);
   };
 
   return (

@@ -12,6 +12,9 @@ import ChannelPage from "../Pages/ChannelPage";
 import {ThemeContext} from "../Component/Context/DarkTheme"
 import ApiContext from "../Component/Context/ApiContext";
 import AuthorDetail from "../Pages/AuthorDetail";
+import CommentsPage from "../Pages/CommentsPage";
+import Like from "../Component/Context/Like";
+import UpdatePost from "../Pages/UpdatePost";
 
 export const Mycontext = createContext();
 
@@ -25,18 +28,22 @@ const [openPopular,setOpenPopular] = useState(false);
     <DarkTheme>
       <ApiContext>
     <Mycontext.Provider value={{showLogIn,setShowLogIn,createCommunity,setCreateCommunity,openPopular,setOpenPopular}}>
+  
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home/>}></Route>
       <Route path="/SignUp" element={<SignUp/>}></Route>
       <Route path="/Popular" element={<Popular/>}></Route>
       <Route path="/premium" element={<Primium/>}></Route>
-      <Route path="/Detail/:id" element={<Detail/>}></Route>
+      <Route path="/Detail" element={<Detail/>}></Route>
       <Route path="/CreatePost" element={<CreatePost/>}></Route>
       <Route path="/ChannelPage/:id" element={<ChannelPage/>}></Route>
       <Route path="/AuthorDetail/:id/:name" element={<AuthorDetail/>}></Route>
+      <Route path="/CommentsPage/:id/:iid" element={<CommentsPage/>}></Route>
+      <Route path="/UpdatePost/:id/:con/:title/:img" element={<UpdatePost/>}></Route>
     </Routes> 
     </BrowserRouter>
+  
     </Mycontext.Provider>
     </ApiContext>
     </DarkTheme>

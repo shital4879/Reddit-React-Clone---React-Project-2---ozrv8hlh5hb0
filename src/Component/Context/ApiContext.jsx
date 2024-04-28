@@ -85,12 +85,13 @@ const channelApidata = async () => {
     channelApidata();
   }, []);
 
+  const storedData = JSON.parse(localStorage.getItem('UserInfo'));
 
 
 
   return (
     <div>
-      <contextApi.Provider value={{searchData,search,setSearch,fetchingData,setFetchingData,postData,setPostData,channelApi,setChannelApi}}>
+      <contextApi.Provider value={{searchData,search,setSearch,fetchingData,setFetchingData,postData,setPostData,channelApi,setChannelApi,PostApi,storedData}}>
         {children}
       </contextApi.Provider>
     </div>

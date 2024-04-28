@@ -5,20 +5,21 @@ import PostData from '../Component/Navbar/PostData'
 import PopularData from "../Component/PopularData"
 import NavDetail from '../Component/Navbar/NavDetail'
 import { ThemeContext } from '../Component/Context/DarkTheme'
+import BeforeLogInNav from '../Component/Navbar/BeforeLogInNav'
 
 const Popular = () => {
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
   return (
     <div className={darkMode ? "dark" : ""}>
       {
-        !localStorage.getItem("token") &&
+        !sessionStorage.getItem("token") &&
       
-      <Navbar/>
+      <BeforeLogInNav/>
 }
-{
-  localStorage.getItem("token") &&
+{/* {
+  sessionStorage.getItem("token") &&
   <NavDetail/>
-}
+} */}
 
       <PopularData/>
 

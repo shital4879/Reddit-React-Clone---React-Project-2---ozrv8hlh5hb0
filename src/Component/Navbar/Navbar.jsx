@@ -17,6 +17,8 @@ import ArrowBackSharpIcon from '@mui/icons-material/ArrowBackSharp';
 import MenuSharpIcon from '@mui/icons-material/MenuSharp';
 import SignOut from "../SignIn/SignOut";
 import PostData from "./PostData";
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 import { Mycontext } from "../../components/App"
 import { contextApi } from "../Context/ApiContext";
 import { ThemeContext } from "../Context/DarkTheme";
@@ -69,163 +71,165 @@ const Navbar = () => {
   // -------------------------------------------------------------------------------------------------------------
 
   // ----------------SIGN UP API ----------------------------------------------------------------------------
-  const SignUpApi = async () => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/user/signup`,
-        {
-          method: "POST",
-          headers: {
-            projectID: "ozrv8hlh5hb0",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: signUpData.name,
-            email: signUpData.email,
-            password: signUpData.password,
-            appType: "reddit",
-          }),
-        }
-      );
-      const result = await responce.json();
-      console.log(result);
-      if (result.status === "success") {
-        localStorage.setItem("token", result.token);
-        navigateDetail()
-        localStorage.setItem(
-          "UserInfo",
-          JSON.stringify({
-            id: result.data._id,
-            name: result.data.name,
-            email: result.data.email,
-          })
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const SignUpApi = async () => {
+  //   try {
+  //     const responce = await fetch(
+  //       `https://academics.newtonschool.co/api/v1/user/signup`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           projectID: "ozrv8hlh5hb0",
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           name: signUpData.name,
+  //           email: signUpData.email,
+  //           password: signUpData.password,
+  //           appType: "reddit",
+  //         }),
+  //       }
+  //     );
+  //     const result = await responce.json();
+  //     console.log(result);
+  //     if (result.status === "success") {
+  //       sessionStorage.setItem("token", result.token);
+  //       navigateDetail()
+  //       sessionStorage.setItem(
+  //         "UserInfo",
+  //         JSON.stringify({
+  //           id: result.data._id,
+  //           name: result.data.name,
+  //           email: result.data.email,
+  //         })
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  
 
+  // console.log(sessionStorage.getItem("result.data.name"),"ppppppp");
 
-  const handleEmail =(e)=>{
-    // e.preventDefault();
-    let isValid = true;
-    let validationError = {};
-    if (signUpData.email === "" || signUpData.email === null) {
-      isValid = false;
-      validationError.email = "Email is required!";
-    } else if (!/\S+@\S+\.\S+/.test(signUpData.email)) {
-      isValid = false;
-      validationError.email = "Invalid EmailId!";
-    }
-    else{
-      setSignUpPage2(!signUpPage2)
-    }
-  }
-  const handleSubmitSignUp = (e) => {
-    e.preventDefault();
-    let isValid = true;
-    let validationError = {};
-    if (signUpData.email === "" || signUpData.email === null) {
-      isValid = false;
-      validationError.email = "Email is required!";
-    } else if (!/\S+@\S+\.\S+/.test(signUpData.email)) {
-      isValid = false;
-      validationError.email = "Invalid EmailId!";
-    }
-    if (signUpData.name === "" || signUpData.name === null) {
-      isValid = false;
-      validationError.name = "name is required!";
-    }
-    if (signUpData.password === "" || signUpData.password === null) {
-      isValid = false;
-      validationError.password = "password is required!";
-    } else if (signUpData.password.length < 4) {
-      isValid = false;
-      validationError.password = "password should be atleast 4 character!";
-    }
-    setValidSign(isValid);
-    setErrorSign(validationError);
-    if (isValid) {
-      SignUpApi();
-    }
-  };
+  // const handleEmail =(e)=>{
+  //   // e.preventDefault();
+  //   let isValid = true;
+  //   let validationError = {};
+  //   if (signUpData.email === "" || signUpData.email === null) {
+  //     isValid = false;
+  //     validationError.email = "Email is required!";
+  //   } else if (!/\S+@\S+\.\S+/.test(signUpData.email)) {
+  //     isValid = false;
+  //     validationError.email = "Invalid EmailId!";
+  //   }
+  //   else{
+  //     setSignUpPage2(!signUpPage2)
+  //   }
+  // }
+  // const handleSubmitSignUp = (e) => {
+  //   e.preventDefault();
+  //   let isValid = true;
+  //   let validationError = {};
+  //   if (signUpData.email === "" || signUpData.email === null) {
+  //     isValid = false;
+  //     validationError.email = "Email is required!";
+  //   } else if (!/\S+@\S+\.\S+/.test(signUpData.email)) {
+  //     isValid = false;
+  //     validationError.email = "Invalid EmailId!";
+  //   }
+  //   if (signUpData.name === "" || signUpData.name === null) {
+  //     isValid = false;
+  //     validationError.name = "name is required!";
+  //   }
+  //   if (signUpData.password === "" || signUpData.password === null) {
+  //     isValid = false;
+  //     validationError.password = "password is required!";
+  //   } else if (signUpData.password.length < 4) {
+  //     isValid = false;
+  //     validationError.password = "password should be atleast 4 character!";
+  //   }
+  //   setValidSign(isValid);
+  //   setErrorSign(validationError);
+  //   if (isValid) {
+  //     SignUpApi();
+  //   }
+  // };
 
   // ----------------------------------------------------------------------------------------------------------------------------
 
   // ------------------------------SIGN IN API---------------------------------------------------------------------------------
-  const SignInData = async () => {
-    console.log(registerData);
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/user/login`,
-        {
-          method: "POST",
-          headers: {
-            projectID: "ozrv8hlh5hb0",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: registerData.email,
-            password: registerData.password,
-            appType: "reddit",
-          }),
-        }
-      );
-      const result = await responce.json();
-      console.log(result);
-      if (result.status === "success") {
-        localStorage.setItem("token", result.token);
-        navigateDetail()
+  // const SignInData = async () => {
+  //   console.log(registerData);
+  //   try {
+  //     const responce = await fetch(
+  //       `https://academics.newtonschool.co/api/v1/user/login`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           projectID: "ozrv8hlh5hb0",
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           email: registerData.email,
+  //           password: registerData.password,
+  //           appType: "reddit",
+  //         }),
+  //       }
+  //     );
+  //     const result = await responce.json();
+  //     console.log(result);
+  //     if (result.status === "success") {
+  //       sessionStorage.setItem("token", result.token);
+  //       navigateDetail()
 
-        localStorage.setItem(
-          "UserInfo",
-          JSON.stringify({
-            id: result.data._id,
-            name: result.data.name,
-            email: result.data.email,
-          })
-        );
-      }
-      if (result.status === "fail") {
-        console.log(result.message);
-        setValid(false);
-        setError((prev) => {
-          return { ...prev, correction: result.message };
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleSubmitSignIn = (e) => {
-    e.preventDefault();
-    let isValid = true;
-    let validationError = {};
-    if (registerData.email === "" || registerData.email === null) {
-      isValid = false;
-      validationError.email = "Email is required!";
-    } else if (!/\S+@\S+\.\S+/.test(registerData.email)) {
-      isValid = false;
-      validationError.email = "Invalid EmailId!";
-    }
-    if (registerData.password === "" || registerData.password === null) {
-      isValid = false;
-      validationError.password = "password is required!";
-    } else if (registerData.password.length < 4) {
-      isValid = false;
-      validationError.password = "password should be atleast 4 character!";
-    }
-    setValid(isValid);
-    setError(validationError);
-    if (isValid) {
-      SignInData();
-    }
-  };
+  //       sessionStorage.setItem(
+  //         "UserInfo",
+  //         JSON.stringify({
+  //           id: result.data._id,
+  //           name: result.data.name,
+  //           email: result.data.email,
+  //         })
+  //       );
+  //     }
+  //     if (result.status === "fail") {
+  //       console.log(result.message);
+  //       setValid(false);
+  //       setError((prev) => {
+  //         return { ...prev, correction: result.message };
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // const handleSubmitSignIn = (e) => {
+  //   e.preventDefault();
+  //   let isValid = true;
+  //   let validationError = {};
+  //   if (registerData.email === "" || registerData.email === null) {
+  //     isValid = false;
+  //     validationError.email = "Email is required!";
+  //   } else if (!/\S+@\S+\.\S+/.test(registerData.email)) {
+  //     isValid = false;
+  //     validationError.email = "Invalid EmailId!";
+  //   }
+  //   if (registerData.password === "" || registerData.password === null) {
+  //     isValid = false;
+  //     validationError.password = "password is required!";
+  //   } else if (registerData.password.length < 4) {
+  //     isValid = false;
+  //     validationError.password = "password should be atleast 4 character!";
+  //   }
+  //   setValid(isValid);
+  //   setError(validationError);
+  //   if (isValid) {
+  //     SignInData();
+  //   }
+  // };
   // ----------------------------------------------------------------------------------------------------------------------
 
   const signout = () => {
-    window.localStorage.removeItem("token");
+    window.sessionStorage.removeItem("token");
     navigate("/");
   };
 
@@ -241,17 +245,17 @@ const Navbar = () => {
 
   return (
     <div className={darkMode?"dark":""}>
-      <div className="flex justify-between pl-12 pr-12 pt-2 pb-10 relative h-14 border-b border-gray-200 dark:border-gray-800 dark:bg-gray-800 xl:-ml-48">
-        <div className="md:-ml-8 md:visible visible sm:visible lg:invisible xl:invisible 2xl:invisible mr-4 mt-1" onClick={()=>setShowHam(!showHam)}><MenuSharpIcon/></div>
+      <div className="bg-gray-100 flex justify-between pl-12 pr-12 pt-2 pb-10 relative h-14 border-b border-gray-200 dark:border-gray-800 dark:bg-gray-800 xl:-ml-20">
+        <div className="md:-ml-8 md:visible visible sm:visible lg:visible xl:invisible 2xl:invisible mr-4 mt-1 lg:mr-10" onClick={()=>setShowHam(!showHam)}><MenuSharpIcon/></div>
         {
           showHam &&
-             <div className="md:flex md:justify-between h-20 p-3  absolute top-14 md:-ml-12 z-10 shadow-xl  md:w-[10rem] md:pl-2 bg-white  ">
-        {!localStorage.getItem("token") && (
+             <div className="md:flex md:justify-between h-20 p-3 absolute top-14 md:-ml-12 z-10 shadow-xl  md:w-[10rem] md:pl-2 bg-white  ">
+        {!sessionStorage.getItem("token") && (
           <div>
             <ul>
               <li>
-                <NavLink to="/" className="bg-gray-300">
-                  <HomeIcon /> Home
+                <NavLink to="/" className="">
+                  <HomeIcon /> Homeeee
                 </NavLink>
               </li>
               <li>
@@ -265,10 +269,10 @@ const Navbar = () => {
           </div>
         }
         <div className="flex xl:mr-44 xl:-ml-8 lg:mr-44 lg:-ml-8">
-          <img src="/1.webp" alt="" className="h-9 w-9 mr-3 xl:ml-20" />
+          <img src="/logo.webp" alt="" className="h-9 w-9 mr-3 xl:ml-20" />
           <h2 className="text-3xl text-orange-500 font-bold sm:invisible md:visible lg:visible xl:visible invisible ">reddit</h2>
         </div>
-        <div className="bg-gray-200 h-11  xl:w-[40rem] float-start space-x-2 pl-3 rounded-3xl pt-2 lg:w-[34rem] md:w-[40rem] md:ml-20 md:-mr-36 xl:-ml-20 lg:-ml-20 lg:mr-4 sm:w-[400px] dark:bg-slate-900">
+        <div className="bg-gray-200 h-11 w-52 2xl:w-[45rem] 2xl:ml-0 sm:w-[50rem] lg:w-[60rem] xl:w-[40rem] xl:mr-24 float-start space-x-2 pl-3 rounded-3xl pt-2  md:w-[40rem] md:ml-20 md:-mr-36  lg:-ml-20 lg:mr-4  dark:bg-slate-900">
           <div className="flex items-center">
           <SearchIcon className="dark:text-slate-400"/>
           <input
@@ -276,7 +280,7 @@ const Navbar = () => {
             name
             search
             placeholder="Search Reddit"
-            className="bg-gray-200 text-lg border-none outline-none dark:bg-slate-900 w-[100%] rounded-3xl"
+            className="bg-gray-200 text-lg border-none outline-none dark:bg-slate-900  rounded-3xl w-36 sm:w-[15rem] md:w-[22rem] lg:w-[30rem] xl:w-[34rem] 2xl:w-[45rem]"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -338,56 +342,47 @@ const Navbar = () => {
         </div>
 {/* <button onClick={toggleDarkMode}>dark</button> */}
         {/* -----------------------------BEFORE LOGIN --------------------------------------------------------------------------------- */}
-        {!localStorage.getItem("token") && (
+        {!sessionStorage.getItem("token") && (
           <div className="flex space-x-7">
             <div>
+               <Tippy content="Get app" className="text-[10px]">
               <div
                 className="flex items-center bg-gray-200 pl-3 pr-3 h-11 rounded-3xl space-x-2 pt-2 pb-2 md:invisible sm:invisible lg:visible xl:visible invisible"
-                onMouseOver={() => {
-                  setShowApp(!showApp);
-                }}
                 onClick={() => {
                   setShowAppLink(!showAppLink);
                 }}
               >
                 <QrCodeScannerIcon className="h-4 w-4"/>
-                <button className="text-base lg:text-xs xl:text-base">Get app</button>
+                <button className="text-base lg:text-xs xl:text-base xl:w-20">Get app</button>
               </div>
+              </Tippy>
               <br />
-              {showApp && (
-                <button className="absolute top-3/4 mr-9 text-xs p-1 rounded-sm -tracking-tight bg-slate-800 text-white">
-                  Get the Reddit app
-                </button>
-              )}
+           
             </div>
-            <div>
+            <Tippy content="Log in to Reddit" className="text-[10px] ">
+            <div 
+            onClick={() => setShowLogIn(!showLogIn)}
+            className="flex items-center xl:w-[7rem] text-center bg-orange-600 pl-3 pr-3 h-11 rounded-3xl space-x-2 pt-2 pb-2 md:invisible sm:invisible lg:visible xl:visible invisible">
+
               <button
-                className="xl:text-base bg-orange-600 pl-4 pr-4 h-11 rounded-3xl space-x-2 pt-2 pb-2 font-semibold text-white text-sm md:text-xs md:invisible sm:invisible lg:visible xl:visible invisible"
-                onMouseOver={() => {
-                  setShow(!show);
-                }}
+                className="xl:text-base  pl-5 pr-4 h-11  space-x-2 pt-2 pb-2 font-semibold text-white text-sm md:text-xs md:invisible sm:invisible lg:visible xl:visible invisible"
                 onClick={() => setShowLogIn(!showLogIn)}
-                onMouseLeave={() => setShow(show)}
+             
               >
                 Log In
               </button>
-              <br />
-              {show && (
-                <button className="absolute top-3/4 mr-9 text-xs p-1 rounded-sm -tracking-tight bg-slate-800 text-white">
-                  Log in to Reddit
-                </button>
-              )}
             </div>
+            </Tippy>
             <div>
               <div
-                className="pt-1 relative cursor-pointer -ml-16 xl:ml-4 md:ml-2"
+                className="pt-1 relative cursor-pointer -ml-44 sm:-ml-24 md:ml-10  xl:ml-4 sm:mr-48 lg:-ml-1"
                 onClick={() => setShowopt(!showopt)}
               >
                 <MoreHorizIcon />
               </div>
             </div>
             {showopt && (
-              <span className="absolute top-2/4 m-6 right-14 space-y-2 shadow-xl p-4 rounded-md bg-white cursor-pointer">
+              <span className=" absolute top-2/4 m-6 sm:right-10 right-14 space-y-2 shadow-xl p-4 rounded-md bg-white cursor-pointer">
                 <h2
                   className="text-sm"
                   onClick={() => {
@@ -405,7 +400,7 @@ const Navbar = () => {
         )}
 
         {/* ---------------------------------AFTER LOGIN ------------------------------------------------------------------------ */}
-        {localStorage.getItem("token") && (
+        {sessionStorage.getItem("token") && (
           <div>
             <div
               onClick={() => setShowOptions(!showOptions)}
@@ -468,7 +463,7 @@ const Navbar = () => {
       {/* -------------------- OPEN APP LINK ----------------------------------------------------------------------------- */}
       {showAppLink && 
       
-      <div className="bg-gray-700 bg-opacity-80 h-dvh size-full m-0 fixed top-0 left-0 w-dvw flex justify-center items-center">
+      <div className="bg-gray-700 bg-opacity-80 h-full m-0 fixed top-0 left-0 w-dvw flex justify-center items-center z-10">
       <div className="bg-white relative w-[30rem] h-[85%] rounded-md">
         <div className="flex m-5 justify-between">
           <h1 className="text-3xl font-bold">Get the Reddit app</h1>

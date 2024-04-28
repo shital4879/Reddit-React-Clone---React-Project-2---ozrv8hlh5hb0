@@ -2,7 +2,7 @@ import React from 'react'
 
 const SignOut = () => {
     const signout=()=>{
-        window.localStorage.removeItem("token")
+        window.sessionStorage.removeItem("token")
     }
   return (
     <div>

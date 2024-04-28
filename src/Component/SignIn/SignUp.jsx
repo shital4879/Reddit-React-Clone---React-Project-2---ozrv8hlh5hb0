@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 const SignUp = () => {
-    const[token,setToken] = useState(localStorage.getItem("token"))
+    const[token,setToken] = useState(sessionStorage.getItem("token"))
    const[registerData,setRegisterData] = useState({
     name:"",
     email:"",
@@ -25,7 +25,7 @@ const SignUp = () => {
         const result = await responce.json();
         console.log(result);
     if(result.status === "success"){
-        localStorage.setItem("token",result.token)
+        sessionStorage.setItem("token",result.token)
     }
 }
     catch(error){

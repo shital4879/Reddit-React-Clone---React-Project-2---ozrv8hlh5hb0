@@ -8,11 +8,13 @@ import ImageIcon from "@mui/icons-material/Image";
 import LinkIcon from "@mui/icons-material/Link";
 import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
 import { ThemeContext } from "../Component/Context/DarkTheme";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import ApiContext, { contextApi } from "../Component/Context/ApiContext";
 
 const CreatePost = () => {
   const navigate = useNavigate();
+  const params = useParams();
+  console.log(params.id);
   const {channelApi} = useContext(contextApi) 
   const [mode, setMode] = useState(false);
   const [imagestate, setImageState] = useState(false);
@@ -66,6 +68,7 @@ e.preventDefault();
 
     if(result.status === "success"){
       console.log(result.message);
+      navigatedetailpage()
     }
     if(result.status === "fail"){
       console.log("fail");
@@ -76,12 +79,26 @@ e.preventDefault();
   }
 }
 
+
+// const updatePost = async ()=>{
+//   try{
+//     const responce = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/:${params.id}`)
+//   }
+// }
+
 useEffect(() => {
   createpostdata;
 }, []);
 
 
+const navigatedetailpage = () =>{
+  navigate(-1)
+}
 
+const [activeItem, setActiveItem] = useState("post");
+const handleItemClick = (itemName) => {
+  setActiveItem(itemName === activeItem ? null : itemName);
+};
 
 
   return (
@@ -112,7 +129,7 @@ useEffect(() => {
             </p>
           </div>
           {community && (
-            <div className=" 2xl:w-72 bg-white p-4 dark:bg-black sm:w-72 md:w-72 lg:w-72 w-44  z-10">
+            <div className="absolute 2xl:w-72 bg-white p-4 dark:bg-black sm:w-72 md:w-72 lg:w-72 w-44  z-10">
               <div className="border-b bolrder-solid border-gray-400 pb-5">
                 <p className="text-xs text-gray-400">Your profile</p>
 
@@ -141,20 +158,23 @@ useEffect(() => {
 
           <div className="mt-4  border-solid border-gray-400 rounded border bg-white 2xl:h-[28rem] shadow-xl dark:bg-black dark:text-gray-400 dark:border-gray-900 sm:w-dvw lg:w-[38rem] xl:w-[45rem] w-dvw">
             <div className="flex  border-solid border-gray-300 border-b dark:border-gray-600">
-              <NavLink
-                className="flex pt-2 pb-2 pl-20 pr-16 border-solid border-gray-300 border-r focus:bg-blue-50 dark:border-gray-900 sm:text-gray-500"
-                onClick={() => setImageState(false)}
+              <div
+             
+             onClick={() => {setImageState(false),handleItemClick("post")}}
+                className={`flex pt-2 pb-2 pl-20 pr-16 border-solid border-gray-300 border-r focus:bg-blue-50 dark:border-gray-900 sm:text-gray-500 ${activeItem === "post" ? "border-b border-solid border-blue-700 text-red-500":"text-blue-800"}`}
               >
                 <PostAddIcon />
                 <p>Post</p>
-              </NavLink>
-              <NavLink
-                className="flex pt-2  pb-2 pl-7 pr-10 border-solid border-gray-300 border-r dark:border-gray-900 sm:text-gray-500"
-                onClick={() => setImageState(true)}
+              </div>
+              <div
+          
+          onClick={() => {setImageState(true),handleItemClick("image")}}
+                className={`
+                flex pt-2  pb-2 pl-7 pr-10 border-solid border-gray-300 border-r dark:border-gray-900 sm:text-gray-500 ${activeItem === "post" ? "border-b border-solid border-blue-700 text-red-500":"text-blue-800"}`}
               >
                 <ImageIcon />
                 <p>Image & Video</p>
-              </NavLink>
+              </div>
             </div>
 
             <div className="flex justify-between m-4 border border-solid border-gray-400 h-10 rounded p-1 focus-visible:border focus-visible:border-solid focus-visible:border-blue-800 focus:bg-red-500 dark:border-gray-900">
@@ -205,11 +225,11 @@ useEffect(() => {
                 <p className="text-blue-600 mr-2 dark:text-gray-400">
                   Drag and drop image or
                 </p>
-                <button className="text-blue-600 mr-4 border border-solid border-blue-600 pl-2 pr-2 rounded-2xl dark:text-gray-400 dark:border-gray-400">
-                  <input type="file" accept="postImage/*" onChange={(e)=>setPostImage(e.target.files[0])}  className=""/>
+                <label htmlFor="forimg" className="text-blue-600 mr-4 border border-solid border-blue-600 pl-2 pr-2 rounded-2xl dark:text-gray-400 dark:border-gray-400">
+                  <input type="file" accept="postImage/*" onChange={(e)=>setPostImage(e.target.files[0])} id="forimg" style={{display:"none",visibility:"none"}}/>
                   {/* <img src="" alt="" onChange={(e)=>setPostImage(e.target.value)} value={postImage}/> */}
                   Upload
-                </button>
+                </label>
               </div>
             )}
 
