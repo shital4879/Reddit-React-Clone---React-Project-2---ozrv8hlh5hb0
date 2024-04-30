@@ -63,7 +63,7 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
       <div className="flex justify-evenly pl-2 pt-2 pb-10 relative h-14 border-b dark:border-gray-800 dark:bg-zinc-950 bg-gray-300 sm:w-dvw  md-w-dvw">
         <div className="">
           <div
-            onClick={() => setOpenHome(!openHome)}
+            onClick={() => {setOpenHome(!openHome),channelApi}}
             className="flex mt-2 dark:text-white cursor-pointer sm:pl-4 md:pl-4 "
           >
             <MenuSharpIcon />
@@ -90,7 +90,7 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
                 </li>
               </ul> */}
               <div className="mt-2 tracking-widest">
-                <h1 className="tracking-widest font-extralight"   onClick={() => setOpenHome(!openHome)}>
+                <h1 className="tracking-widest font-extralight"   onClick={() => {setOpenHome(!openHome)}}>
                   COMMUNITY{" "}
                   <KeyboardArrowDownOutlinedIcon className="dark:text-white" />
                 </h1>
@@ -101,16 +101,23 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
                   {channelApi &&
                     channelApi.map((item) => (
                       <div
-                        className="flex space-x-3 space-y-4 dark:bg-zinc-950 dark:text-white pl-3"
+                        className="flex space-x-3 pb-2 space-y-4 dark:bg-zinc-950 dark:text-white pl-3"
                         onClick={() => navigatetoChannel(item._id)}
                       >
-                        <img
-                          src={item.image}
-                          alt=""
-                          className="w-6 h-6 rounded-2xl mt-4"
-                        />
+                       {item.image == null ? (
+                                    <p className="mt-2 font-bold pl-1 pr-1 text-sm h-5 dark:text-gray-900 bg-gray-300 rounded-2xl">
+                                       {item.name.charAt(0).toUpperCase()}
+                                       
+                                    </p>
+                                  ) : (
+                                    <img
+                                      src={item.image}
+                                      alt=""
+                                      className="h-6 w-6 rounded-3xl mt-2"
+                                    />
+                                  )}
                         <div>
-                          <div className="text-[16px] tracking-normal">
+                          <div className="text-[16px] tracking-normal -mt-2">
                             {item.name}
                           </div>
                         </div>
@@ -147,7 +154,7 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
             />
           </div>
           {openSearch && (
-            <div className="w-[100%] mt-4 p-4 shadow-2xl z-50 overflow-auto h-[30rem] bg-white rounded-lg">
+            <div className="w-[100%] mt-4 p-4 shadow-2xl z-50 overflow-auto h-[30rem] bg-white rounded-lg dark:bg-slate-900 dark:text-gray-200">
               <p className="mb-2 font-normal text-sm">
                 <TrendingUpSharpIcon /> TRENDING TODAY
               </p>
@@ -166,12 +173,12 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
                           item.author.name
                         );
                       }}
-                      className="mb-4 mt-4"
+                      className="mb-4 mt-4 "
                     >
                       <div className="text-base font-semibold">
                         {item.author.name}
                       </div>
-                      <div className="flex text-sm text-gray-400 space-x-7 mr-2 mt-1 ">
+                      <div className="flex text-sm text-gray-600 space-x-7 mr-2 mt-1 justify-between">
                         <div>{item.content}</div>
                         <img
                           src={item.images}
@@ -180,12 +187,18 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
                         />
                       </div>
                       <div className="flex mt-3">
-                        <img
-                          src={item.author.profileImage}
-                          alt=""
-                          className="h-4 w-4"
-                        />
-                        <p className="flex text-sm text-gray-400 space-x-6 mb-4">
+                      {item.author.profileImage === null ? (
+                                    <p className="font-bold pl-2 pr-2 h-6 mr-2  bg-gray-300  rounded-xl dark:bg-gray-500 dark:text-white">
+                                      {item.author.name.charAt(0).toUpperCase()}
+                                    </p>
+                                  ) : (
+                                    <img
+                                      src={item.author.profileImage}
+                                      alt=""
+                                      className="h-6 w-6 rounded-3xl"
+                                    />
+                                  )}
+                        <p className="flex text-sm text-gray-600 space-x-6 mb-4">
                           {item.author.name}
                         </p>
                       </div>
@@ -250,7 +263,7 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
           <Tippy content="Open profile menu" className="text-xs">
           <div
             onClick={() => setShowOptions(!showOptions)}
-            className="cursor-pointer flex justify-between items-center border-solid h-10 border-gray-400 border rounded-md 2xl:w-36 pl-2 pr-2 sm:mr-4 sm:w-24 md:mr-4 md:w-24  lg:-ml-20 2xl:mr-1 mr-2 w-16"
+            className="cursor-pointer flex justify-between items-center border-solid h-10 border-gray-400 border rounded-md 2xl:w-36 pl-2 pr-2 sm:mr-4 sm:w-24 md:mr-4 md:w-24  lg:-ml-20 2xl:mr-1 mr-2 w-20"
           >
             <img
               className="h-6 w-6 rounded-lg"
@@ -258,15 +271,15 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
               alt=""
             />
             <div>
-            <p className="font-bold p-1 dark:text-gray-300 -ml-8">{storedData.name.charAt(0).toUpperCase()}</p>
+            <p className="font-bold p-1 dark:text-gray-300 2xl:-ml-8 xl:ml-2 -ml- ">{storedData.name.charAt(0).toUpperCase()}</p>
             {/* <p className="flex">1 karma</p> */}
             </div>
             <KeyboardArrowDownOutlinedIcon className="dark:text-white" />
           </div>
           </Tippy>
           {showOptions && (
-            <div className="z-50 bg-white dark:bg-zinc-950 absolute w-56 pl-4 pt-3 top-2/4 mt-7 ml-10 right-14 space-y-2 shadow-md p-6 rounded-lg sm:-mr-10 md:-mr-10 lg:ml-20" >
-              <div>
+            <div className="z-50 bg-white dark:bg-zinc-950 dark:border-gray-700 dark:border absolute w-56 pl-4 pt-3 top-2/4 mt-7 ml-10 right-14 space-y-2 shadow-md p-6 rounded-lg sm:-mr-10 md:-mr-10 lg:ml-20" >
+              {/* <div>
                 <div className="flex space-x-2 text-gray-400 text-lg">
                   <AccountCircleSharpIcon className="mr-2 mt-1 h-12 w-12" />
                   My Stuff
@@ -274,8 +287,8 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
                 <div className="ml-10 mt-3 text-lg dark:text-white">
                   Profile
                 </div>
-              </div>
-              <hr />
+              </div> */}
+              {/* <hr /> */}
               <div>
                 <div className="flex space-x-2 text-gray-400 text-lg">
                   <VisibilitySharpIcon className="mr-2 mt-1 h-12 w-12" />

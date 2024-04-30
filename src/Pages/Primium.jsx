@@ -30,7 +30,7 @@ const Primium = () => {
     <div className='bg-cyan-900 w-dvw h-dvh'>
      <NavDetail/>
 
-    <div className='ml-52 mt-32'>
+    <div className='2xl:ml-52 xl:ml-52 lg:ml-52 md:ml-44 ml-10 mt-32 sm:ml-10'>
 
         <h1 className='text-5xl font-bold text-white'>reddit premium</h1>
         <p className='mt-7 text-lg font-bold text-white'>Help support Reddit and get VIP treatment and exclusive access.</p>

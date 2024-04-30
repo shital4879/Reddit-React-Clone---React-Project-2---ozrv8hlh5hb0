@@ -28,10 +28,10 @@ import { ThemeContext } from "../Component/Context/DarkTheme";
 import { contextApi } from "../Component/Context/ApiContext";
 import NavDetail from "../Component/Navbar/NavDetail";
 import Popular from "./Popular";
+import ApiPostUpdate from "../Component/data/ApiPostUpdate";
 
 const Detail = () => {
   const params = useParams();
-  const [showHam, setShowHam] = useState(false);
   const [sortBy, setSortBy] = useState("best");
 
   const handleSortChange = (e) => {
@@ -48,9 +48,10 @@ const Detail = () => {
     setPostData,
     channelApi,
     setChannelApi,
+ 
   } = useContext(contextApi);
+  const[ showHam, setShowHam] = useState(false)
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
-  console.log(channelApi, "ml");
   const {
     showLogIn,
     setShowLogIn,
@@ -72,35 +73,14 @@ const Detail = () => {
   const [openInput, setOpenInput] = useState(false);
   const [activeItem, setActiveItem] = useState("Best");
 
-
   const handleItemClick = (itemName) => {
     setActiveItem(itemName === activeItem ? null : itemName);
   };
-
 
   const navigatetoAuthordetail = (id, name) => {
     navigate(`/AuthorDetail/${id}/${name}`);
   };
 
-  //   const upvoteApi = async()=>{
-  //     try{
-  //       const responce = await fetch(`https://academics.newtonschool.co/api/v1/reddit/like/:"64e6003b42b72201a6bcf7ba"`,
-  //    { method:"POST",
-  //     headers:
-  //     {Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-  //     projectID: "ozrv8hlh5hb0"}}
-  //     )
-
-  //     const result = await responce.json();
-  //     console.log(result,"kkkk");
-  // }
-  // catch (error) {
-  // console.log(error);
-  // }
-  // };
-  // useEffect(() => {
-  // upvoteApi();
-  // }, []);
 
   const [userData, setUserData] = useState(null);
 
@@ -121,9 +101,8 @@ const Detail = () => {
       );
 
       const result = await responce.json();
-      setLikeBtn(result.data);
       PostApi();
-      console.log(result, "kkkk");
+      // console.log(result, "kkkk");
     } catch (error) {
       console.log(error);
     }
@@ -147,8 +126,7 @@ const Detail = () => {
       );
 
       const result = await responce.json();
-      PostApi()
-      console.log(result, "kkkki");
+      PostApi();
     } catch (error) {
       console.log(error);
     }
@@ -177,7 +155,6 @@ const Detail = () => {
       );
       const result = await responce.json();
       setPosts(result.data);
-      console.log(result.data, "post");
     } catch (error) {
       console.log(error);
     }
@@ -229,8 +206,14 @@ const Detail = () => {
         }
       );
 
-      const result = await responce.json();
-      PostApi();
+      // const result = await responce.json();
+      if (responce.status === 204) {
+        console.log("Comment deleted successfully");
+        PostApi();
+      } else {
+        console.log("Failed to delete comment. Status code:", responce.status);
+      }
+
       console.log(result, "kkkkii");
     } catch (error) {
       console.log(error);
@@ -243,14 +226,13 @@ const Detail = () => {
   const [inputvalue, setInputValue] = useState();
   const [text, setText] = useState();
 
-
   const createCommunityapi = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
 
-    formData.append("title", inputCount);
-    formData.append("description", "hii");
+    formData.append("name", inputCount);
+    // formData.append("description", "hii");
 
     try {
       const response = await fetch(
@@ -262,7 +244,7 @@ const Detail = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
 
             projectID: "ozrv8hlh5hb0",
-            "Content-Type": "multipart/form-data",
+            // "Content-Type": "multipart/form-data",
           },
 
           body: formData,
@@ -281,10 +263,15 @@ const Detail = () => {
     }
   };
 
-const navigatetoUpdatePost = (id,con,title,img) =>{
-  navigate(`/UpdatePost/${id}/${con}/${title}/${img}`)
-}
-  
+  const navigatetoUpdatePost = (id, con, title) => {
+    navigate(`/UpdatePost/${id}/${con}/${title}`);
+  };
+
+  const navigatetoChannel = (id) => {
+    navigate(`/ChannelPage/${id}`);
+  };
+
+
   const storedData = JSON.parse(localStorage.getItem("UserInfo"));
   // console.log(storedData._id);
   return (
@@ -309,7 +296,7 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
                     <input
                       type="text"
                       value="Create Post"
-                      className="border 2xl:w-[30rem] pl-3 rounded-sm bg-gray-100 dark:bg-gray-950 dark:text-gray-400 dark:border-gray-900 lg:w-[27rem] md:w-[35rem]"
+                      className="border 2xl:w-[30rem] pl-3 w-[25rem] rounded-sm bg-gray-100 dark:bg-gray-950 dark:text-gray-400 dark:border-gray-900 lg:w-[35rem] md:w-[40rem] sm:w-[30rem]"
                       onClick={() =>
                         // navigatetoAuthordetail(item._id, item.author.name)
                         navigate("/CreatePost")
@@ -321,24 +308,28 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
               {!openPopular && (
                 <div className="flex w-dvw -ml-24 space-x-6 mt-8 bg-white p-3 border-gray-400 border  rounded-sm dark:bg-black dark:text-gray-200 dark:border-gray-900 sm:-ml-24 sm:w-dvw md:-ml-24 md:w-dvw  lg:-ml-6 lg:w-[35rem] 2xl:w-[48rem] xl:w-[40rem] xl:ml-16 2xl:-ml-28">
                   <div
-                    
                     value="Best"
-                    
-                    onClick={() => {applyFilter("Best"),handleItemClick("Best")}}
+                    onClick={() => {
+                      applyFilter("Best"), handleItemClick("Best");
+                    }}
                     className={`flex text-black cursor-pointer pl-2 pr-2 p-1 ${
-                      activeItem === 'Best' ? 'font-bold text-gray-600 bg-gray-200 rounded-lg' : ''
+                      activeItem === "Best"
+                        ? "font-bold text-gray-600 bg-gray-200 rounded-lg dark:bg-slate-700 dark:text-white"
+                        : ""
                     }`}
-        
-                    
                   >
                     <RocketSharpIcon className="mr-1" /> Best
                   </div>
 
                   <div
-                      onClick={() => {applyFilter("Hot"),handleItemClick("Hot")}}
-                      className={`flex text-black cursor-pointer pl-2 pr-2 p-1 ${
-                        activeItem === 'Hot' ? 'font-bold text-gray-600 bg-gray-200 rounded-lg' : ''
-                      }`}
+                    onClick={() => {
+                      applyFilter("Hot"), handleItemClick("Hot");
+                    }}
+                    className={`flex text-black cursor-pointer pl-2 pr-2 p-1 dark:text-white ${
+                      activeItem === "Hot"
+                        ? "font-bold text-gray-600 bg-gray-200 rounded-lg dark:bg-slate-700 dark:text-white"
+                        : ""
+                    }`}
                     value="Hot"
                     // onClick={() => applyFilter("Hot")}
                   >
@@ -346,9 +337,13 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
                   </div>
 
                   <div
-                    onClick={() => {applyFilter("New"),handleItemClick("New")}}
-                    className={`flex text-black cursor-pointer pl-2 pr-2 p-1 ${
-                      activeItem === 'New' ? 'font-bold text-gray-600 bg-gray-200 rounded-lg' : ''
+                    onClick={() => {
+                      applyFilter("New"), handleItemClick("New");
+                    }}
+                    className={`flex text-black cursor-pointer pl-2 pr-2 p-1 dark:text-white ${
+                      activeItem === "New"
+                        ? "font-bold text-gray-600 bg-gray-200 rounded-lg dark:bg-slate-700 dark:text-white"
+                        : ""
                     }`}
                     value="New"
                   >
@@ -356,10 +351,14 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
                   </div>
                   <div
                     value="Top"
-                    onClick={() => {applyFilter("Top"),handleItemClick("Top")}}
-                      className={`flex text-black cursor-pointer pl-2 pr-2 p-1 ${
-                        activeItem === 'Top' ? 'font-bold text-gray-600 bg-gray-200 rounded-lg' : ''
-                      }`}
+                    onClick={() => {
+                      applyFilter("Top"), handleItemClick("Top");
+                    }}
+                    className={`flex text-black cursor-pointer pl-2 pr-2 p-1 dark:text-white ${
+                      activeItem === "Top"
+                        ? "font-bold text-gray-600 bg-gray-200 rounded-lg dark:bg-slate-700 dark:text-white"
+                        : ""
+                    }`}
                   >
                     <UploadIcon className="mr-1" /> Top
                   </div>
@@ -379,8 +378,8 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
                               <div className="flex w-[44rem] justify-between">
                                 <div className="flex ">
                                   {item.author.profileImage === null ? (
-                                    <p className="font-bold pl-2 pr-2 dark:text-gray-300 bg-gray-300 rounded-xl">
-                                      {storedData.name.charAt(0).toUpperCase()}
+                                    <p className="font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:bg-gray-500 dark:text-white">
+                                      {item.author.name.charAt(0).toUpperCase()}
                                     </p>
                                   ) : (
                                     <img
@@ -404,19 +403,16 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
                                 </div>
 
                                 {item.author.name === storedData.name ? (
-                                  <div onClick={() => setShowHam(!showHam)} className="relative">
+                                  <div
+                                    onClick={() => setShowHam(!showHam)}
+                                    className="relative"
+                                  >
                                     <MoreHorizOutlinedIcon />
-
-                                    
-                     
                                   </div>
                                 ) : (
                                   ""
                                 )}
-                                 </div>  
-
-
-                           
+                              </div>
 
                               <div className="text-gray-500 text-sm">
                                 .
@@ -432,15 +428,20 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
                             <div className="flex justify-end mr-0"></div>
                           </div>
                           <div>
-                            <p className="mb-2">{item.content}</p>
-                            <div
-                              className=" flex items-center justify-start"
-                             
-                            >
+                            <p className="mb-2"   onClick={() =>
+                            {console.log("working",item); 
+                                navigatetoUpdatePost(
+                                  item._id,
+                                  item.title,
+                                  item.content,
+                                )
+                              }
+                              }>{item.content}</p>
+                            <div className=" flex items-center justify-start">
                               <img
                                 src={item.images}
                                 alt=""
-                                className="rounded w-[25rem] h-[20rem] 2xl:w-[45rem] 2xl:h-[25rem] sm:w-[35rem] sm:h-[25rem] md:w-[44rem] md:h-[30rem]"
+                                className="object-contain rounded w-[25rem] h-[20rem] 2xl:w-[45rem] 2xl:h-[25rem] sm:w-[35rem] sm:h-[25rem] md:w-[44rem] md:h-[30rem]"
                               />
                             </div>
                           </div>
@@ -474,32 +475,37 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
 
                         {showHam && 
                         
-                        item.author.name === storedData.name ? (
-                        (
-                    <div className="absolute top-72 right-[27rem] bg-white border border-solid border-gray-500 pl-4 pr-4 pt-2 pb-2 rounded-md">
-                      <button className="flex space-x-3 p-1 pl-2 pr-3 hover:bg-blue-100 w-[9rem]" 
-                       onClick={() => deletePost(item._id)}>
-                        <DeleteIcon />
-                        <h1>Delete Post</h1>
-                      </button>
-                      <button className="flex space-x-3 mt-2 p-1 pl-2 pr-3 hover:bg-blue-100 w-[9rem]" 
-                      onClick={()=>navigatetoUpdatePost(item._id, item.title,item.content,<img src={item.images}/>)}
-                      >
-                        <EditIcon />
-                        <h1>Edit Post</h1>
-                      </button>
-                    </div>
-                  )):""
-                
-                
-                }
+                      <ApiPostUpdate>
+                          <div className="absolute top-72 right-[27rem] bg-white border border-solid border-gray-500 pl-4 pr-4 pt-2 pb-2 rounded-md">
+                            <button
+                              className="flex space-x-3 p-1 pl-2 pr-3 hover:bg-blue-100 w-[9rem]"
+                              onClick={() => deletePost(item._id)}
+                            >
+                              <DeleteIcon />
+                              <h1>Delete Post</h1>
+                            </button>
+                            <button
+                              className="flex space-x-3 mt-2 p-1 pl-2 pr-3 hover:bg-blue-100 w-[9rem]"
+                              onClick={(e) =>
+                                {console.log("not working",item);
+                                e.stopPropagation(); 
+                                navigatetoUpdatePost(
+
+                                  item._id,
+                                  item.title,
+                                  item.content,
+                                )}
+                              }
+                            >
+                              <EditIcon />
+                              <h1>Edit Post</h1>
+                            </button>
+                          </div>
+                      </ApiPostUpdate>
+                        }
 
                       </div>
                     ))}
-
-
-
-                 
                 </div>
               )}
 
@@ -522,11 +528,17 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
                                   )
                                 }
                               >
-                                <img
-                                  src={item.author.profileImage}
-                                  alt=""
-                                  className="h-6 w-6 rounded-3xl"
-                                />
+                               {item.author.profileImage === null ? (
+                                    <p className="font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:bg-gray-500 dark:text-white">
+                                      {item.author.name.charAt(0).toUpperCase()}
+                                    </p>
+                                  ) : (
+                                    <img
+                                      src={item.author.profileImage}
+                                      alt=""
+                                      className="h-6 w-6 rounded-3xl"
+                                    />
+                                  )}
                                 <h1 className="font-semibold text-base ml-2 mr-2">
                                   {item.author.name}
                                 </h1>
@@ -548,7 +560,7 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
                                 <img
                                   src={item.images}
                                   alt=""
-                                  className="rounded"
+                                  className="object-contain rounded w-[25rem] h-[20rem] 2xl:w-[45rem] 2xl:h-[25rem] sm:w-[35rem] sm:h-[25rem] md:w-[44rem] md:h-[30rem]"
                                 />
                               </div>
                             </div>
@@ -557,11 +569,11 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
                                 <ArrowUpwardOutlinedIcon
                                   className="hover:text-orange-500 h-1 w-1"
                                   onClick={() => {
-                                    item.likeCount + 1;
+                                    upvoteApi(item._id);
                                   }}
                                 />
                                 <div>{item.likeCount}</div>
-                                <ArrowDownwardOutlinedIcon className="hover:text-green-700 h-1 w-1" />
+                                <ArrowDownwardOutlinedIcon className="hover:text-green-700 h-1 w-1" onClick={() => downvoteApi(item._id)}/>
                               </div>
                               <div
                                 onClick={() =>
@@ -640,7 +652,10 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
         </div>
       </div>
       {createCommunity && (
-        <>
+<div>
+        {
+          channelApi && 
+          channelApi.slice(0,1).map((item)=>(
           <div className="bg-gray-700 bg-opacity-80 h-dvh size-full m-0 fixed top-0 left-0 w-dvw ">
             {/* <NavDetail /> */}
 
@@ -768,6 +783,7 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
                         }`}
                         disabled={inputCount.length < 3}
                         // onClick={createCommunityapi}
+                        onClick={() => navigatetoChannel()}
                       >
                         Create Community
                       </button>
@@ -777,7 +793,9 @@ const navigatetoUpdatePost = (id,con,title,img) =>{
               </div>
             </div>
           </div>
-        </>
+      ))
+    }
+    </div>
       )}
     </div>
   );

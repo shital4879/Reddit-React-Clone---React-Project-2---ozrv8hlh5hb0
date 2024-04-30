@@ -16,10 +16,7 @@ const Popular = () => {
       
       <BeforeLogInNav/>
 }
-{/* {
-  sessionStorage.getItem("token") &&
-  <NavDetail/>
-} */}
+
 
       <PopularData/>
 

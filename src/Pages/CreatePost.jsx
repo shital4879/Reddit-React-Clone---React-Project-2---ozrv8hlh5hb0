@@ -10,12 +10,12 @@ import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
 import { ThemeContext } from "../Component/Context/DarkTheme";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import ApiContext, { contextApi } from "../Component/Context/ApiContext";
+import { Mycontext } from "../components/App";
+// import { contextApi } from "../components/App";
 
 const CreatePost = () => {
   const navigate = useNavigate();
   const params = useParams();
-  console.log(params.id);
-  const {channelApi} = useContext(contextApi) 
   const [mode, setMode] = useState(false);
   const [imagestate, setImageState] = useState(false);
   const [draftno, setDraftno] = useState(0);
@@ -25,6 +25,7 @@ const CreatePost = () => {
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
   const [postImage,setPostImage] = useState("")
   const [text, setText] = useState("");
+  const { showLogIn, setShowLogIn, dataChannel,openPopular,setOpenPopular,createCommunity, setCreateCommunity} = useContext(Mycontext);
 
   const handleTextChange = (event) => {
     setText(event.target.value);
@@ -161,7 +162,7 @@ const handleItemClick = (itemName) => {
               <div
              
              onClick={() => {setImageState(false),handleItemClick("post")}}
-                className={`flex pt-2 pb-2 pl-20 pr-16 border-solid border-gray-300 border-r focus:bg-blue-50 dark:border-gray-900 sm:text-gray-500 ${activeItem === "post" ? "border-b border-solid border-blue-700 text-red-500":"text-blue-800"}`}
+                className={`flex pt-2 pb-2 pl-20 pr-16 border-solid  dark:border-gray-900 sm:text-gray-500 ${activeItem === "post" ? " border-b-2 bg-blue-100 border-blue-700 dark:border-gray-200 dark:text-gray-300 dark:bg-gray-900":""}`}
               >
                 <PostAddIcon />
                 <p>Post</p>
@@ -170,7 +171,7 @@ const handleItemClick = (itemName) => {
           
           onClick={() => {setImageState(true),handleItemClick("image")}}
                 className={`
-                flex pt-2  pb-2 pl-7 pr-10 border-solid border-gray-300 border-r dark:border-gray-900 sm:text-gray-500 ${activeItem === "post" ? "border-b border-solid border-blue-700 text-red-500":"text-blue-800"}`}
+                flex pt-2  pb-2 pl-7 pr-10 border-solid  dark:border-gray-900 sm:text-gray-500 ${activeItem === "image" ? " border-b-2 bg-blue-100 border-blue-700 dark:border-gray-200 dark:text-gray-300 dark:bg-gray-900":""}`}
               >
                 <ImageIcon />
                 <p>Image & Video</p>

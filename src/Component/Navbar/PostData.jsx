@@ -113,7 +113,7 @@ const userdata = JSON.parse(localStorage.getItem("UserInfo"))
                     <div className="flex">
                     {item.author.profileImage === null ? (
                                     <p className="font-bold pl-2 pr-2 dark:text-gray-300 bg-gray-300 rounded-xl">
-                                      {userdata.name.charAt(0).toUpperCase()}
+                                      {item.author.name.charAt(0).toUpperCase()}
                                     </p>
                                   ) : (
                                     <img
@@ -163,11 +163,18 @@ const userdata = JSON.parse(localStorage.getItem("UserInfo"))
                 .slice(0, showMore ? channelApi.length : 8)
                 .map((item) => (
                   <div className="flex space-x-3  mb-2">
-                    <img
-                      src={item.image}
-                      alt=""
-                      className="w-8 h-8 rounded-2xl mb-6 mt-3"
-                    />
+                     {item.image == null ? (
+                                    <p className="mt-2 font-bold pl-2 pr-2 text-sm h-6 dark:text-gray-300 bg-gray-300 rounded-2xl">
+                                       {item.name.charAt(0).toUpperCase()}
+                                       
+                                    </p>
+                                  ) : (
+                                    <img
+                                      src={item.image}
+                                      alt=""
+                                      className="h-6 w-6 rounded-3xl mt-2"
+                                    />
+                                  )}
                     <div>
                       <div className="text-[18px]">{item.name}</div>
                       <div className="text-xs text-gray-600">

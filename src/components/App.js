@@ -15,6 +15,7 @@ import AuthorDetail from "../Pages/AuthorDetail";
 import CommentsPage from "../Pages/CommentsPage";
 import Like from "../Component/Context/Like";
 import UpdatePost from "../Pages/UpdatePost";
+import OpenPop from "../Component/Navbar/OpenPop";
 
 export const Mycontext = createContext();
 
@@ -40,7 +41,8 @@ const [openPopular,setOpenPopular] = useState(false);
       <Route path="/ChannelPage/:id" element={<ChannelPage/>}></Route>
       <Route path="/AuthorDetail/:id/:name" element={<AuthorDetail/>}></Route>
       <Route path="/CommentsPage/:id/:iid" element={<CommentsPage/>}></Route>
-      <Route path="/UpdatePost/:id/:con/:title/:img" element={<UpdatePost/>}></Route>
+      <Route path="/UpdatePost/:id/:con/:title" element={<UpdatePost/>}></Route>
+      <Route path="/OpenPop" element={<OpenPop/>}></Route>
     </Routes> 
     </BrowserRouter>
   

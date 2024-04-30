@@ -199,8 +199,7 @@ const BeforeLogInNav = () => {
     }
   };
 
-  // const data = sessionStorage.getItem('UserInfo');
-  console.log("data");
+
 
 
   const handleSubmitSignIn = (e) => {
@@ -250,17 +249,17 @@ const BeforeLogInNav = () => {
           <MenuSharpIcon />
         </div>
         {showHam && (
-          <div className="md:flex md:justify-between h-20 p-3 absolute top-14 md:-ml-12 z-10 shadow-xl  md:w-[10rem] md:pl-2 bg-white -ml-12 ">
+          <div className="md:flex md:justify-between h-16 absolute top-14 md:-ml-12 z-10 shadow-xl  md:w-[10rem] md:pl-2 bg-white -ml-12 ">
             {!sessionStorage.getItem("token") && (
               <div>
                 <ul>
-                  <li>
-                    <NavLink to="/" >
+                  <li className="bg-gray-400 mb-2 w-28">
+                    <NavLink to="/" className="p-2 pt-4">
                       <HomeIcon /> Home
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/popular">
+                    <NavLink to="/popular" className="p-2">
                       <OutboundOutlinedIcon /> Popular
                     </NavLink>
                   </li>
@@ -320,7 +319,7 @@ const BeforeLogInNav = () => {
                       <div className="text-base font-semibold">
                         {item.author.name}
                       </div>
-                      <div className="flex text-sm text-gray-400 space-x-7 mr-2 mt-1">
+                      <div className="flex text-sm text-gray-600 space-x-7 mr-2 mt-1">
                         <div>{item.content}</div>
                         <img
                           src={item.images}
@@ -329,12 +328,18 @@ const BeforeLogInNav = () => {
                         />
                       </div>
                       <div className="flex mt-3">
-                        <img
-                          src={item.author.profileImage}
-                          alt=""
-                          className="h-4 w-4"
-                        />
-                        <p className="flex text-sm text-gray-400 space-x-6">
+                      {item.author.profileImage === null ? (
+                                    <p className="font-bold pl-2 pr-2 h-6 mr-2  bg-gray-300  rounded-xl dark:bg-gray-500 dark:text-white">
+                                      {item.author.name.charAt(0).toUpperCase()}
+                                    </p>
+                                  ) : (
+                                    <img
+                                      src={item.author.profileImage}
+                                      alt=""
+                                      className="h-6 w-6 rounded-3xl"
+                                    />
+                                  )}
+                        <p className="flex text-sm text-gray-600 space-x-6">
                           {item.author.name}
                         </p>
                       </div>
@@ -521,8 +526,8 @@ const BeforeLogInNav = () => {
           {postData &&
             postData.map((item) => (
               <div>
-                <div className="bg-gray-700 bg-opacity-80 h-full m-0 fixed top-0 left-0 w-dvw flex justify-center items-center z-50">
-                  <div className="bg-white relative w-[30rem] h-[90%] rounded-md ">
+                <div className="bg-gray-700 bg-opacity-80 h-full m-0 fixed top-0 left-0 w-dvw flex justify-center items-center z-40">
+                  <div className="bg-white relative w-[30rem] h-[90%] rounded-md z-50 ">
                     <div className="flex justify-end mt-4 mr-4">
                       <button
                         className="text-2xl pl-2 pr-2 rounded-md bg-gray-400 flex"

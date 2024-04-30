@@ -17,17 +17,17 @@ const UpdatePost = () => {
     const params = useParams();
     const { fetchingData, PostApi } = useContext(contextApi);
     console.log(params.id);
-    console.log(params.img);
+    // console.log(params.img);
     const {channelApi} = useContext(contextApi) 
     const [mode, setMode] = useState(false);
     const [imagestate, setImageState] = useState(false);
     const [draftno, setDraftno] = useState(0);
-    const [inputvalue, setInputValue] = useState("");
+    const [inputvalue, setInputValue] = useState(params.con);
     let maxnum = 100;
     const [community, setCommunity] = useState(false);
     const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
     const [postImage,setPostImage] = useState("")
-    const [text, setText] = useState("");
+    const [text, setText] = useState(params.title);
   
     const handleTextChange = (event) => {
       setText(event.target.value);
@@ -184,7 +184,7 @@ const UpdatePost = () => {
               type="text"
               value={inputvalue}
             //   value={params.con}
-            defaultValue={params.con}
+            // defaultValue={params.con}
               placeholder="Title"
               onClick={handleinputNum}
               maxLength="100"
@@ -242,9 +242,9 @@ const UpdatePost = () => {
               required
               className="-mt-[16px] ml-4 mr-4 border border-solid border-gray-200 2xl:w-[43rem] h-[10rem] p-2 dark:border-gray-900 dark:bg-black sm:w-[38rem] sm:mr-4 md:w-[46rem] lg:w-[36rem] xl:w-[43rem] w-[26rem]"
               placeholder="Text(Optional)"
-            //   value={text}
-            defaultValue={text}
-              value={params.title}
+              // value={text}
+            // defaultValue={params.title}
+              value={text}
               onChange={(e) => setText(e.target.value)}
               onClick={handleTextChange}
             ></textarea>

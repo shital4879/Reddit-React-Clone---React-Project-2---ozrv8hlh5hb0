@@ -9,6 +9,7 @@ const ApiContext = ({children}) => {
     const [fetchingData, setFetchingData] = useState();
     const [postData, setPostData] = useState();
     const [channelApi,setChannelApi] = useState();
+    const [showHam, setShowHam] = useState(false);
 
 // --------------SEARCH API ---------------------------------------------------------------------------------------------
   const searchData = async () => {
@@ -25,7 +26,7 @@ const ApiContext = ({children}) => {
       );
       const result = await responce.json();
       setFetchingData(result.data);
-      console.log("lo", result);
+      // console.log("lo", result);
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +51,7 @@ const ApiContext = ({children}) => {
       );
       const result = await responce.json();
       setPostData(result.data);
-      console.log(result.data,"post");
+      // console.log(result.data,"post");
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +77,7 @@ const channelApidata = async () => {
       );
       const result = await responce.json();
       setChannelApi(result.data);
-      console.log("loll", result.data);
+      // console.log("loll", result.data);
     } catch (error) {
       console.log(error);
     }
