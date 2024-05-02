@@ -188,11 +188,11 @@ const BeforeLogInNav = () => {
         navigateDetail();
       }
       if (result.status === "fail") {
-        console.log(result.message);
-        // setValid(false);
-        // setError((prev) => {
-        //   return { ...prev, correction: result.message };
-        // });
+        // console.log(result.message);
+        setValid(false);
+        setError((prev) => {
+          return { ...prev, correction: result.message };
+        });
       }
     } catch (error) {
       console.log(error);
@@ -240,10 +240,10 @@ const BeforeLogInNav = () => {
 
 
   return (
-    <div>
-      <div className="bg-gray-100 flex justify-between pl-12 pr-12 pt-2 pb-10 relative h-14 border-b border-gray-200 xl:-ml-20">
+    <div className="fixed bg-white z-50 sm:-mt-16 -mt-4 lg:mt-0">
+      <div className=" flex justify-between pl-12 pt-2 pr-12 pb-10 relative h-14 border-b border-gray-200 xl:-ml-20">
         <div
-          className="md:-ml-8 md:visible visible sm:visible lg:visible xl:invisible 2xl:invisible mr-4 mt-1 lg:mr-10 -ml-10"
+          className="md:-ml-8 md:visible visible sm:visible lg:invisible xl:invisible 2xl:invisible mr-4 mt-1 lg:mr-10 -ml-10"
           onClick={() => setShowHam(!showHam)}
         >
           <MenuSharpIcon />
@@ -268,13 +268,17 @@ const BeforeLogInNav = () => {
             )}
           </div>
         )}
-        <div className="flex xl:mr-44 xl:-ml-8 lg:mr-44 lg:-ml-8">
-          <img src="/logo.webp" alt="" className="h-9 w-9 mr-3 xl:ml-20" />
+        <Tippy content="Go to Reddit Home" className="mt-6 -ml-24 text-[10px]">
+          <NavLink to="/">
+        <div className="flex xl:mr-44 xl:-ml-8 lg:mr-36 lg:-ml-14 2xl:-ml-16">
+          <img src="/logo.webp" alt="" className="h-9 w-9 mr-2 xl:ml-20" />
           <h2 className="text-3xl text-orange-500 font-bold sm:invisible md:visible lg:visible xl:visible invisible ">
             reddit
           </h2>
         </div>
-        <div className="bg-gray-200 h-11 w-52 2xl:w-[45rem] 2xl:ml-0 sm:w-[50rem] lg:w-[60rem] xl:w-[40rem] xl:mr-24  float-start space-x-2 pl-3 rounded-3xl pt-2  md:w-[40rem] md:ml-20 md:-mr-36  lg:-ml-20 lg:mr-4 -ml-10 ">
+        </NavLink>
+        </Tippy>
+        <div className="bg-gray-200 h-11 w-52 2xl:w-[45rem] 2xl:ml-0 sm:w-[22rem] lg:w-[34rem] xl:w-[40rem] xl:mr-24  float-start space-x-2 pl-3 rounded-3xl pt-2  md:w-[25rem] md:ml-20 md:-mr-36  lg:-ml-20 lg:mr-4 -ml-10 ">
           <div className="flex items-center">
             <SearchIcon className="dark:text-slate-400" />
             <input
@@ -282,7 +286,7 @@ const BeforeLogInNav = () => {
               name
               search
               placeholder="Search Reddit"
-              className="bg-gray-200 text-lg border-none outline-none  rounded-3xl w-36 sm:w-[20rem] md:w-[22rem] lg:w-[30rem] xl:w-[34rem] 2xl:w-[45rem] "
+              className="bg-gray-200 text-lg border-none outline-none font-thin ml-2  rounded-3xl w-36 sm:w-[20rem] md:w-[22rem] lg:w-[30rem] xl:w-[34rem] 2xl:w-[45rem] "
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -298,7 +302,7 @@ const BeforeLogInNav = () => {
           </div>
 
           {openSearch && (
-            <div className="w-[100%] mt-4 p-4 shadow-2xl z-50 overflow-auto h-[30rem] bg-white rounded-lg">
+            <div className="w-[100%] mt-4  p-4 shadow-2xl z-50 overflow-auto h-[30rem] bg-white rounded-lg">
               <p className="mb-2 font-normal text-sm">
                 <TrendingUpSharpIcon /> TRENDING TODAY
               </p>
@@ -316,18 +320,24 @@ const BeforeLogInNav = () => {
                         setShowLogIn(!showLogIn)
                       }}
                     >
-                      <div className="text-base font-semibold">
+                      <div className="text-base font-semibold pt-2">
                         {item.author.name}
                       </div>
-                      <div className="flex text-sm text-gray-600 space-x-7 mr-2 mt-1">
+                      <div className="flex justify-between text-sm text-gray-600 space-x-7 mr-2 mt-1">
                         <div>{item.content}</div>
-                        <img
-                          src={item.images}
-                          alt=""
-                          className="w-16 h-14 mt-2 rounded-lg"
-                        />
+                        
+                            {item.images == "" ? (
+                              <p className="ml-8"></p>
+                            ) : (
+                              <img
+                                src={item.images}
+                                alt=""
+                                className="rounded-xl h-20 w-20"
+                              />
+                            )}
+                          
                       </div>
-                      <div className="flex mt-3">
+                      <div className="flex mt-3 pb-4 ">
                       {item.author.profileImage === null ? (
                                     <p className="font-bold pl-2 pr-2 h-6 mr-2  bg-gray-300  rounded-xl dark:bg-gray-500 dark:text-white">
                                       {item.author.name.charAt(0).toUpperCase()}
@@ -339,7 +349,7 @@ const BeforeLogInNav = () => {
                                       className="h-6 w-6 rounded-3xl"
                                     />
                                   )}
-                        <p className="flex text-sm text-gray-600 space-x-6">
+                        <p className="flex text-sm text-gray-600 space-x-6 ml-2">
                           {item.author.name}
                         </p>
                       </div>
@@ -352,30 +362,29 @@ const BeforeLogInNav = () => {
         {/* <button onClick={toggleDarkMode}>dark</button> */}
         {/* -----------------------------BEFORE LOGIN --------------------------------------------------------------------------------- */}
         {!sessionStorage.getItem("token") && (
-          <div className="flex space-x-7">
+          <div className="flex space-x-4 2xl:ml-32 xl:-ml-10 lg:ml-7  ">
             <div>
               <Tippy content="Get app" className="text-[10px]">
                 <div
-                  className="flex items-center bg-gray-200 pl-3 pr-3 h-11 rounded-3xl space-x-2 pt-2 pb-2 md:invisible sm:invisible lg:visible xl:visible invisible"
+                  className="flex items-center bg-gray-200 pl-3 pr-2 h-10 w-28  rounded-3xl pt-2 pb-2 md:invisible sm:invisible lg:visible xl:visible invisible"
                   onClick={() => {
                     setShowAppLink(!showAppLink);
                   }}
                 >
                   <QrCodeScannerIcon className="h-4 w-4" />
-                  <button className="text-base lg:text-xs xl:text-base xl:w-20">
+                  <button className="text-sm font-semibold lg:text-sm xl:text-base xl:w-20">
                     Get app
                   </button>
                 </div>
               </Tippy>
-              <br />
             </div>
-            <Tippy content="Log in to Reddit" className="text-[10px] ">
+            <Tippy content="Log in to Reddit" className="text-[10px]">
               <div
                 onClick={() => setShowLogIn(!showLogIn)}
-                className="flex items-center xl:w-[7rem] text-center bg-orange-600 pl-3 pr-3 h-11 rounded-3xl space-x-2 pt-2 pb-2 md:invisible sm:invisible lg:visible xl:visible invisible"
+                className="hover:bg-orange-800 flex items-center  xl:w-24 lg:w-20 text-center bg-orange-600 h-10 2xl:w-20 justify-center rounded-3xl  pt-2 pb-2 md:invisible sm:invisible lg:visible xl:visible invisible"
               >
                 <button
-                  className="xl:text-base  pl-5 pr-4 h-11  space-x-2 pt-2 pb-2 font-semibold text-white text-sm md:text-xs md:invisible sm:invisible lg:visible xl:visible invisible"
+                  className="xl:text-base  pt-2 pb-2 font-semibold text-white text-sm md:text-xs md:invisible sm:invisible lg:visible xl:visible invisible"
                   onClick={() => setShowLogIn(!showLogIn)}
                 >
                   Log In
@@ -383,12 +392,14 @@ const BeforeLogInNav = () => {
               </div>
             </Tippy>
             <div>
+            <Tippy content="Open settings menu" className="text-[10px]">
               <div
-                className="pt-1 relative cursor-pointer -ml-44 sm:-ml-24 md:ml-10  xl:ml-4 sm:mr-48 lg:-ml-1"
+                className="pt-1 relative cursor-pointer    sm:-ml-3 -ml-24 2xl:-ml-0 md:ml-16  xl:ml-4 sm:mr-48 lg:-ml-1 hover:bg-gray-200 p-1 hover:rounded-2xl"
                 onClick={() => setShowopt(!showopt)}
               >
                 <MoreHorizIcon />
               </div>
+              </Tippy>
             </div>
             {showopt && (
               <span className=" absolute top-2/4 m-6 sm:right-10 right-14 space-y-2 shadow-xl p-4 rounded-md bg-white cursor-pointer">
@@ -647,6 +658,10 @@ const BeforeLogInNav = () => {
                           >
                             Log In
                           </button>
+
+                          {valid ? <></> : (
+                            <p className="absolute mt-4 ml-36 text-red-600 text-sm">{error.correction}</p>
+                          )}
                         </div>
                       </form>
                     )}

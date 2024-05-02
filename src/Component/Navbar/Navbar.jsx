@@ -22,7 +22,6 @@ import 'tippy.js/dist/tippy.css';
 import { Mycontext } from "../../components/App"
 import { contextApi } from "../Context/ApiContext";
 import { ThemeContext } from "../Context/DarkTheme";
-import Detail from "../../Pages/Detail";
 
 const Navbar = () => {
   console.log("daa",fetchingData);

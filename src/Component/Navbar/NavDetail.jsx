@@ -18,12 +18,13 @@ import { ThemeContext } from "../Context/DarkTheme";
 import { contextApi } from "../Context/ApiContext";
 import { Mycontext } from "../../components/App";
 import { NavLink, useNavigate } from "react-router-dom";
+import Community from "../Detailing/Community";
 // import {Mycontext} from "../../components/App"
 
 const NavDetail = () => {
   const navigate = useNavigate();
-  const {createCommunity, setCreateCommunity} = useContext(Mycontext)
-  const [openHome, setOpenHome] = useState(false);
+  const {createCommunity, setCreateCommunity,openHome, setOpenHome} = useContext(Mycontext)
+  // const [openHome, setOpenHome] = useState(false);
   const [comming, setComming] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const { showLogIn, setShowLogIn, dataChannel,openPopular,setOpenPopular,} = useContext(Mycontext);
@@ -60,82 +61,31 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
 // console.log(sessionStorage.getItem());
   return (
     <div>
-      <div className="flex justify-evenly pl-2 pt-2 pb-10 relative h-14 border-b dark:border-gray-800 dark:bg-zinc-950 bg-gray-300 sm:w-dvw  md-w-dvw">
+      <div className="flex justify-evenly pl-2 pt-2 pb-10 relative h-14 border-b dark:border-gray-800 dark:bg-zinc-950 bg-gray-100 sm:w-dvw  md-w-dvw">
         <div className="">
           <div
             onClick={() => {setOpenHome(!openHome),channelApi}}
-            className="flex mt-2 dark:text-white cursor-pointer sm:pl-4 md:pl-4 "
+            className="relative flex mt-2 dark:text-white cursor-pointer sm:pl-4 md:pl-4 visible 2xl:invisible md:visible sm:visible xl:invisible lg:invisible"
           >
-            <MenuSharpIcon />
+            <MenuSharpIcon className="" />
           </div>
          
-          {openHome && (
-            <div className="bg-gray-50 p-4 absolute mt-4 shadow-xl dark:bg-black rounded-md dark:text-white z-50">
-              {/* <ul>
-                <li>
-                  <NavLink
-                    to="/premium"
-                    className=""
-                  >
-                    <HomeIcon /> Home
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/popular"
-                    className=""
-                  >
-                    <OutboundOutlinedIcon /> Popular
-                  </NavLink>
-                </li>
-              </ul> */}
-              <div className="mt-2 tracking-widest">
-                <h1 className="tracking-widest font-extralight"   onClick={() => {setOpenHome(!openHome)}}>
-                  COMMUNITY{" "}
-                  <KeyboardArrowDownOutlinedIcon className="dark:text-white" />
-                </h1>
-                <div className="xl:w-[16rem] bg-gray-100 m-4 lg:w-[14rem] overflow-y-scroll h-96">
-                  <h1 className="tracking-tight pb-2 dark:bg-zinc-950 dark:text-white" onClick={()=>setCreateCommunity(!createCommunity)}>
-                    <AddOutlinedIcon /> Create a Community
-                  </h1>
-                  {channelApi &&
-                    channelApi.map((item) => (
-                      <div
-                        className="flex space-x-3 pb-2 space-y-4 dark:bg-zinc-950 dark:text-white pl-3"
-                        onClick={() => navigatetoChannel(item._id)}
-                      >
-                       {item.image == null ? (
-                                    <p className="mt-2 font-bold pl-1 pr-1 text-sm h-5 dark:text-gray-900 bg-gray-300 rounded-2xl">
-                                       {item.name.charAt(0).toUpperCase()}
-                                       
-                                    </p>
-                                  ) : (
-                                    <img
-                                      src={item.image}
-                                      alt=""
-                                      className="h-6 w-6 rounded-3xl mt-2"
-                                    />
-                                  )}
-                        <div>
-                          <div className="text-[16px] tracking-normal -mt-2">
-                            {item.name}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
-        <div className="flex 2xl:w-12 xl:-ml-6 ml-5 2xl:mr-28 ">
+        <div className="absolute -ml-[40rem] -mt-7">
+          {openHome && (
+            <Community onClick={()=>{setOpenHome(!openHome)}} className="z-50 md:-mt-10 "/>
+          )}
+          </div>
+        <Tippy content="Go to Reddit Home" className="mt-6 ml-14 text-[10px]">
+        <div className="flex 2xl:w-12 ml-5 2xl:mr-28 2xl:-ml-36 xl:-ml-64 lg:-ml-40">
           <img src="/logo.webp" alt="" className="h-9 w-9 mr-3" />
           <h2 className="text-3xl text-orange-500 font-bold invisible lg:visible">
             reddit
           </h2>
         </div>
+        </Tippy>
 
-        <div className="bg-gray-200 w-[40rem] h-11 2xl:w-[45rem] xl:w-[35rem] -ml-10 float-start space-x-2 pl-3 rounded-3xl pt-2 dark:bg-slate-900 sm:-ml-4 sm:w-[20rem] sm:mr-2 md:-ml-4 md:w-[25rem] md:mr-2 ">
+        <div className="bg-gray-200 w-[40rem] h-11 2xl:ml-20 2xl:w-[45rem] xl:w-[35rem] -ml-10 float-start space-x-2 pl-3 rounded-3xl pt-2 dark:bg-slate-900 sm:-ml-4 sm:w-[20rem] sm:mr-2 md:-ml-4 md:w-[25rem] md:mr-2 ">
           <div className="flex items-center">
             <SearchIcon className="dark:text-slate-400" />
             <input
@@ -180,11 +130,16 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
                       </div>
                       <div className="flex text-sm text-gray-600 space-x-7 mr-2 mt-1 justify-between">
                         <div>{item.content}</div>
-                        <img
-                          src={item.images}
-                          alt=""
-                          className="w-16 h-14 mt-2 rounded-lg"
-                        />
+                        
+                            {item.images == "" ? (
+                              <p className="ml-8"></p>
+                            ) : (
+                              <img
+                                src={item.images}
+                                alt=""
+                                className="rounded-xl w-20 h-20"/>
+                            )}
+                          
                       </div>
                       <div className="flex mt-3">
                       {item.author.profileImage === null ? (
@@ -263,7 +218,7 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
           <Tippy content="Open profile menu" className="text-xs">
           <div
             onClick={() => setShowOptions(!showOptions)}
-            className="cursor-pointer flex justify-between items-center border-solid h-10 border-gray-400 border rounded-md 2xl:w-36 pl-2 pr-2 sm:mr-4 sm:w-24 md:mr-4 md:w-24  lg:-ml-20 2xl:mr-1 mr-2 w-20"
+            className="cursor-pointer flex justify-between items-center border-solid h-10 border-gray-400 border rounded-md 2xl:w-36 pl-2 pr-2 sm:mr-4 sm:w-24 md:mr-4 md:w-24 xl:-mr-24 lg:-mr-14 lg:-ml-10 2xl:-mr-4 mr-2 w-20"
           >
             <img
               className="h-6 w-6 rounded-lg"
@@ -295,7 +250,7 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
                   View Options
                 </div>
                 <button
-                  onClick={toggleDarkMode}
+                  onClick={()=>{toggleDarkMode(),setShowOptions(!showOptions)}}
                   className="ml-10 mt-3 text-lg w-18 dark:text-white"
                 >
                   {

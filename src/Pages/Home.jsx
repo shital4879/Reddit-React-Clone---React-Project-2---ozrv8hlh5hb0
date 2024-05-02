@@ -6,7 +6,10 @@ import BeforeLogInNav from '../Component/Navbar/BeforeLogInNav'
 const Home = () => {
   return (
     <div>
-      <BeforeLogInNav/>
+      <div className=' bg-white'>
+
+      <BeforeLogInNav />
+      </div>
       <PostData/>
     </div>
   )

@@ -82,13 +82,6 @@ const UpdatePost = () => {
     }
   }
   
-  
-  // const updatePost = async ()=>{
-  //   try{
-  //     const responce = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/:${params.id}`)
-  //   }
-  // }
-  
   useEffect(() => {
     createpostdata;
   }, []);

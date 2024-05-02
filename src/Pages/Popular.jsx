@@ -11,15 +11,11 @@ const Popular = () => {
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
   return (
     <div className={darkMode ? "dark" : ""}>
-      {
-        !sessionStorage.getItem("token") &&
-      
+      <div className='md:mt-16 sm:mt-16 -mt-4 lg:-mt-0 xl:-mt-0'>
+
       <BeforeLogInNav/>
-}
-
-
+      </div>
       <PopularData/>
-
     </div>
   )
 }

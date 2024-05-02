@@ -4,7 +4,7 @@ import {Routes,Route,BrowserRouter, json} from "react-router-dom"
 import SignUp from "../Component/SignIn/SignUp";
 import Popular from "../Pages/Popular"
 import Primium from "../Pages/Primium";
-import Detail from "../Pages/Detail"
+import Detail from "../Component/Detailing/Detail"
 import CreatePost from "../Pages/CreatePost";
 import DarkTheme from "../Component/Context/DarkTheme";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -23,12 +23,12 @@ function App() {
 const [createCommunity,setCreateCommunity] = useState(false)
 const[showLogIn, setShowLogIn] = useState(false);
 const [openPopular,setOpenPopular] = useState(false);
-
+const [openHome, setOpenHome] = useState(false);
 
   return <div>
     <DarkTheme>
       <ApiContext>
-    <Mycontext.Provider value={{showLogIn,setShowLogIn,createCommunity,setCreateCommunity,openPopular,setOpenPopular}}>
+    <Mycontext.Provider value={{showLogIn,setShowLogIn,createCommunity,setCreateCommunity,openPopular,setOpenPopular,openHome, setOpenHome}}>
   
     <BrowserRouter>
     <Routes>
