@@ -75,15 +75,15 @@ const Pupular = () => {
   return (
     <div className={darkMode ? "dark" : ""}>
       <div className="xl:flex lg:flex border-r-2 pb-4">
-        <div className="2xl:mt-16 xl:mt-16 lg:mt-16 mt-7 xl:w-[12rem] 2xl:w-[15rem] flex justify-between  pr-12 pt-3 pb-2 relative h-14 lg:w-[10rem] md:w-[10rem]  sm:invisible  md:invisible lg:visible xl:visible invisible">
+        <div className="2xl:mt-16 xl:mt-16 lg:mt-16 mt-7 xl:w-[14rem] 2xl:w-[16rem] flex justify-between  pr-12 pt-3 pb-2 relative h-14 lg:w-[10rem] md:w-[10rem]  sm:invisible  md:invisible lg:visible xl:visible invisible">
           <div>
             <ul>
-              <li className="pl-5 ml-5 mb-2 hover:bg-gray-200 pt-1 pb-1  2xl:w-[12rem] rounded-lg lg:w-[8rem] xl:w-[10rem]">
+              <li className="pl-5 ml-5 mb-2 w-[15rem] hover:bg-gray-200 pt-1 pb-1  2xl:w-[13rem] rounded-lg lg:w-[8rem] xl:w-[12rem]">
                 <NavLink to="/">
                   <HomeIcon /> Home
                 </NavLink>
               </li>
-              <li className="mb-2 bg-gray-200 w-[15rem] pt-1 pb-1 pl-5 pr-5 z-0  2xl:w-[12rem] ml-5 rounded-lg xl:w-[10rem] lg:w-[8rem]">
+              <li className="mb-2 bg-gray-200 w-[15rem] pt-1 pb-1 pl-5 pr-5 z-0  2xl:w-[13rem] ml-5 rounded-lg xl:w-[12rem] lg:w-[8rem]">
                 <NavLink to="/popular">
                   <OutboundOutlinedIcon /> Popular
                 </NavLink>
@@ -149,7 +149,7 @@ const Pupular = () => {
                 !cardOpen &&
                 postData.map((item) => (
                   <div className="flex justify-center items-center  ml-8 ">
-                    <div className="hover:bg-gray-100 hover:rounded-2xl -ml-7  border-b mb-10 w-full sm:w-full 2xl:ml-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[42rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 xl:ml-0">
+                    <div className="hover:bg-gray-100 hover:rounded-2xl -ml-7  border-b mb-10 w-full sm:w-full 2xl:ml-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[40rem] 2xl:mr-4 lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 xl:ml-0 2xl:-mt-3">
                       <div className="flex items-center">
                         <div className="flex">
                           {item.author.profileImage === null ? (
@@ -216,7 +216,7 @@ const Pupular = () => {
               className="md:mt-20 pt-2 sm:mt-24 lg:-mt-2 xl:-mt-10 -mt-28 bg-white">
               {cardOpen &&
                 postData.map((item) => (
-                  <div className="flex pb-4 mb-4 lg:mr-10 hover:bg-gray-100 hover:rounded-2xl border-b w-full sm:w-full 2xl:ml-8  lg:mb-10  xl:w-[45rem] xl:mt-2 lg:-mt-5 items-center pt-4 pl-7 pr-8  xl:mb-8   bg-white lg:w-[38rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36  xl:mr-6">
+                  <div className="flex pb-4 mb-4 lg:mr-10 hover:bg-gray-100 hover:rounded-2xl border-b w-full sm:w-full 2xl:ml-12  lg:mb-10  xl:w-[45rem] 2xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center pt-4 pl-7 pr-8  xl:mb-8   bg-white lg:w-[38rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 xl:mr-6 ">
                     <div className="pb-4">
                       {item.images == "" ? (
                         <p className="ml-8"></p>
@@ -254,7 +254,7 @@ const Pupular = () => {
                         days ago
                       </div>
                       <div>
-                        <p className="mb-2  w-[18rem] sm:w-[30rem]  xl:w-[35rem] lg:w-[28rem] md:w-[37rem] ">
+                        <p className="mb-2  w-[18rem] sm:w-[30rem]  xl:w-[35rem] lg:w-[28rem] md:w-[37rem] 2xl:w-[39rem] mt-2">
                           {item.content}
                         </p>
                       </div>
@@ -281,7 +281,7 @@ const Pupular = () => {
         </div>
 
         {!sessionStorage.getItem("token") && (
-          <div className="2xl:mt-20 xl:mt-20 lg:mt-20 xl:w-[19rem] bg-gray-50 rounded-2xl mt-9 2xl:ml-10 xl:ml-0 lg:w-[17rem] sm:invisible  md:invisible lg:visible xl:visible h-[43rem]">
+          <div className="2xl:mt-20 xl:mt-20 lg:mt-20 xl:w-[19rem] 2xl:w-[17rem] lg:w-[15rem] bg-gray-50 rounded-2xl mt-9 2xl:ml-10 xl:ml-0 sm:invisible  md:invisible lg:visible xl:visible h-[43rem]">
             <h1 className="pt-7 pl-5 text-gray-600 text-base">
               POPULAR COMMUNITIES
             </h1>
@@ -323,61 +323,7 @@ const Pupular = () => {
             </div>
           </div>
         )}
-        {sessionStorage.getItem("token") && (
-          <div>
-            <div className="mt-8 ml-12 mr-14 border-gray-400 border h-[6rem] w-[19rem] rounded-sm bg-white ">
-              <div className=" flex  p-2">
-                <div className="mr-3 mt-1  text-orange-500 ">
-                  <SecurityIcon />
-                </div>
-                <p className="text-xs">
-                  Reddit Premium <br />
-                  The best Reddit experience
-                </p>
-              </div>
-              <div className="flex justify-center">
-                <button
-                  onClick={() => {
-                    navigate("/premium");
-                  }}
-                  className="bg-orange-600 w-[17rem]  rounded-3xl space-x-2 pt-2 pb-2 font-semibold text-white text-sm"
-                >
-                  Try now
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-8 ml-12 mr-14 border-gray-400 border h-[15rem] w-[19rem] rounded-sm bg-white">
-              <img
-                src="https://reddit-ten-mocha.vercel.app/home-banner.png"
-                alt=""
-              />
-              <img
-                src="	https://reddit-ten-mocha.vercel.app/snoo.png"
-                alt=""
-                className="h-16 -m-1 ml-3"
-              />
-              <p className="text-sm p-2 border-b border-gray-300">
-                Your personal Reddit frontpage. Come here to check in with your
-                favorite communities.
-              </p>
-              <div className="flex justify-center mt-3">
-                <button
-                  onClick={() => navigate(`CreatePost`)}
-                  className="bg-blue-700 w-[17rem]  rounded-3xl space-x-2 pt-1 pb-1 font-semibold text-white text-sm"
-                >
-                  Create Post
-                </button>
-              </div>
-              <div className="flex justify-center mt-3">
-                <button className="border-blue-700 border text-blue-700 w-[17rem]  rounded-3xl space-x-2 pt-1 pb-1 font-semibold text-sm">
-                  Create Community
-                </button>
-              </div>
-              <hr />
-            </div>
-          </div>
-        )}
+       
       </div>
     </div>
   );

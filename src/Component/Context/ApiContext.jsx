@@ -92,7 +92,7 @@ const channelApidata = async () => {
 
   return (
     <div>
-      <contextApi.Provider value={{searchData,search,setSearch,fetchingData,setFetchingData,postData,setPostData,channelApi,setChannelApi,PostApi,storedData}}>
+      <contextApi.Provider value={{searchData,search,setSearch,fetchingData,setFetchingData,postData,setPostData,channelApi,setChannelApi,PostApi,storedData,}}>
         {children}
       </contextApi.Provider>
     </div>

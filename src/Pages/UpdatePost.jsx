@@ -90,6 +90,11 @@ const UpdatePost = () => {
     navigate(-1)
   }
 
+  const [activeItem, setActiveItem] = useState("post");
+const handleItemClick = (itemName) => {
+  setActiveItem(itemName === activeItem ? null : itemName);
+};
+
   
   return (
     <div className={darkMode ? "dark" : ""}>
@@ -156,20 +161,21 @@ const UpdatePost = () => {
 
         <div className="mt-4  border-solid border-gray-400 rounded border bg-white 2xl:h-[28rem] shadow-xl dark:bg-black dark:text-gray-400 dark:border-gray-900 sm:w-dvw lg:w-[38rem] xl:w-[45rem] w-dvw">
           <div className="flex  border-solid border-gray-300 border-b dark:border-gray-600">
-            <NavLink
-              className="flex pt-2 pb-2 pl-20 pr-16 border-solid border-gray-300 border-r focus:bg-blue-50 dark:border-gray-900 sm:text-gray-500"
-              onClick={() => setImageState(false)}
+            <div
+             onClick={() => {setImageState(false),handleItemClick("post")}}
+             className={`flex pt-2 pb-2 pl-20 pr-16 border-solid  dark:border-gray-900 sm:text-gray-500 ${activeItem === "post" ? " border-b-2 bg-blue-100 border-blue-700 dark:border-gray-200 dark:text-gray-300 dark:bg-gray-900":""}`}
             >
               <PostAddIcon />
               <p>Post</p>
-            </NavLink>
-            <NavLink
-              className="flex pt-2  pb-2 pl-7 pr-10 border-solid border-gray-300 border-r dark:border-gray-900 sm:text-gray-500"
-              onClick={() => setImageState(true)}
+            </div>
+            <div
+                onClick={() => {setImageState(true),handleItemClick("image")}}
+                className={`
+                flex pt-2  pb-2 pl-7 pr-10 border-solid  dark:border-gray-900 sm:text-gray-500 ${activeItem === "image" ? " border-b-2 bg-blue-100 border-blue-700 dark:border-gray-200 dark:text-gray-300 dark:bg-gray-900":""}`}
             >
               <ImageIcon />
               <p>Image & Video</p>
-            </NavLink>
+            </div>
           </div>
 
           <div className="flex justify-between m-4 border border-solid border-gray-400 h-10 rounded p-1 focus-visible:border focus-visible:border-solid focus-visible:border-blue-800 focus:bg-red-500 dark:border-gray-900">

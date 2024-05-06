@@ -48,16 +48,15 @@ const ChannelPage = () => {
   return (
     <div className={darkMode ? "dark" : ""}>
       <div>
+        <div className="fixed bg-white z-50">
+
         <NavDetail />
+        </div>
         {apiId && (
           <div className="">
             <img src={apiId.owner.profileImage} alt="" className="w-dvw h-60" />
 
-            {/* <div className=' -mt-44 bg-zinc-800 h-44 w-full z-40'> */}
-
-            {/* <div className='mt-8'> */}
-
-            <div className="flex  dark:bg-zinc-800 z-50 h-24 pt-6 bg-white ml-20">
+            <div className="flex  dark:bg-zinc-800 z-50 h-24 pt-6 bg-white pl-20">
               {apiId.image == null ? (
                 <p className="h-16 w-16 mr-3 text-3xl bg-gray-300 rounded-3xl flex justify-center items-center font-bold">
                   {apiId.name.charAt(0).toUpperCase()}
@@ -71,7 +70,7 @@ const ChannelPage = () => {
               )}
 
               <h2 className="dark:text-white 2xl:text-3xl 2xl:mt-2 2xl:ml-5 font-bold z-40 sm:text-xl text-black">
-                {apiId.name}
+                r/{apiId.name}
               </h2>
             </div>
 
@@ -83,7 +82,7 @@ const ChannelPage = () => {
                   alt=""
                   className="lg:h-44 lg:w-36 lg:-mb-14 mr-44"
                 />
-                <h2 className="2xl:text-2xl 2xl:w-80 lg:text-2xl lg:w-80 font-bold sm:mt-16 sm:text-2xl sm:w-32 mb-8 ml-4 w-28 text-black">
+                <h2 className="2xl:text-2xl 2xl:w-80 lg:text-2xl lg:w-80 font-bold sm:mt-16 sm:text-2xl sm:w-32 mb-8 ml-4 w-28 text-black dark:text-white">
                   {apiId.name} hasn't posted yet
                 </h2>
               </div>

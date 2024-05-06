@@ -55,6 +55,10 @@ const navigatetoAuthordetail = (id, name) => {
 };
 
 
+const navigatetoWorkProgress = () =>{
+  navigate(`/WorkProgress`);
+}
+
 const storedData = JSON.parse(localStorage.getItem('UserInfo'));
 // console.log(storedData.name);
 
@@ -63,21 +67,23 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
     <div>
       <div className="flex justify-evenly pl-2 pt-2 pb-10 relative h-14 border-b dark:border-gray-800 dark:bg-zinc-950 bg-gray-100 sm:w-dvw  md-w-dvw">
         <div className="">
+          <Tippy content="Open navigation" className="text-[10px]">
           <div
             onClick={() => {setOpenHome(!openHome),channelApi}}
             className="relative flex mt-2 dark:text-white cursor-pointer sm:pl-4 md:pl-4 visible 2xl:invisible md:visible sm:visible xl:invisible lg:invisible"
           >
             <MenuSharpIcon className="" />
           </div>
+          </Tippy>
          
         </div>
-        <div className="absolute -ml-[40rem] -mt-7">
+        <div className="absolute -ml-[13rem] sm:-ml-[20rem] -mt-7 md:-ml-[30rem] lg:-ml-[42rem]">
           {openHome && (
             <Community onClick={()=>{setOpenHome(!openHome)}} className="z-50 md:-mt-10 "/>
           )}
           </div>
-        <Tippy content="Go to Reddit Home" className="mt-6 ml-14 text-[10px]">
-        <div className="flex 2xl:w-12 ml-5 2xl:mr-28 2xl:-ml-36 xl:-ml-64 lg:-ml-40">
+        <Tippy content="Go to Reddit Home" className="mt-6 ml-10 text-[10px]">
+        <div className="flex 2xl:w-12 ml-5 2xl:mr-28 2xl:-ml-36 xl:-ml-64 lg:-ml-40" onClick={()=>navigate("/Detail")}>
           <img src="/logo.webp" alt="" className="h-9 w-9 mr-3" />
           <h2 className="text-3xl text-orange-500 font-bold invisible lg:visible">
             reddit
@@ -85,7 +91,7 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
         </div>
         </Tippy>
 
-        <div className="bg-gray-200 w-[40rem] h-11 2xl:ml-20 2xl:w-[45rem] xl:w-[35rem] -ml-10 float-start space-x-2 pl-3 rounded-3xl pt-2 dark:bg-slate-900 sm:-ml-4 sm:w-[20rem] sm:mr-2 md:-ml-4 md:w-[25rem] md:mr-2 ">
+        <div className="bg-gray-200 w-[13rem] h-11 2xl:ml-20 2xl:w-[45rem] xl:w-[35rem] -ml-10 float-start space-x-2 pl-3 rounded-3xl pt-2 dark:bg-slate-900 sm:-ml-4 sm:w-[20rem] sm:mr-2 md:-ml-4 md:w-[25rem] md:mr-2 ">
           <div className="flex items-center">
             <SearchIcon className="dark:text-slate-400" />
             <input
@@ -165,18 +171,18 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
         </div>
 
         <div className="flex   ">
-          <div className="flex 2xl:space-x-4 2xl:mr-15 mt-2 space-x-2 text-gray-600  lg:-ml-10 lg:mr-28 -mr-12 pl-2" >
+          <div className="flex 2xl:mr-15 mt-2  text-gray-600  lg:-ml-10 lg:mr-28 -mr-12 pl-2" >
             <div className="lg:mr-6 flex">
             <div onClick={()=>navigate("/CreatePost")}>
               <Tippy content="Create Post" className="text-xs">
               <AddOutlinedIcon className="sm:mr-3  md:mr-3 md:ml-5 cursor-pointer "/>
             </Tippy>
             </div>
-            <div onClick={()=>setOpenPopular(!openPopular)}>
+            {/* <div onClick={()=>setOpenPopular(!openPopular)}>
               <Tippy content="Popular" className="text-xs">
             <OutboundOutlinedIcon className="md:-mr-5 sm:-mr-5 cursor-pointer" />
             </Tippy>
-            </div>
+            </div> */}
             </div>
             <div
               className="flex 2xl:space-x-4 2xl:mr-5  text-gray-600 invisible lg:visible lg:space-x-3 lg:mr-4 lg:-ml-3"
@@ -185,20 +191,22 @@ const storedData = JSON.parse(localStorage.getItem('UserInfo'));
               <div>
               <Tippy content="Open chat" className="text-xs">
                 <ChatOutlinedIcon 
-                // onClick={() => setComming(!comming)}
-                className="cursor-not-allowed"
+                className="cursor-pointer"
+                onClick={()=>navigatetoWorkProgress()}
                 />
                 </Tippy>
               </div>
 
               <div>
               <Tippy content="Open inbox" className="text-xs">
-                <NotificationsNoneIcon    className="cursor-not-allowed" />
+                <NotificationsNoneIcon      className="cursor-pointer"
+                onClick={()=>navigatetoWorkProgress()}/>
                 </Tippy>
               </div>
               <div>
               <Tippy content="Advertise" className="text-xs">
-                <PodcastsIcon    className="cursor-not-allowed"/>
+                <PodcastsIcon        className="cursor-pointer"
+                onClick={()=>navigatetoWorkProgress()}/>
                 </Tippy>
               </div>
             </div>

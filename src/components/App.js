@@ -16,6 +16,7 @@ import CommentsPage from "../Pages/CommentsPage";
 import Like from "../Component/Context/Like";
 import UpdatePost from "../Pages/UpdatePost";
 import OpenPop from "../Component/Navbar/OpenPop";
+import WorkProgress from "../Pages/WorkProgress";
 
 export const Mycontext = createContext();
 
@@ -29,7 +30,7 @@ const [openHome, setOpenHome] = useState(false);
     <DarkTheme>
       <ApiContext>
     <Mycontext.Provider value={{showLogIn,setShowLogIn,createCommunity,setCreateCommunity,openPopular,setOpenPopular,openHome, setOpenHome}}>
-  
+    <Like>
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home/>}></Route>
@@ -43,9 +44,10 @@ const [openHome, setOpenHome] = useState(false);
       <Route path="/CommentsPage/:id/:iid" element={<CommentsPage/>}></Route>
       <Route path="/UpdatePost/:id/:con/:title" element={<UpdatePost/>}></Route>
       <Route path="/OpenPop" element={<OpenPop/>}></Route>
+      <Route path="/WorkProgress" element={<WorkProgress/>}></Route>
     </Routes> 
     </BrowserRouter>
-  
+    </Like>
     </Mycontext.Provider>
     </ApiContext>
     </DarkTheme>

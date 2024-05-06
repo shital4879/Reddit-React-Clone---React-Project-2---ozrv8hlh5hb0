@@ -45,15 +45,15 @@ const PostData = () => {
   return (
     <div className={`${darkMode && "dark"}`}>
       <div className="xl:flex lg:flex border-r  pb-4  ">
-        <div className="2xl:mt-16 sm:mt-16 lg:mt-16 mt-7 xl:w-[12rem] 2xl:w-[15rem] flex justify-between  pr-12 pt-3 pb-2 relative h-14 lg:w-[10rem] md:w-[10rem]  sm:invisible  md:invisible lg:visible xl:visible invisible">
+        <div className="2xl:mt-16 sm:mt-16 lg:mt-16 mt-7 xl:w-[14rem] 2xl:w-[16rem] flex justify-between  pr-12 pt-3 pb-2 relative h-14 lg:w-[10rem] md:w-[10rem]  sm:invisible  md:invisible lg:visible xl:visible invisible">
           <div>
             <ul>
-              <li className="mb-2 bg-gray-200 w-[15rem] pt-1 pb-1 pl-5 pr-5 z-0  2xl:w-[12rem] ml-5 rounded-lg xl:w-[10rem] lg:w-[8rem]">
+              <li className="mb-2 bg-gray-200 w-[15rem] pt-1 pb-1 pl-5 pr-5 z-0  2xl:w-[13rem] ml-5 rounded-lg xl:w-[12rem] lg:w-[8rem]">
                 <NavLink to="/">
                   <HomeIcon /> Home
                 </NavLink>
               </li>
-              <li className="pl-5 ml-5 hover:bg-gray-200 pt-1 pb-1  2xl:w-[12rem] rounded-lg lg:w-[8rem] xl:w-[10rem]">
+              <li className="pl-5 ml-5 hover:bg-gray-200 pt-1 pb-1  2xl:w-[13rem] rounded-lg lg:w-[8rem] xl:w-[12rem]">
                 <NavLink to="/popular">
                   <OutboundOutlinedIcon /> Popular
                 </NavLink>
@@ -120,7 +120,7 @@ const PostData = () => {
                 !cardOpen &&
                 postData.map((item) => (
                   <div className="flex justify-center items-center  ml-8 ">
-                    <div className="hover:bg-gray-100 hover:rounded-2xl md:-ml-6 sm:-ml-6  border-b mb-10 w-full sm:w-full 2xl:ml-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[42rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 xl:ml-0">
+                    <div className="hover:bg-gray-100 hover:rounded-2xl md:-ml-6 sm:-ml-6  border-b mb-10 w-full sm:w-full 2xl:ml-8 2xl:mr-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[40rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 lg:mr-8 xl:-ml-6 xl:-mr-7 2xl:-mt-3">
                       <div className="flex items-center">
                         <div className="flex">
                           {item.author.profileImage === null ? (
@@ -170,11 +170,11 @@ const PostData = () => {
                         onClick={() => setShowLogIn(!showLogIn)}
                       >
                         <div className="bg-gray-200 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
-                          <ThumbUpIcon className="hover:text-orange-500 h-1 w-1 text-gray-600" />
+                          <ArrowUpwardOutlinedIcon className="hover:text-orange-500 h-1 w-1 text-gray-800" />
                           <div>{item.likeCount}</div>
-                          <ThumbDownIcon className="hover:text-green-700 h-1 w-1 text-gray-600 " />
+                          <ArrowDownwardOutlinedIcon className="hover:text-green-700 h-1 w-1 text-gray-800 " />
                         </div>
-                        <div className="mt-1 ml-5 w-14 pl-2 bg-gray-200 rounded-2xl p-1">
+                        <div className="mt-1 ml-5 w-14 pl-2 rounded-2xl p-1 bg-gray-200">
                           <ChatBubbleOutlineOutlinedIcon className="mr-2 text-sm " />
                           {item.commentCount}
                         </div>
@@ -187,7 +187,7 @@ const PostData = () => {
               className="md:mt-20 pt-2 sm:mt-24 lg:-mt-2 xl:-mt-10 -mt-28 bg-white">
               {cardOpen &&
                 postData.map((item) => (
-                  <div className="flex pb-4 mb-4 lg:mr-10 hover:bg-gray-100 hover:rounded-2xl border-b w-full sm:w-full 2xl:ml-8  lg:mb-10  xl:w-[45rem] xl:mt-2 lg:-mt-5 items-center pt-4 pl-7 pr-8  xl:mb-8   bg-white lg:w-[38rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36  xl:mr-6">
+                  <div className="flex pb-4 mb-4 lg:mr-10 hover:bg-gray-100 hover:rounded-2xl border-b w-full sm:w-full 2xl:ml-8 2xl:w-[50rem] lg:mb-10  xl:w-[45rem] xl:mt-2 lg:-mt-5 items-center pt-4 pl-7 pr-8  xl:mb-8   bg-white lg:w-[38rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36  xl:mr-6">
                     <div className="pb-4">
                       {item.images == "" ? (
                         <p className="ml-8"></p>
@@ -225,7 +225,7 @@ const PostData = () => {
                         days ago
                       </div>
                       <div>
-                        <p className="mb-2  w-[18rem] sm:w-[30rem]  xl:w-[35rem] lg:w-[28rem] md:w-[37rem] ">
+                        <p className="mb-2 mt-2 2xl:w-[40rem] w-[18rem] sm:w-[30rem]  xl:w-[35rem] lg:w-[28rem] md:w-[37rem] ">
                           {item.content}
                         </p>
                       </div>
@@ -251,7 +251,7 @@ const PostData = () => {
           </div>
         </div>
 
-        <div className="2xl:mt-20 sm:mt-20 xl:w-[18rem] lg:-ml-8 bg-gray-50 rounded-xl mt-11 2xl:ml-10 xl:-ml-4 lg:w-[17rem] sm:invisible  md:invisible lg:visible xl:visible h-auto z-index-50">
+        <div className="2xl:mt-20 2xl:ml-10 2xl:w-[17rem] sm:mt-20 xl:w-[15rem] xl:ml-10 lg:-ml-8 bg-gray-50 rounded-xl mt-11  lg:w-[14rem] sm:invisible  md:invisible lg:visible xl:visible h-auto z-index-50">
           <h1 className="pt-7 pl-5 text-gray-600 text-base h-auto">
             POPULAR COMMUNITIES
           </h1>

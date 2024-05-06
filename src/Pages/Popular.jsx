@@ -11,7 +11,7 @@ const Popular = () => {
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
   return (
     <div className={darkMode ? "dark" : ""}>
-      <div className='md:mt-16 sm:mt-16 -mt-4 lg:-mt-0 xl:-mt-0'>
+      <div className='md:mt-16 sm:mt-16 lg:-mt-0 xl:-mt-0 mt-3'>
 
       <BeforeLogInNav/>
       </div>

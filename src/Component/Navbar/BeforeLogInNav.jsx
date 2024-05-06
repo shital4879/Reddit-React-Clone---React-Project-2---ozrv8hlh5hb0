@@ -240,7 +240,7 @@ const BeforeLogInNav = () => {
 
 
   return (
-    <div className="fixed bg-white z-50 sm:-mt-16 -mt-4 lg:mt-0">
+    <div className="fixed bg-white z-50 sm:-mt-16 -mt-8 lg:mt-0 ">
       <div className=" flex justify-between pl-12 pt-2 pr-12 pb-10 relative h-14 border-b border-gray-200 xl:-ml-20">
         <div
           className="md:-ml-8 md:visible visible sm:visible lg:invisible xl:invisible 2xl:invisible mr-4 mt-1 lg:mr-10 -ml-10"
@@ -249,11 +249,11 @@ const BeforeLogInNav = () => {
           <MenuSharpIcon />
         </div>
         {showHam && (
-          <div className="md:flex md:justify-between h-16 absolute top-14 md:-ml-12 z-10 shadow-xl  md:w-[10rem] md:pl-2 bg-white -ml-12 ">
+          <div className="md:flex md:justify-between h-16 absolute top-14 md:-ml-12 z-10 shadow-xl md:pl-2 bg-white -ml-12 ">
             {!sessionStorage.getItem("token") && (
               <div>
                 <ul>
-                  <li className="bg-gray-400 mb-2 w-28">
+                  <li className="bg-gray-400 mb-2 ">
                     <NavLink to="/" className="p-2 pt-4">
                       <HomeIcon /> Home
                     </NavLink>
@@ -394,7 +394,7 @@ const BeforeLogInNav = () => {
             <div>
             <Tippy content="Open settings menu" className="text-[10px]">
               <div
-                className="pt-1 relative cursor-pointer    sm:-ml-3 -ml-24 2xl:-ml-0 md:ml-16  xl:ml-4 sm:mr-48 lg:-ml-1 hover:bg-gray-200 p-1 hover:rounded-2xl"
+                className="pt-1 relative cursor-pointer sm:-ml-3 -ml-24 2xl:-ml-0 md:ml-16  xl:ml-4 sm:mr-48 lg:-ml-1 hover:bg-gray-200 p-1 hover:rounded-2xl"
                 onClick={() => setShowopt(!showopt)}
               >
                 <MoreHorizIcon />
@@ -402,18 +402,18 @@ const BeforeLogInNav = () => {
               </Tippy>
             </div>
             {showopt && (
-              <span className=" absolute top-2/4 m-6 sm:right-10 right-14 space-y-2 shadow-xl p-4 rounded-md bg-white cursor-pointer">
+              <span className=" absolute md:left-[36rem] sm:left-[28rem] left-[17rem] top-5 m-6 sm:right-10 space-y-2 shadow-xl p-4 rounded-md bg-white cursor-pointer">
                 <h2
                   className="text-sm"
                   onClick={() => {
-                    setShowLogIn(!showLogIn);
+                    setShowLogIn(!showLogIn),setShowopt(false)
                   }}
                 >
                   <LoginIcon className="mr-2 text-sm" /> Log In / Sing Up
                 </h2>
                 <h2
                   className="text-sm "
-                  onClick={() => setShowAppLink(!showAppLink)}
+                  onClick={() => {setShowAppLink(!showAppLink),setShowopt(false)}}
                 >
                   <QrCodeScannerIcon className="mr-2" /> Get App
                 </h2>

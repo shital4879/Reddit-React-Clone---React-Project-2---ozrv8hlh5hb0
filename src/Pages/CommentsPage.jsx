@@ -3,16 +3,24 @@ import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-// import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
+import HomeIcon from "@mui/icons-material/AddOutlined";
+import OutboundOutlinedIcon from "@mui/icons-material/AddOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { contextApi } from "../Component/Context/ApiContext";
 import { useParams } from "react-router-dom";
 import NavDetail from "../Component/Navbar/NavDetail";
 import { ThemeContext } from "../Component/Context/DarkTheme";
+import CommentApi from "../Component/data/CommentApi";
+import HomeNav from "../Component/Detailing/HomeNav";
 
 const CommentsPage = () => {
   const params = useParams();
-  const { fetchingData, PostApi,openPopular } = useContext(contextApi);
+  const { fetchingData, PostApi, openPopular, channelApi } =
+    useContext(contextApi);
+  const [openRecents, setOpenRecents] = useState(false);
+  const [opencommun, setOpenCommun] = useState(false);
   const [showHam, setShowHam] = useState(false);
   const [commentdata, setCommentData] = useState("");
   const [fetchcom, setFetchCom] = useState();
@@ -73,6 +81,80 @@ const CommentsPage = () => {
     fetchComment();
   }, []);
 
+
+  // const PostApii = async () => {
+  //   try {
+  //     const responce = await fetch(
+  //       `https://academics.newtonschool.co/api/v1/reddit/post?limit=100`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           projectID: "ozrv8hlh5hb0",
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     const result = await responce.json();
+  //     setPosts(result.data);
+  //     console.log(result.data,"api");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   PostApii();
+  // }, []);
+
+
+  const downvoteApi = async (postId) => {
+    try {
+      const responce = await fetch(
+        `https://academics.newtonschool.co/api/v1/reddit/like/${postId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            projectID: "ozrv8hlh5hb0",
+          },
+          // "Content-Type": "application/json",
+        }
+      );
+
+      const result = await responce.json();
+      PostApi();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    downvoteApi();
+  }, []);
+
+  const upvoteApi = async (postId) => {
+    try {
+      const responce = await fetch(
+        `https://academics.newtonschool.co/api/v1/reddit/like/${postId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            projectID: "ozrv8hlh5hb0",
+          },
+          // "Content-Type": "application/json",
+        }
+      );
+
+      const result = await responce.json();
+      PostApi();
+      console.log(result, "kkkk");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    upvoteApi();
+  }, []);
+
   const deleteComment = async (comId) => {
     try {
       const responce = await fetch(
@@ -104,185 +186,249 @@ const CommentsPage = () => {
     deleteComment();
   }, []);
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+    return `${month} ${day},${year.toString()}`;
+  }
+
   const storedData = JSON.parse(localStorage.getItem("UserInfo"));
+
+  const navigatetoChannel = (id) => {
+    navigate(`/ChannelPage/${id}`);
+  };
 
   return (
     <div className={darkMode ? "dark" : ""}>
-      <NavDetail />
-      <div className="dark:bg-zinc-950 bg-gray-300">
-        {fetchingData &&
-          fetchingData
-            .filter((item) => params.id == item._id)
+      <div className="fixed z-50">
+        <NavDetail />
+      </div>
+      <div className="dark:bg-zinc-950 bg-gray-200 flex">
+        <div className="mt-1">
+          <HomeNav />
+        </div>
+        <div className="mt-20">
+          {fetchingData &&
+            fetchingData
+              .filter((item) => params.id == item._id)
+              .map((item) => (
+                <div className=" ml-40 2xl:ml-44 mt-1">
+                  <div className="lg:flex lg:justify-center 2xl:flex 2xl:justify-center">
+                    <div className="w-dvw sm:-ml-[31rem] -ml-[31rem]  md:-ml-[31rem] lg:-ml-36 xl:-ml-32 shadow-md 2xl:w-[48rem] items-center justify-center pt-4 pl-10 pr-8  mb-8  bg-white  border-gray-400 border  rounded-sm dark:bg-black dark:text-gray-200 dark:border-gray-900  sm:w-dvw md:w-dvw  lg:w-[45rem] xl:w-[48rem]  ">
+                      <div className="flex items-center">
+                        <div className="">
+                          <div className="flex w-[44rem] justify-between">
+                            <div className="flex ">
+                              {item.author.profileImage === null ? (
+                                <p className="font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:text-white dark:bg-gray-800">
+                                  {item.author.name.charAt(0).toUpperCase()}
+                                </p>
+                              ) : (
+                                <img
+                                  src={item.author.profileImage}
+                                  alt=""
+                                  className="h-6 w-6 rounded-3xl"
+                                />
+                              )}
+                              <h1
+                                className="font-semibold text-base ml-2 mr-2"
 
-            .map((item) => (
-              <div className=" ml-40 ">
-                <div className="lg:flex lg:justify-center 2xl:flex 2xl:justify-center">
-                  <div className="w-dvw -ml-40 shadow-md 2xl:w-[48rem]  items-center justify-center pt-4 pl-10 pr-8  mb-8  bg-white  border-gray-400 border  rounded-sm dark:bg-black dark:text-gray-200 dark:border-gray-900  sm:w-dvw md:w-dvw  lg:w-[45rem] xl:w-[48rem]  ">
-                    <div className="flex items-center">
+                                // onClick={() =>
+                                //   navigatetoAuthordetail(item._id,item.author.name)
+                                // }
+                              >
+                                {item.author.name}
+                              </h1>
+                            </div>
+                          </div>
+
+                          <div className="text-gray-500 text-sm">
+                            .
+                            {(
+                              (new Date() - new Date(item.createdAt)) /
+                              1000 /
+                              3600 /
+                              24
+                            ).toFixed(0)}{" "}
+                            days ago
+                          </div>
+                        </div>
+                        <div className="flex justify-end mr-0"></div>
+                      </div>
+                      <div>
+                        <p className="mb-4 mt-4">{item.content}</p>
+                        <div className=" flex items-center justify-start">
+                          {item.images == "" ? (
+                            <p className="ml-8"></p>
+                          ) : (
+                            <img
+                              src={item.images}
+                              alt=""
+                              className="rounded-xl w-[25rem] h-[20rem] 2xl:w-[45rem] 2xl:h-[25rem] sm:w-[35rem] sm:h-[25rem] md:w-[44rem] md:h-[30rem]"
+                              // onClick={() => deletePost(item._id)}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex mt-3 pb-5 space-x-4">
+                        <div className="bg-gray-200 rounded-3xl flex space-x-2 p-1 text-sm dark:bg-zinc-950">
+                          <ArrowUpwardOutlinedIcon
+                            className="hover:text-orange-500 h-1 w-1"
+                            onClick={() => upvoteApi(item._id)}
+                          />
+                          <div>{item.likeCount}</div>
+                          <ArrowDownwardOutlinedIcon
+                            className="hover:text-green-700 h-1 w-1"
+                            onClick={() => downvoteApi(item._id)}
+                          />
+                        </div>
+                        <div>
+                          <ChatBubbleOutlineOutlinedIcon className="mr-2" />
+                          {item.commentCount}
+                        </div>
+                      </div>
+                      {/* <textarea name="" id="" cols="30" rows="10" className='w-[60rem] h-[20rem] border border-solid border-gray-500 ' value={commentdata} onChange={(e)=>setCommentData(e.target.value)} ></textarea> */}
                       <div className="">
-                        <div className="flex w-[44rem] justify-between">
-                          <div className="flex ">
-                          {item.author.profileImage === null ? (
-                                    <p className="font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:text-white dark:bg-gray-800">
-                                      {item.author.name.charAt(0).toUpperCase()}
+                        <input
+                          type="text"
+                          placeholder="What are Your Thoughts ?"
+                          value={commentdata}
+                          onChange={(e) => setCommentData(e.target.value)}
+                          className="w-dvw -ml-10 sm:ml-0 h-[10rem] border border-solid border-gray-500 pb-32 pl-3 sm:w-[35rem] md:w-[40rem] lg:w-[40rem] dark:text-white dark:bg-zinc-900"
+                        />
+                        <br />
+                        <button
+                          type="submit"
+                          onClick={() => {
+                            commentApi(), setCommentData("");
+                          }}
+                          disabled={commentdata.trim() === ""}
+                          className={`pl-3 pr-3 pt-1 pb-1 mb-10 mt-4 rounded-xl font-medium ${
+                            commentdata.trim() === ""
+                              ? "bg-slate-200 text-gray-400 dark:bg-gray-900 dark:text-gray-700"
+                              : "text-white bg-blue-500"
+                          }`}
+                        >
+                          COMMENT
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className=" lg:flex lg:justify-center xl:flex xl:justify-center 2xl:flex 2xl:justify-center dark:text-gray-200 dark:border-gray-900 ">
+                    <div className=" bg-white mb-20 pb-20 -ml-[31rem] border-solid  px-4 py-2 rounded-sm transition duration-300 ease-in-out w-dvw  border-gray-400 border shadow-md 2xl:w-[48rem] xl:-ml-32  sm:w-dvw md:w-dvw  lg:w-[45rem] xl:w-[48rem] md:-ml-[31rem] sm:-ml-[31rem] lg:-ml-36 dark:bg-black dark:text-gray-200 dark:border-gray-900">
+                      {fetchcom &&
+                        fetchcom.map((item) => (
+                          <div className="flex justify-between pt-5 pb-5 border-b border-solid border-gray-300 dark:border-gray-800 ">
+                            <div>
+                              <div className="flex items-center">
+                                <div className="w-6  h-6 space-x-2 mr-3 mt-1">
+                                  {item.author_details.profileImage === null ? (
+                                    <p className="font-bold pl-2 pr-2 bg-gray-300 rounded-xl dark:text-white dark:bg-gray-800">
+                                      {item.author_details.name
+                                        .trim()
+                                        .charAt(0)
+                                        .toUpperCase()}
                                     </p>
                                   ) : (
                                     <img
-                                      src={item.author.profileImage}
+                                      src={item.author_details.profileImage}
                                       alt=""
                                       className="h-6 w-6 rounded-3xl"
                                     />
                                   )}
-                            <h1
-                              className="font-semibold text-base ml-2 mr-2"
-
-                              // onClick={() =>
-                              //   navigatetoAuthordetail(item._id,item.author.name)
-                              // }
-                            >
-                              {item.author.name}
-                            </h1>
-                          </div>
-                        </div>
-
-                        <div className="text-gray-500 text-sm">
-                          .
-                          {(
-                            (new Date() - new Date(item.createdAt)) /
-                            1000 /
-                            3600 /
-                            24
-                          ).toFixed(0)}{" "}
-                          days ago
-                        </div>
-                      </div>
-                      <div className="flex justify-end mr-0"></div>
-                    </div>
-                    <div>
-                      <p className="mb-4 mt-4">{item.content}</p>
-                      <div className=" flex items-center justify-start">
-                        <img
-                          src={item.images}
-                          alt=""
-                          className="rounded w-[25rem] h-[20rem] 2xl:w-[45rem] 2xl:h-[25rem] sm:w-[35rem] sm:h-[25rem] md:w-[44rem] md:h-[30rem]"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex mt-3 pb-5 space-x-4">
-                      <div className="bg-gray-200 rounded-3xl flex space-x-2 p-1 text-sm dark:bg-zinc-950">
-                        <ArrowUpwardOutlinedIcon
-                          className="hover:text-orange-500 h-1 w-1"
-                          onClick={() => upvoteApi(item._id)}
-                        />
-                        <div>{item.likeCount}</div>
-                        <ArrowDownwardOutlinedIcon
-                          className="hover:text-green-700 h-1 w-1"
-                          onClick={() => downvoteApi(item._id)}
-                        />
-                      </div>
-                      <div>
-                        <ChatBubbleOutlineOutlinedIcon className="mr-2" />
-                        {item.commentCount}
-                      </div>
-                    </div>
-                    {/* <textarea name="" id="" cols="30" rows="10" className='w-[60rem] h-[20rem] border border-solid border-gray-500 ' value={commentdata} onChange={(e)=>setCommentData(e.target.value)} ></textarea> */}
-                    <div className="">
-                      <input
-                        type="text"
-                        placeholder="What are Your Thoughts ?"
-                        value={commentdata}
-                        onChange={(e) => setCommentData(e.target.value)}
-                        className="w-dvw -ml-10 sm:ml-0 h-[10rem] border border-solid border-gray-500 pb-32 pl-3 sm:w-[35rem] md:w-[40rem] lg:w-[40rem] dark:text-white dark:bg-zinc-900"
-                      />
-                      <br />
-                      <button
-                        type="submit"
-                        onClick={() => {
-                          commentApi(), setCommentData("");
-                        }}
-                        disabled={commentdata.trim() === ""}
-                        className={`pl-3 pr-3 pt-1 pb-1 mb-10 mt-4 rounded-xl font-medium ${
-                          commentdata.trim() === ""
-                            ? "bg-slate-200 text-gray-400 dark:bg-gray-900 dark:text-gray-700"
-                            : "text-white bg-blue-500"
-                        }`}
-                      >
-                        COMMENT
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className=" lg:flex lg:justify-center xl:flex xl:justify-center 2xl:flex 2xl:justify-center dark:text-gray-200 dark:border-gray-900 ">
-                  <div className="bg-white mb-20 pb-20 border border-solid border-gray-300 px-4 py-2 rounded-lg transition duration-300 ease-in-out w-dvw  shadow-md 2xl:w-[48rem] sm:-ml-40 sm:w-dvw md:w-dvw  lg:w-[45rem] xl:w-[48rem]  dark:bg-black dark:text-gray-200 dark:border-gray-900  -ml-40">
-                    {fetchcom &&
-                      fetchcom.map((item) => (
-                        <div className="flex justify-between pt-5 pb-5 border-b border-solid border-gray-300 dark:border-gray-800">
-                          <div>
-                            <div className="flex items-center">
-                              <div className="w-6  h-6 space-x-2 mr-3 mt-1">
-                                {item.author_details.profileImage === null ? (
-                                  <p className="font-bold pl-2 pr-2 bg-gray-300 rounded-xl dark:text-white dark:bg-gray-800">
-                                    {item.author_details.name
-                                      .trim()
-                                      .charAt(0)
-                                      .toUpperCase()}
-                                  </p>
-                                ) : (
-                                  <img
-                                    src={item.author_details.profileImage}
-                                    alt=""
-                                    className="h-6 w-6 rounded-3xl"
-                                  />
-                                )}
-                              </div>
-                              <div className="text-sm font-medium">
-                                {" "}
-                                {item.author_details.name}
-                              </div>
-                              <div className="text-xs text-gray-500 mt-1 ml-4">
-                                .
-                                {(
-                                  (new Date() - new Date(item.createdAt)) /
-                                  1000 /
-                                  3600 /
-                                  24
-                                ).toFixed(0)}{" "}
-                                days ago
-                              </div>
-                            </div>
-                            <div className="ml-8 text-base dark:text-gray-400">
-                              {item.content}
-                            </div>
-                          </div>
-                          {item.author_details.name === storedData.name ? (
-                            <div
-                              onClick={() => setShowHam(!showHam)}
-                              className="relative"
-                            >
-                              <MoreHorizOutlinedIcon />
-
-                              {showHam && (
-                                <div className="absolute mt-2 right-1 bg-white border border-solid border-gray-500 pl-4 pr-4 pt-2 pb-2 rounded-md">
-                                  <button
-                                    className="flex space-x-3 p-1 pl-2 pr-3 hover:bg-blue-100 w-[9rem]"
-                                    onClick={() => deleteComment(item._id)}
-                                  >
-                                    <DeleteIcon />
-                                    <h1>Delete Post</h1>
-                                  </button>
                                 </div>
-                              )}
+                                <div className="text-sm font-medium">
+                                  {" "}
+                                  {item.author_details.name}
+                                </div>
+                                <div className="text-xs text-gray-500 mt-1 ml-4">
+                                  .
+                                  {(
+                                    (new Date() - new Date(item.createdAt)) /
+                                    1000 /
+                                    3600 /
+                                    24
+                                  ).toFixed(0)}{" "}
+                                  days ago
+                                </div>
+                              </div>
+                              <div className="ml-8 text-base dark:text-gray-400">
+                                {item.content}
+                              </div>
                             </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      ))}
+                            {item.author_details.name === storedData.name ? (
+                              <div className="relative">
+                                <button
+                                  className="flex text-sm p-1 pl-2 pr-2 mr-3 hover:bg-blue-100 dark:text-gray-500"
+                                  onClick={() => deleteComment(item._id)}
+                                >
+                                  <DeleteIcon />
+                                </button>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+        </div>
+
+        <div className=" lg:invisible xl:visible 2xl:visible md:invisible sm:invisible invisible 2xl:mt-7 2xl:ml-11 xl:mt-6  xl:ml-10 lg:mt-20 lg:w-[13rem] 2xl:w-[15rem] w-64 dark:bg-zinc-950 rounded-md h-80  ml-5 bg-gray-200 ">
+          {fetchingData &&
+            fetchingData
+              .filter((item) => params.id === item._id)
+              .map((item) => (
+                <div className="mt-14 border-gray-400 border dark:border-gray-900 bg-white pb-6 rounded-t-md">
+                  <div className="h-20 bg-pink-500 rounded-t-md"></div>
+
+                  <div className="h-16 w-14 mb-2 -mt-4 ml-3 dark:bg-black bg-white border flex justify-center text-center items-center dark:border-gray-700">
+                    {item.author.profileImage === null ? (
+                      <p className="font-bold text-xl h-8 w-8  bg-gray-300 dark:bg-gray-800 rounded-2xl dark:text-white">
+                        {item.author.name.charAt(0).toUpperCase()}
+                      </p>
+                    ) : (
+                      <img
+                        src={item.author.profileImage}
+                        alt=""
+                        className=" p-[2px] h-16 w-14"
+                      />
+                    )}
+                  </div>
+                  {/* <img src={item.author.profileImage === "" ? : item.author.profileImage} alt="" className="h-20 w-20 -mt-8 ml-4 p-1 bg-white" /> */}
+                  <div className="ml-4 text-sm mb-4 dark:text-white">
+                    <h1 className="text-[17px] font-semibold dark:text-white">
+                      Name
+                    </h1>
+                    {item.author.name}
+                  </div>
+                  <div className="ml-4 text-sm dark:text-white">
+                    <h1 className="text-[17px] font-semibold ">Created on</h1>
+                    {formatDate(item.createdAt)}
+                  </div>
+                  {/* 
+                  <div>
+                    <button
+                      onClick={() => {
+                        handleToggle(item.author.name);
+                      }}
+                      className="ml-4 mt-5 rounded-xl bg-pink-500 pl-4 pr-4 pt-1 pb-1 text-white"
+                    >
+                      {isFollowing ? "Unfollow" : "Follow"}
+                    </button>
+                    <p className="bg-slate-700 pl-3 pr-3  rounded-md text-white mt-20">
+                      {message}{" "}
+                    </p>
+                  </div> */}
+                </div>
+              ))}
+        </div>
         {/* </form> */}
       </div>
     </div>

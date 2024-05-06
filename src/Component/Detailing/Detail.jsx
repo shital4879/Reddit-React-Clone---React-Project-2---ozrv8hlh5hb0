@@ -28,7 +28,7 @@ import { ThemeContext } from "../Context/DarkTheme";
 import { contextApi } from "../Context/ApiContext";
 import NavDetail from "../Navbar/NavDetail";
 import Popular from "../../Pages/Popular";
-import ApiPostUpdate from "../data/ApiPostUpdate";
+import ApiPostUpdate from "../Detailing/ApiPostUpdate";
 import Community from "./Community";
 
 const Detail = () => {
@@ -59,6 +59,7 @@ const Detail = () => {
     setCreateCommunity,
     openPopular,
     setOpenPopular,
+    // channelApidata
     // PostApi
   } = useContext(Mycontext);
   const [openSearch, setOpenSearch] = useState(false);
@@ -140,6 +141,7 @@ const Detail = () => {
   }, []);
 
   const navigatetoCommentsPage = (id, iid) => {
+    channelApidata();
     navigate(`/CommentsPage/${id}/${iid}`);
   };
 
@@ -231,14 +233,34 @@ const Detail = () => {
   const [inputvalue, setInputValue] = useState();
   const [text, setText] = useState();
 
-  const createCommunityapi = async (e) => {
-    e.preventDefault();
+  const channelApidata = async () => {
+    try {
+      const responce = await fetch(
+        `https://academics.newtonschool.co/api/v1/reddit/channel/`,
 
+        {
+          method: "GET",
+          headers: {
+            projectID: "ozrv8hlh5hb0",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const result = await responce.json();
+      setChannelApi(result.data);
+      // console.log("loll", result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    channelApidata();
+  }, []);
+
+  const createCommunityapi = async () => {
+    // e.preventDefault();
     const formData = new FormData();
-
     formData.append("name", inputCount);
-    // formData.append("description", "hii");
-
     try {
       const response = await fetch(
         "https://academics.newtonschool.co/api/v1/reddit/channel/",
@@ -261,44 +283,37 @@ const Detail = () => {
       }
 
       const result = await response.json();
-
+      channelApidata();
       console.log(result);
     } catch (error) {
       console.error("Failed to create community:", error);
     }
   };
 
-  const navigatetoUpdatePost = (id, con, title) => {
-    console.log("recieving data", id, con, title);
-    navigate(`/UpdatePost/${id}/${con}/${title}`);
-  };
 
   const navigatetoChannel = (id) => {
     navigate(`/ChannelPage/${id}`);
   };
+
 
   const storedData = JSON.parse(localStorage.getItem("UserInfo"));
   // console.log(storedData._id);
   return (
     <div className={darkMode ? "dark" : ""}>
       <div>
-        <div className="fixed bg-white z-50" >
-          <NavDetail className="fixed"/>
+        <div className="fixed bg-white z-50">
+          <NavDetail className="fixed" />
         </div>
 
         <div className="">
-      
-          
-
           <div className="flex  pb-4 dark:bg-zinc-950  bg-gray-100">
             <div className="md:invisible invisible 2xl:visible xl:visible lg:visible sm:invisible">
-
-            <Community className="flex xl:mr-36 "/>
+              <Community className="flex xl:mr-36 " />
             </div>
             <div className=" mt-4 flex justify-between pl-12 pr-12 pt-3 pb-2 relative h-14 w-56 "></div>
-            <div className="dark:bg-zinc-950 mt-12">
-              <div>
-                <div className="flex w-dvw border-gray-400 border  rounded-sm p-2 mt-8 bg-white dark:bg-black dark:border-gray-900 sm:-ml-[27rem] sm:w-dvw md:-ml-[27rem] md:w-dvw lg:w-[35rem] xl:w-[40rem] xl:-ml-24 2xl:w-[48rem] 2xl:-ml-28 lg:-ml-12 -ml-[27rem]">
+            <div className="dark:bg-zinc-950 mt-12 ">
+              <div className="2xl:-ml-4">
+                <div className="flex w-dvw border-gray-400 border  rounded-sm p-2 mt-8 bg-white dark:bg-black dark:border-gray-900 sm:-ml-[27rem] sm:w-dvw md:-ml-[27rem] md:w-dvw lg:w-[35rem] xl:w-[40rem] xl:-ml-24 2xl:w-[48rem] lg:-ml-12 -ml-[27rem] 2xl:-ml-16">
                   <img
                     src="https://www.redditstatic.com/avatars/defaults/v2/avatar_default_3.png"
                     alt=""
@@ -309,7 +324,7 @@ const Detail = () => {
                       <input
                         type="text"
                         value="Create Post"
-                        className="border 2xl:w-[30rem] pl-3 w-[25rem] rounded-sm bg-gray-100 dark:bg-gray-950 dark:text-gray-400 dark:border-gray-900 lg:w-[35rem] md:w-[40rem] sm:w-[30rem]"
+                        className="border 2xl:w-[30rem]  pl-3 w-[25rem] rounded-sm bg-gray-100 dark:bg-gray-950 dark:text-gray-400 dark:border-gray-900 lg:w-[35rem] md:w-[40rem] sm:w-[30rem]"
                         onClick={() =>
                           // navigatetoAuthordetail(item._id, item.author.name)
                           navigate("/CreatePost")
@@ -317,319 +332,13 @@ const Detail = () => {
                       />
                     ))}
                 </div>
-
-                {!openPopular && (
-                  <div className="flex w-dvw space-x-6 mt-3 bg-white p-3 border-gray-400 border  rounded-sm dark:bg-black dark:text-gray-400 dark:border-gray-900 sm:-ml-[27rem] sm:w-dvw md:-ml-[27rem] md:w-dvw lg:w-[35rem] lg:-ml-12 2xl:w-[48rem] xl:w-[40rem] xl:-ml-24 2xl:-ml-28 -ml-[27rem]">
-                    <div
-                      value="Best"
-                      onClick={() => {
-                        applyFilter("Best"), handleItemClick("Best");
-                      }}
-                      className={`flex text-black cursor-pointer pl-2 pr-2 p-1 dark:text-gray-400 ${
-                        activeItem === "Best"
-                          ? "font-bold text-gray-600 bg-gray-200 rounded-lg dark:bg-slate-700 dark:text-white"
-                          : ""
-                      }`}
-                    >
-                      <RocketSharpIcon className="mr-1" /> Best
-                    </div>
-
-                    <div
-                      onClick={() => {
-                        applyFilter("Hot"), handleItemClick("Hot");
-                      }}
-                      className={`flex text-black cursor-pointer pl-2 pr-2 p-1 dark:text-gray-400 ${
-                        activeItem === "Hot"
-                          ? "font-bold text-gray-600 bg-gray-200 rounded-lg dark:bg-slate-700 dark:text-white"
-                          : ""
-                      }`}
-                      value="Hot"
-                      // onClick={() => applyFilter("Hot")}
-                    >
-                      <LocalFireDepartmentIcon className="mr-1" /> Hot
-                    </div>
-
-                    <div
-                      onClick={() => {
-                        applyFilter("New"), handleItemClick("New");
-                      }}
-                      className={`flex text-black cursor-pointer pl-2 pr-2 p-1 dark:text-gray-400 ${
-                        activeItem === "New"
-                          ? "font-bold text-gray-600 bg-gray-200 rounded-lg dark:bg-slate-700 dark:text-white"
-                          : ""
-                      }`}
-                      value="New"
-                    >
-                      <NewReleasesTwoToneIcon className="mr-1" /> New
-                    </div>
-                    <div
-                      value="Top"
-                      onClick={() => {
-                        applyFilter("Top"), handleItemClick("Top");
-                      }}
-                      className={`flex text-black cursor-pointer pl-2 pr-2 p-1 dark:text-gray-400 ${
-                        activeItem === "Top"
-                          ? "font-bold text-gray-600 bg-gray-200 rounded-lg dark:bg-slate-700 dark:text-white"
-                          : ""
-                      }`}
-                    >
-                      <UploadIcon className="mr-1" /> Top
-                    </div>
-                  </div>
-                )}
               </div>
 
-              {/* <div>
-                {!openPopular && (
-                  <div>
-                    {posts &&
-                      posts.map((item) => (
-                        <div className="">
-                          <div className="w-dvw -ml-24 hover:bg-gray-300 dark:hover:bg-gray-900 shadow-md 2xl:w-[48rem] mt-3 items-center justify-center pt-4 pl-10 pr-8  mb-4 bg-white  border-gray-400 border  rounded-sm dark:bg-black dark:text-gray-200 dark:border-gray-900 sm:-ml-[27rem] sm:w-dvw md:w-dvw md:-ml-[27rem]  lg:w-[35rem] xl:w-[40rem] xl:-ml-24 2xl:-ml-28">
-                            <div className="flex items-center">
-                              <div className="">
-                                <div className="flex w-[44rem] justify-between">
-                                  <div className="flex ">
-                                    {item.author.profileImage === null ? (
-                                      <p className="font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:bg-gray-500 dark:text-white">
-                                        {item.author.name
-                                          .charAt(0)
-                                          .toUpperCase()}
-                                      </p>
-                                    ) : (
-                                      <img
-                                        src={item.author.profileImage}
-                                        alt=""
-                                        className="h-6 w-6 rounded-3xl"
-                                      />
-                                    )}
 
-                                    <h1
-                                      className="font-semibold text-base ml-2 mr-2"
-                                      onClick={() =>
-                                        navigatetoAuthordetail(
-                                          item._id,
-                                          item.author.name
-                                        )
-                                      }
-                                    >
-                                      {item.author.name}
-                                    </h1>
-                                  </div>
-
-                                  {item.author.name === storedData.name ? (
-                                    <div
-                                      onClick={() => setShowHam(!showHam)}
-                                      className="relative"
-                                    >
-                                      <MoreHorizOutlinedIcon />
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-
-                                <div className="text-gray-700 text-sm">
-                                  .
-                                  {(
-                                    (new Date() - new Date(item.createdAt)) /
-                                    1000 /
-                                    3600 /
-                                    24
-                                  ).toFixed(0)}{" "}
-                                  days ago
-                                </div>
-                              </div>
-                              <div className="flex justify-end mr-0"></div>
-                            </div>
-                            <div>
-                              <p
-                                className="mb-2 dark:text-gray-400"
-                                onClick={() => {
-                                  console.log("working", item);
-                                  navigatetoUpdatePost(
-                                    item._id,
-                                    item.title,
-                                    item.content
-                                  );
-                                }}
-                              >
-                                {item.content}
-                              </p>
-                              <div className=" flex items-center justify-start">
-                              {item.images == "" ? (
-                              <p className="ml-8"></p>
-                            ) : (
-                              <img
-                                src={item.images}
-                                alt=""
-                                className="rounded-xl w-[25rem] h-[20rem] 2xl:w-[45rem] 2xl:h-[25rem] sm:w-[35rem] sm:h-[25rem] md:w-[44rem] md:h-[30rem]"
-                              />
-                            )}
-
-
-                              </div>
-                            </div>
-                            <div className="flex mt-3 pb-5 space-x-4">
-                              <div className="bg-gray-200 rounded-3xl flex space-x-2 p-1 text-sm dark:bg-zinc-950">
-                                <ArrowUpwardOutlinedIcon
-                                  className={`hover:text-orange-500 h-1 w-1  ${
-                                    isLiked
-                                      ? "text-blue-900"
-                                      : "text-yellow-500"
-                                  }`}
-                                  onClick={() => {
-                                    upvoteApi(item._id), toggleLike();
-                                  }}
-                                />
-
-                                <div>{item.likeCount}</div>
-                                <ArrowDownwardOutlinedIcon
-                                  className="hover:text-green-700 h-1 w-1"
-                                  onClick={() => downvoteApi(item._id)}
-                                />
-                              </div>
-                              <div
-                                onClick={() =>
-                                  navigatetoCommentsPage(
-                                    item._id,
-                                    item.author._id
-                                  )
-                                }
-                              >
-                                <ChatBubbleOutlineOutlinedIcon className="mr-2" />
-                                {item.commentCount}
-                              </div>
-                            </div>
-                          </div>
-
-                          {showHam && (
-                            <ApiPostUpdate>
-                              <div className="absolute top-72 right-[27rem] bg-white border border-solid border-gray-500 pl-4 pr-4 pt-2 pb-2 rounded-md">
-                                <button
-                                  className="flex space-x-3 p-1 pl-2 pr-3 hover:bg-blue-100 w-[9rem]"
-                                  onClick={() => deletePost(item._id)}
-                                >
-                                  <DeleteIcon />
-                                  <h1>Delete Post</h1>
-                                </button>
-                                <button
-                                  className="flex space-x-3 mt-2 p-1 pl-2 pr-3 hover:bg-blue-100 w-[9rem]"
-                                  onClick={(e) => {
-                                    console.log("not working", item);
-                                    e.stopPropagation();
-                                    navigatetoUpdatePost(
-                                      item._id,
-                                      item.title,
-                                      item.content
-                                    );
-                                  }}
-                                >
-                                  <EditIcon />
-                                  <h1>Edit Post</h1>
-                                </button>
-                              </div>
-                            </ApiPostUpdate>
-                          )}
-                        </div>
-                      ))}
-                  </div>
-                )}
-
-            
-                {openPopular && (
-                  <div>
-                    {posts &&
-                      posts
-                        .filter((item) => item.likeCount >= 5)
-                        .map((item) => (
-                          <div className="">
-                            <div className="w-dvw -ml-24 shadow-md 2xl:w-[48rem] mt-5 items-center justify-center pt-4 pl-10 pr-8  mb-8  bg-white  border-gray-400 border  rounded-sm dark:bg-black dark:text-gray-200 dark:border-gray-900 sm:-ml-[27rem] md:-ml-[27rem] sm:w-dvw  md:w-dvw  lg:-ml-6 lg:w-[35rem] xl:w-[40rem] xl:ml-16 2xl:-ml-28">
-                              <div className="flex items-center">
-                                <div
-                                  className="flex"
-                                  onClick={() =>
-                                    navigatetoAuthordetail(
-                                      item._id,
-                                      item.author.name
-                                    )
-                                  }
-                                >
-                                  {item.author.profileImage === null ? (
-                                    <p className="font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:bg-gray-500 dark:text-white">
-                                      {item.author.name.charAt(0).toUpperCase()}
-                                    </p>
-                                  ) : (
-                                    <img
-                                      src={item.author.profileImage}
-                                      alt=""
-                                      className="h-6 w-6 rounded-3xl"
-                                    />
-                                  )}
-                                  <h1 className="font-semibold text-base ml-2 mr-2">
-                                    {item.author.name}
-                                  </h1>
-                                </div>
-                                <div className="text-gray-500 text-sm">
-                                  .
-                                  {(
-                                    (new Date() - new Date(item.createdAt)) /
-                                    1000 /
-                                    3600 /
-                                    24
-                                  ).toFixed(0)}{" "}
-                                  days ago
-                                </div>
-                              </div>
-                              <div>
-                                <p className="mb-2">{item.content}</p>
-                                <div className=" flex items-center justify-start">
-                                  <img
-                                    src={item.images}
-                                    alt=""
-                                    className="object-contain rounded w-[25rem] h-[20rem] 2xl:w-[45rem] 2xl:h-[25rem] sm:w-[35rem] sm:h-[25rem] md:w-[44rem] md:h-[30rem]"
-                                  />
-                                </div>
-                              </div>
-                              <div className="flex mt-3 pb-5 space-x-4">
-                                <div className="bg-gray-200 rounded-3xl flex space-x-2 p-1 text-sm dark:bg-zinc-950">
-                                  <ArrowUpwardOutlinedIcon
-                                    className="hover:text-orange-500 h-1 w-1"
-                                    onClick={() => {
-                                      upvoteApi(item._id);
-                                    }}
-                                  />
-                                  <div>{item.likeCount}</div>
-                                  <ArrowDownwardOutlinedIcon
-                                    className="hover:text-green-700 h-1 w-1"
-                                    onClick={() => downvoteApi(item._id)}
-                                  />
-                                </div>
-                                <div
-                                  onClick={() =>
-                                    navigatetoCommentsPage(
-                                      item._id,
-                                      item.author._id
-                                    )
-                                  }
-                                >
-                                  <ChatBubbleOutlineOutlinedIcon className="mr-2" />
-                                  {item.commentCount}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                  </div>
-                )}
-              </div> */}
-
-             <ApiPostUpdate apidata = {posts}/>
-
-
+              <ApiPostUpdate apidata={posts} />
             </div>
             <div>
-              <div className="mt-20 ml-12 mr-14 xl:ml-3 border-gray-400 border h-[6rem] w-[19rem] rounded-sm bg-white dark:bg-black dark:text-white dark:border-gray-900 invisible lg:invisible 2xl:visible xl:visible">
+              <div className="mt-20 ml-12 mr-14 xl:ml-3 2xl:ml-8 border-gray-400 border h-[6rem] w-[19rem] rounded-sm bg-white dark:bg-black dark:text-white dark:border-gray-900 invisible lg:invisible 2xl:visible xl:visible">
                 <div className=" flex  p-2">
                   <div className="mr-3 mt-1  text-orange-500 ">
                     <SecurityIcon />
@@ -651,7 +360,7 @@ const Detail = () => {
                 </div>
               </div>
 
-              <div className="mt-8 ml-12 mr-14 xl:ml-3 border-gray-400 border h-[15rem] w-[19rem] rounded-sm bg-white  dark:bg-black dark:text-white dark:border-gray-900 invisible lg:invisible 2xl:visible xl:visible">
+              <div className="mt-8 ml-12 mr-14 xl:ml-3 2xl:ml-8 border-gray-400 border h-[15rem] w-[19rem] rounded-sm bg-white  dark:bg-black dark:text-white dark:border-gray-900 invisible lg:invisible 2xl:visible xl:visible">
                 <img
                   src="https://reddit-ten-mocha.vercel.app/home-banner.png"
                   alt=""
@@ -692,8 +401,8 @@ const Detail = () => {
                 <div className="bg-gray-700 bg-opacity-80 h-dvh size-full m-0 fixed top-0 left-0 w-dvw ">
                   {/* <NavDetail /> */}
 
-                  <div className="flex justify-center items-center 2xl:mt-10 sm:mt-0 lg:mt-10 xl:mt-10 ">
-                    <div className="bg-white relative 2xl:w-[36rem] 2xl:h-[36rem] rounded-md pt-4 pl-5 pr-5 dark:bg-zinc-950  border border-solid border-gray-600 sm:w-dvw sm:h-dvh md:w-dvw md:h-dvh lg:w-[36rem] lg:h-[36rem] xl:w-[36rem] xl:h-[36rem] h-dvh w-dvw">
+                  <div className="flex justify-center items-center 2xl:mt-10 sm:mt-0 lg:mt-10 xl:mt-10  ">
+                    <div className="bg-white relative 2xl:w-[36rem] 2xl:h-[36rem] rounded-md pt-4 pl-5 pr-5 dark:bg-zinc-950  border border-solid border-gray-600 sm:w-dvw sm:h-dvh md:w-dvw md:h-dvh lg:w-[36rem] lg:h-[36rem] xl:w-[36rem] xl:h-[36rem] h-dvh w-dvw mt-10">
                       <div className="flex justify-between  pb-2 text-lg border-b border-solid border-gray-400 dark:text-white">
                         <h1>Create a community</h1>
                         <h2
@@ -825,7 +534,10 @@ const Detail = () => {
                               }`}
                               disabled={inputCount.length < 3}
                               // onClick={createCommunityapi}
-                              onClick={() => navigatetoChannel()}
+                              onClick={() => {
+                                createCommunityapi(),
+                                  navigatetoChannel(item._id);
+                              }}
                             >
                               Create Community
                             </button>
