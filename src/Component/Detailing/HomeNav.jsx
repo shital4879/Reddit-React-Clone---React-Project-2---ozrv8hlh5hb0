@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import OutboundOutlinedIcon from "@mui/icons-material/AddOutlined";
+import OutboundRoundedIcon from '@mui/icons-material/OutboundRounded';
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import { contextApi } from "../Context/ApiContext";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -39,7 +39,7 @@ const HomeNav = () => {
                 <NavLink
                  to="/Detail"
                 >
-                  <OutboundOutlinedIcon /> Popular
+                  < OutboundRoundedIcon/> Popular
                 </NavLink>
               </li>
             </ul>

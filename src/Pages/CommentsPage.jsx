@@ -82,29 +82,29 @@ const CommentsPage = () => {
   }, []);
 
 
-  // const PostApii = async () => {
-  //   try {
-  //     const responce = await fetch(
-  //       `https://academics.newtonschool.co/api/v1/reddit/post?limit=100`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           projectID: "ozrv8hlh5hb0",
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     const result = await responce.json();
-  //     setPosts(result.data);
-  //     console.log(result.data,"api");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   PostApii();
-  // }, []);
+  // const [posts, setPosts] = useState([]);
+  const upvoteApi = async (postId) => {
+    try {
+      const responce = await fetch(
+        `https://academics.newtonschool.co/api/v1/reddit/like/${postId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            projectID: "ozrv8hlh5hb0",
+          },
+          // "Content-Type": "application/json",
+        }
+      );
 
+      const result = await responce.json();
+      // setLikeBtn(result.data);
+      PostApi();
+      console.log(result, "kkkk");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const downvoteApi = async (postId) => {
     try {
@@ -126,34 +126,11 @@ const CommentsPage = () => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    downvoteApi();
-  }, []);
 
-  const upvoteApi = async (postId) => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/like/${postId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            projectID: "ozrv8hlh5hb0",
-          },
-          // "Content-Type": "application/json",
-        }
-      );
 
-      const result = await responce.json();
-      PostApi();
-      console.log(result, "kkkk");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    upvoteApi();
-  }, []);
+
+
+ 
 
   const deleteComment = async (comId) => {
     try {
@@ -363,7 +340,7 @@ const CommentsPage = () => {
                             {item.author_details.name === storedData.name ? (
                               <div className="relative">
                                 <button
-                                  className="flex text-sm p-1 pl-2 pr-2 mr-3 hover:bg-blue-100 dark:text-gray-500"
+                                  className="flex text-sm p-1 pl-1 pr-1 mr-3 hover:bg-gray-700 dark:text-gray-400 rounded-2xl"
                                   onClick={() => deleteComment(item._id)}
                                 >
                                   <DeleteIcon />
@@ -385,7 +362,7 @@ const CommentsPage = () => {
             fetchingData
               .filter((item) => params.id === item._id)
               .map((item) => (
-                <div className="mt-14 border-gray-400 border dark:border-gray-900 bg-white pb-6 rounded-t-md">
+                <div className="mt-14 border-gray-400 border dark:border-gray-900 bg-white pb-6 rounded-t-md dark:bg-black">
                   <div className="h-20 bg-pink-500 rounded-t-md"></div>
 
                   <div className="h-16 w-14 mb-2 -mt-4 ml-3 dark:bg-black bg-white border flex justify-center text-center items-center dark:border-gray-700">

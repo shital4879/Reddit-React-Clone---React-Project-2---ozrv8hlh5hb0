@@ -73,76 +73,10 @@ const Detail = () => {
   const [inputCount, setInputCount] = useState("");
   const [openInput, setOpenInput] = useState(false);
   const [activeItem, setActiveItem] = useState("Best");
+  const [posts, setPosts] = useState([]);
 
   const handleItemClick = (itemName) => {
     setActiveItem(itemName === activeItem ? null : itemName);
-  };
-
-  const navigatetoAuthordetail = (id, name) => {
-    navigate(`/AuthorDetail/${id}/${name}`);
-  };
-
-  const [userData, setUserData] = useState(null);
-  const [isLiked, setIsLiked] = useState(false);
-  const [likebtn, setLikeBtn] = useState();
-
-  const toggleLike = () => {
-    setIsLiked(true);
-  };
-
-  const upvoteApi = async (postId) => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/like/${postId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            projectID: "ozrv8hlh5hb0",
-          },
-          // "Content-Type": "application/json",
-        }
-      );
-
-      const result = await responce.json();
-      PostApi();
-
-      console.log(result, "kkkk");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    upvoteApi();
-  }, []);
-
-  const downvoteApi = async (postId) => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/like/${postId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            projectID: "ozrv8hlh5hb0",
-          },
-          // "Content-Type": "application/json",
-        }
-      );
-
-      const result = await responce.json();
-      PostApi();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    downvoteApi();
-  }, []);
-
-  const navigatetoCommentsPage = (id, iid) => {
-    channelApidata();
-    navigate(`/CommentsPage/${id}/${iid}`);
   };
 
   const [products, setProducts] = useState([]);
@@ -170,68 +104,6 @@ const Detail = () => {
     PostApi();
   }, []);
 
-  const [posts, setPosts] = useState([]);
-  const [filter, setFilter] = useState("Best");
-
-  const applyFilter = (filter) => {
-    let filteredPosts = [...posts];
-    switch (filter) {
-      case "Best":
-        filteredPosts.sort((a, b) => b.likeCount - a.likeCount);
-        break;
-      case "Hot":
-        filteredPosts = posts.filter(
-          (item) => item.likeCount == item.likeCount
-        );
-        break;
-      case "New":
-        filteredPosts.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
-        break;
-      case "Top":
-        filteredPosts = posts.filter((item) => item.likeCount >= 7);
-        break;
-      default:
-        break;
-    }
-    setPosts(filteredPosts);
-    setFilter(filter);
-  };
-
-  const deletePost = async (comId) => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/post/${comId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            projectID: "ozrv8hlh5hb0",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      // const result = await responce.json();
-      if (responce.status === 204) {
-        console.log("Comment deleted successfully");
-        PostApi();
-      } else {
-        console.log("Failed to delete comment. Status code:", responce.status);
-      }
-
-      console.log(result, "kkkkii");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    deletePost();
-  }, []);
-
-  const [inputvalue, setInputValue] = useState();
-  const [text, setText] = useState();
 
   const channelApidata = async () => {
     try {

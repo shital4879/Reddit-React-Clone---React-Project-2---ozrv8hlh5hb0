@@ -53,7 +53,7 @@ const AuthorDetail = () => {
     }
   };
   useEffect(() => {
-    upvoteApi();
+    // upvoteApi();
   }, []);
 
   const downvoteApi = async (postId) => {
@@ -77,7 +77,7 @@ const AuthorDetail = () => {
     }
   };
   useEffect(() => {
-    downvoteApi();
+    // downvoteApi();
   }, []);
 
   function formatDate(dateString) {
