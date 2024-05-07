@@ -1,18 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import RocketSharpIcon from "@mui/icons-material/RocketSharp";
-import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-import NewReleasesTwoToneIcon from "@mui/icons-material/NewReleasesTwoTone";
-import UploadIcon from "@mui/icons-material/Upload";
-import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
-import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import MenuSharpIcon from "@mui/icons-material/MenuSharp";
-import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "@mui/icons-material/Home";
-import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import SecurityIcon from "@mui/icons-material/MoreHoriz";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import OutboundOutlinedIcon from "@mui/icons-material/OutboundOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import TableRowsIcon from "@mui/icons-material/TableRows";
@@ -74,7 +67,7 @@ const Pupular = () => {
 
   return (
     <div className={darkMode ? "dark" : ""}>
-      <div className="xl:flex lg:flex border-r-2 pb-4">
+      <div className="xl:flex lg:flex border-r-2 pb-4 bg-zinc-100">
         <div className="2xl:mt-16 xl:mt-16 lg:mt-16 mt-7 xl:w-[14rem] 2xl:w-[16rem] flex justify-between  pr-12 pt-3 pb-2 relative h-14 lg:w-[10rem] md:w-[10rem]  sm:invisible  md:invisible lg:visible xl:visible invisible">
           <div>
             <ul>
@@ -89,6 +82,19 @@ const Pupular = () => {
                 </NavLink>
               </li>
             </ul>
+
+            <div>
+              <h1 className="flex justify-between tracking-widest font-extralight text-gray-500 pl-7 pr-2 pt-2 pb-2 rounded-md mt-6 dark:hover:bg-gray-800 dark:text-gray-500">
+                <h1>COMMUNITY </h1>
+              </h1>
+
+              <h1
+                className="tracking-tight  text-gray-700 ml-6 dark:bg-zinc-950 dark:text-gray-400 pl-5 pr-4 pt-1 pb-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
+                onClick={() => setShowLogIn(!showLogIn)}
+              >
+                <AddOutlinedIcon /> Create a Community
+              </h1>
+            </div>
           </div>
 
           {localStorage.getItem("token") && <div className="w-60"></div>}
@@ -97,13 +103,13 @@ const Pupular = () => {
           <div className="border-l border-solid border-gray-300 pt-10">
           <Tippy content="Change post view" className="text-[10px]" placement="bottom">
             <div
-              className={`2xl:mt-8 xl:mt-8 lg:mt-8 relative -mt-12 2xl:ml-24  sm:-mt-24 sm:ml-14 ml-10 md:-mt-24 md:ml-14 xl:ml-14 text-gray-500 mb-3 hover:bg-gray-100 w-14 p-1 rounded-2xl ${
+              className={`flex justify-center items-center 2xl:mt-5 xl:mt-8 lg:mt-8 relative -mt-12 2xl:ml-24  sm:-mt-24 sm:ml-14 ml-10 md:-mt-24 md:ml-14 xl:ml-14 text-gray-500 mb-3 hover:bg-gray-100 w-14 p-1 rounded-2xl ${
                 activeItem === "compact" ? "mr-10" : ""
               }`}
               onClick={() => setOpenDrop(!opendrop)}
             >
-              <ViewAgendaOutlinedIcon />
-              <KeyboardArrowDownOutlinedIcon />
+              <ViewAgendaOutlinedIcon style={{fontSize:"20px"}}/>
+              <KeyboardArrowDownOutlinedIcon style={{fontSize:"20px"}}/>
             </div>
 </Tippy>
             <div className={`absolute `}>
@@ -124,7 +130,7 @@ const Pupular = () => {
                         setOpenDrop(!opendrop);
                     }}
                   >
-                    <ViewAgendaSharpIcon className="text-gray-500" />
+                    <ViewAgendaSharpIcon className="text-gray-500" style={{fontSize:"20px"}}/>
                     <p>Card</p>
                   </div>
                   <div
@@ -137,7 +143,7 @@ const Pupular = () => {
                         setOpenDrop(!opendrop);
                     }}
                   >
-                    <TableRowsIcon className="text-gray-500" />
+                    <TableRowsIcon className="text-gray-500" style={{fontSize:"20px"}}/>
                     <p>Compact</p>
                   </div>
                 </div>
@@ -147,9 +153,11 @@ const Pupular = () => {
             <div className="md:mt-24 sm:mt-28 mt-28 lg:mt-10">
               {postData &&
                 !cardOpen &&
-                postData.map((item) => (
+                postData
+                .filter(item => item.likeCount >= 10)
+                .map((item) => (
                   <div className="flex justify-center items-center  ml-8 ">
-                    <div className="hover:bg-gray-100 hover:rounded-2xl -ml-7  border-b mb-10 w-full sm:w-full 2xl:ml-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[40rem] 2xl:mr-4 lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 xl:ml-0 2xl:-mt-3">
+                    <div className="hover:bg-gray-200 hover:rounded-2xl -ml-7  border-b mb-10 w-full sm:w-full 2xl:ml-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[40rem] 2xl:mr-4 lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 xl:ml-0 2xl:-mt-3 border rounded-md border-gray-300">
                       <div className="flex items-center">
                         <div className="flex">
                           {item.author.profileImage === null ? (
@@ -199,12 +207,12 @@ const Pupular = () => {
                         onClick={() => setShowLogIn(!showLogIn)}
                       >
                         <div className="bg-gray-200 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
-                          <ThumbUpIcon className="hover:text-orange-500 h-1 w-1 text-gray-600" />
+                          <ThumbUpOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-orange-500 h-1 w-1" />
                           <div>{item.likeCount}</div>
-                          <ThumbDownIcon className="hover:text-green-700 h-1 w-1 text-gray-600 " />
+                          <ThumbDownOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-green-700 h-1 w-1 " />
                         </div>
                         <div className="mt-1 ml-5 w-14 pl-2 bg-gray-200 rounded-2xl p-1">
-                          <ChatBubbleOutlineOutlinedIcon className="mr-2 text-sm " />
+                          <ChatBubbleOutlineOutlinedIcon style={{ fontSize: "18px" }} className="mr-2 text-sm " />
                           {item.commentCount}
                         </div>
                       </div>
@@ -213,10 +221,12 @@ const Pupular = () => {
                 ))}
             </div>
             <div
-              className="md:mt-20 pt-2 sm:mt-24 lg:-mt-2 xl:-mt-10 -mt-28 bg-white">
+              className="md:mt-20 pt-2 sm:mt-24 lg:-mt-2 xl:-mt-10 -mt-28 bg-zinc-100">
               {cardOpen &&
-                postData.map((item) => (
-                  <div className="flex pb-4 mb-4 lg:mr-10 hover:bg-gray-100 hover:rounded-2xl border-b w-full sm:w-full 2xl:ml-12  lg:mb-10  xl:w-[45rem] 2xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center pt-4 pl-7 pr-8  xl:mb-8   bg-white lg:w-[38rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 xl:mr-6 ">
+                postData
+                .filter(item => item.likeCount >= 10)
+                .map((item) => (
+                  <div className="flex pb-4 mb-4 lg:mr-10 hover:bg-gray-200 hover:rounded-2xl border-b w-full sm:w-full 2xl:ml-12  lg:mb-10  xl:w-[45rem] 2xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center pt-4 pl-7 pr-8  xl:mb-8   bg-white lg:w-[38rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 xl:mr-6 border border-gray-300 rounded-md">
                     <div className="pb-4">
                       {item.images == "" ? (
                         <p className="ml-8"></p>
@@ -263,12 +273,12 @@ const Pupular = () => {
                         onClick={() => setShowLogIn(!showLogIn)}
                       >
                         <div className="bg-gray-200 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
-                          <ThumbUpIcon className="hover:text-orange-500 h-1 w-1 text-gray-600" />
+                          <ThumbUpOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-orange-500 h-1 w-1 " />
                           <div>{item.likeCount}</div>
-                          <ThumbDownIcon className="hover:text-green-700 h-1 w-1 text-gray-600 " />
+                          <ThumbDownOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-green-700 h-1 w-1 " />
                         </div>
                         <div className="mt-1 ml-5 w-14 pl-2 bg-gray-200 rounded-2xl p-1">
-                          <ChatBubbleOutlineOutlinedIcon className="mr-2 text-sm " />
+                          <ChatBubbleOutlineOutlinedIcon style={{ fontSize: "18px" }} className="mr-2 text-sm " />
                           {item.commentCount}
                         </div>
                       </div>

@@ -14,19 +14,19 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import "tippy.js/dist/tippy.css";
 import Tippy from "@tippyjs/react";
 import { Mycontext } from "../../components/App";
+import LikeCompo from "./LikeCompo";
+import DeletePost from "./DeletePost";
 
-const ApiPostUpdate = ({ apidata }) => {
+const ApiPostUpdate = () => {
   const [activeItem, setActiveItem] = useState("Best");
-
   const handleItemClick = (itemName) => {
     setActiveItem(itemName === activeItem ? null : itemName);
   };
-  const [showHam, setShowHam] = useState(true);
-
-  const [showedit, setShowEdit] = useState(false);
   const { postData } = useContext(contextApi);
   const {
     showLogIn,
@@ -36,15 +36,9 @@ const ApiPostUpdate = ({ apidata }) => {
     openPopular,
     setOpenPopular,
   } = useContext(Mycontext);
-  const { PostApi } = useContext(contextApi);
-  const [userData, setUserData] = useState(null);
-  const [isLiked, setIsLiked] = useState(false);
-  const [likebtn, setLikeBtn] = useState();
-
-  const toggleLike = () => {
-    setIsLiked(true);
-  };
   const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+  const [filter, setFilter] = useState("Best");
   const storedData = JSON.parse(localStorage.getItem("UserInfo"));
 
   const navigatetoUpdatePost = (id, con, title) => {
@@ -75,91 +69,38 @@ const ApiPostUpdate = ({ apidata }) => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    PostApii();
-  }, []);
 
-  // const [posts, setPosts] = useState([]);
-  const upvoteApi = async (postId) => {
+
+  const LogInPostApii = async (token) => {
     try {
       const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/like/${postId}`,
+        `https://academics.newtonschool.co/api/v1/reddit/post?limit=100`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            projectID: "ozrv8hlh5hb0",
-          },
-          // "Content-Type": "application/json",
-        }
-      );
-
-      const result = await responce.json();
-      // setLikeBtn(result.data);
-      PostApii();
-      console.log(result, "kkkk");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    upvoteApi();
-  }, []);
-
-  const downvoteApi = async (postId) => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/like/${postId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            projectID: "ozrv8hlh5hb0",
-          },
-          // "Content-Type": "application/json",
-        }
-      );
-
-      const result = await responce.json();
-      PostApii();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    downvoteApi();
-  }, []);
-
-  const deletePost = async (comId) => {
-    try {
-      const responce = await fetch(
-        `https://academics.newtonschool.co/api/v1/reddit/post/${comId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
             projectID: "ozrv8hlh5hb0",
             "Content-Type": "application/json",
           },
         }
       );
-
-      // const result = await responce.json();
-      if (responce.status === 204) {
-        console.log("Comment deleted successfully");
-        PostApii();
-      } else {
-        console.log("Failed to delete comment. Status code:", responce.status);
-      }
-
-      console.log(result, "kkkkii");
+      const result = await responce.json();
+      setPosts(result.data);
+      console.log(result.data, "api");
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [posts, setPosts] = useState([]);
-  const [filter, setFilter] = useState("Best");
+  useEffect(() => {
+    if(localStorage.getItem("token")){
+      LogInPostApii(localStorage.getItem("token"));
+    }
+    else{
+      PostApii()
+    }
+  }, []);
+
 
   const applyFilter = (filter) => {
     let filteredPosts = [...posts];
@@ -186,6 +127,8 @@ const ApiPostUpdate = ({ apidata }) => {
     setPosts(filteredPosts);
     setFilter(filter);
   };
+  
+
 
   return (
     <div>
@@ -215,7 +158,6 @@ const ApiPostUpdate = ({ apidata }) => {
                 : ""
             }`}
             value="Hot"
-            // onClick={() => applyFilter("Hot")}
           >
             <LocalFireDepartmentIcon className="mr-1" /> Hot
           </div>
@@ -248,6 +190,9 @@ const ApiPostUpdate = ({ apidata }) => {
           </div>
         </div>
       )}
+
+
+
 
       <div>
         <div>
@@ -284,27 +229,24 @@ const ApiPostUpdate = ({ apidata }) => {
                               >
                                 {item.author.name}
                               </h1>
+                              <div className="text-gray-500 mt-1 text-xs">
+                                .
+                                {(
+                                  (new Date() - new Date(item.createdAt)) /
+                                  1000 /
+                                  3600 /
+                                  24
+                                ).toFixed(0)}{" "}
+                                days ago
+                              </div>
                             </div>
                             {item.author.name === storedData.name ? (
                               <div className="sm:-pl-32 sm:mr-28 mr-64 2xl:-mr-1 lg:mr-60 dark:text-gray-400 p-1 rounded-2xl hover:dark:bg-gray-800">
-                                <DeleteOutlineIcon
-                                  onClick={() => deletePost(item._id)}
-                                />
+                                <DeletePost item={item} key={item._id} setPosts={setPosts}/>
                               </div>
                             ) : (
                               <></>
                             )}
-                          </div>
-
-                          <div className="text-gray-700 text-sm">
-                            .
-                            {(
-                              (new Date() - new Date(item.createdAt)) /
-                              1000 /
-                              3600 /
-                              24
-                            ).toFixed(0)}{" "}
-                            days ago
                           </div>
                         </div>
                         <div className="flex justify-end mr-0"></div>
@@ -327,20 +269,9 @@ const ApiPostUpdate = ({ apidata }) => {
                         </div>
                       </div>
                       <div className="flex mt-3 pb-5 space-x-4">
-                        <div className="bg-gray-300 rounded-3xl flex space-x-2 p-1 text-sm dark:bg-zinc-950">
-                          <ArrowUpwardOutlinedIcon
-                            className={`hover:text-orange-500 h-1 w-1  `}
-                            onClick={() => {
-                              upvoteApi(item._id);
-                            }}
-                          />
+                       
+                      <LikeCompo key={item._id} item={item} setPosts={setPosts}/>
 
-                          <div>{item.likeCount}</div>
-                          <ArrowDownwardOutlinedIcon
-                            // className="hover:text-green-700 h-1 w-1"
-                            onClick={() => downvoteApi(item._id)}
-                          />
-                        </div>
                         <Tippy
                           content="Comments"
                           placement="bottom"
@@ -352,36 +283,14 @@ const ApiPostUpdate = ({ apidata }) => {
                               navigatetoCommentsPage(item._id, item.author._id)
                             }
                           >
-                            <ChatBubbleOutlineOutlinedIcon className="mr-1 " />
+                            <ChatBubbleOutlineOutlinedIcon
+                              className="mr-1 "
+                              style={{ fontSize: "18px" }}
+                            />
                             {item.commentCount}
                           </div>
                         </Tippy>
-                        <div>
-                          <Tippy
-                            content="Update post"
-                            placement="bottom"
-                            className="text-[10px]"
-                          >
-                            {item.author.name === storedData.name ? (
-                              <div
-                                className="bg-gray-300 p-1  rounded-xl dark:bg-zinc-950"
-                                onClick={(e) => {
-                                  console.log("not working", item);
-                                  e.stopPropagation();
-                                  navigatetoUpdatePost(
-                                    item._id,
-                                    item.title,
-                                    item.content
-                                  );
-                                }}
-                              >
-                                <UpgradeIcon />
-                              </div>
-                            ) : (
-                              <></>
-                            )}
-                          </Tippy>
-                        </div>
+                       
                       </div>
                     </div>
                   </div>
@@ -424,27 +333,24 @@ const ApiPostUpdate = ({ apidata }) => {
                                 >
                                   {item.author.name}
                                 </h1>
+                                <div className="text-gray-500 mt-1 text-xs">
+                                  .
+                                  {(
+                                    (new Date() - new Date(item.createdAt)) /
+                                    1000 /
+                                    3600 /
+                                    24
+                                  ).toFixed(0)}{" "}
+                                  days ago
+                                </div>
                               </div>
                               {item.author.name === storedData.name ? (
                                 <div className="sm:-pl-32 sm:mr-28 mr-64 2xl:-mr-1 lg:mr-60">
-                                  <DeleteOutlineIcon
-                                    onClick={() => deletePost(item._id)}
-                                  />
+                                  <DeletePost item={item} key={item._id} setPosts={setPosts}/>
                                 </div>
                               ) : (
                                 <></>
                               )}
-                            </div>
-
-                            <div className="text-gray-700 text-sm">
-                              .
-                              {(
-                                (new Date() - new Date(item.createdAt)) /
-                                1000 /
-                                3600 /
-                                24
-                              ).toFixed(0)}{" "}
-                              days ago
                             </div>
                           </div>
                           <div className="flex justify-end mr-0"></div>
@@ -467,22 +373,7 @@ const ApiPostUpdate = ({ apidata }) => {
                           </div>
                         </div>
                         <div className="flex mt-3 pb-5 space-x-4">
-                          <div className="bg-gray-300 rounded-3xl flex space-x-2 p-1 text-sm dark:bg-zinc-950">
-                            <ArrowUpwardOutlinedIcon
-                              className={`hover:text-orange-500 h-1 w-1  ${
-                                isLiked ? "" : "text-red-500"
-                              }`}
-                              onClick={() => {
-                                upvoteApi(item._id), toggleLike();
-                              }}
-                            />
-
-                            <div>{item.likeCount}</div>
-                            <ArrowDownwardOutlinedIcon
-                              // className="hover:text-green-700 h-1 w-1"
-                              onClick={() => downvoteApi(item._id)}
-                            />
-                          </div>
+                        <LikeCompo key={item._id} item={item} setPosts={setPosts}/>
                           <Tippy
                             content="Comments"
                             placement="bottom"
@@ -497,36 +388,14 @@ const ApiPostUpdate = ({ apidata }) => {
                                 )
                               }
                             >
-                              <ChatBubbleOutlineOutlinedIcon className="mr-1 " />
+                              <ChatBubbleOutlineOutlinedIcon
+                                className="mr-1 "
+                                style={{ fontSize: "18px" }}
+                              />
                               {item.commentCount}
                             </div>
                           </Tippy>
-                          <div>
-                            <Tippy
-                              content="Update post"
-                              placement="bottom"
-                              className="text-[10px]"
-                            >
-                              {item.author.name === storedData.name ? (
-                                <div
-                                  className="bg-gray-300 p-1  rounded-xl dark:bg-zinc-950"
-                                  onClick={(e) => {
-                                    console.log("not working", item);
-                                    e.stopPropagation();
-                                    navigatetoUpdatePost(
-                                      item._id,
-                                      item.title,
-                                      item.content
-                                    );
-                                  }}
-                                >
-                                  <UpgradeIcon />
-                                </div>
-                              ) : (
-                                <></>
-                              )}
-                            </Tippy>
-                          </div>
+                          
                         </div>
                       </div>
                     </div>

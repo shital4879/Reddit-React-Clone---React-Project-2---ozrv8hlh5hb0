@@ -104,11 +104,14 @@ const handleItemClick = (itemName) => {
 
   return (
     <div className={darkMode ? "dark" : ""}>
+      <div className="fixed ">
+
       <NavDetail />
+      </div>
       <form onSubmit={createpostdata}>
       <div className="bg-gray-300 h-dvh w-dvw flex pt-8 2xl:pl-40 pr-40 justify-between dark:bg-zinc-950 sm:pl-0 lg:pl-8 xl:pl-24">
-        <div className="">
-          <div className="flex justify-between border-solid border-white border-b 2xl:w-[50rem] pb-4 dark:text-white dark:border-gray-800 sm:w-[40rem] pr-2 sm:-mt-4 sm:pl-2 md:w-dvw lg:w-[38rem] xl:w-[45rem] w-dvw">
+        <div className="mt-12">
+          <div className="flex justify-between border-solid border-white border-b 2xl:w-[50rem] pb-2 dark:text-white dark:border-gray-800 sm:w-[40rem] pr-2 sm:-mt-4 sm:pl-2 md:w-dvw lg:w-[38rem] xl:w-[45rem] w-dvw">
             <h1 className="text-lg">Create a post</h1>
             <div className="text-sm mt-1 text-blue-600 font-semibold dark:text-white">
               DRAFTS{" "}
@@ -280,7 +283,7 @@ const handleItemClick = (itemName) => {
           </div>
         </div>
 
-        <div className="invisible sm:invisible 2xl:visible lg:visible">
+        <div className="invisible sm:invisible 2xl:visible lg:visible mt-12">
           <div className="flex ml-14 border-solid p-4 2xl:w-[23rem] 2xl:h-[18rem] border-gray-400 border rounded-md bg-white dark:bg-black dark:text-gray-400 dark:border-gray-900 md:w-[19rem]">
             <h1 className="flex space-x-4  md:w-[15rem]">
               <img src="/snooo.png" alt="" className="h-7 w-7" />

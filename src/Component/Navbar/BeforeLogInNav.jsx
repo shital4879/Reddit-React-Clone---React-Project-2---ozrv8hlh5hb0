@@ -240,7 +240,7 @@ const BeforeLogInNav = () => {
 
 
   return (
-    <div className="fixed bg-white z-50 sm:-mt-16 -mt-8 lg:mt-0 ">
+    <div className="fixed bg-zinc-100 z-50 sm:-mt-16 -mt-8 lg:mt-0 ">
       <div className=" flex justify-between pl-12 pt-2 pr-12 pb-10 relative h-14 border-b border-gray-200 xl:-ml-20">
         <div
           className="md:-ml-8 md:visible visible sm:visible lg:invisible xl:invisible 2xl:invisible mr-4 mt-1 lg:mr-10 -ml-10"

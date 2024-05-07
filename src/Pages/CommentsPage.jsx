@@ -8,8 +8,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import HomeIcon from "@mui/icons-material/AddOutlined";
 import OutboundOutlinedIcon from "@mui/icons-material/AddOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import { contextApi } from "../Component/Context/ApiContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NavDetail from "../Component/Navbar/NavDetail";
 import { ThemeContext } from "../Component/Context/DarkTheme";
 import CommentApi from "../Component/data/CommentApi";
@@ -17,6 +19,7 @@ import HomeNav from "../Component/Detailing/HomeNav";
 
 const CommentsPage = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const { fetchingData, PostApi, openPopular, channelApi } =
     useContext(contextApi);
   const [openRecents, setOpenRecents] = useState(false);
@@ -178,6 +181,10 @@ const CommentsPage = () => {
     navigate(`/ChannelPage/${id}`);
   };
 
+  const navigatetoAuthordetail = (id, name) => {
+    navigate(`/AuthorDetail/${id}/${name}`);
+  };
+
   return (
     <div className={darkMode ? "dark" : ""}>
       <div className="fixed z-50">
@@ -198,7 +205,12 @@ const CommentsPage = () => {
                       <div className="flex items-center">
                         <div className="">
                           <div className="flex w-[44rem] justify-between">
-                            <div className="flex ">
+                            <div className="flex "   onClick={() =>
+                                  navigatetoAuthordetail(
+                                    item._id,
+                                    item.author.name
+                                  )
+                                }>
                               {item.author.profileImage === null ? (
                                 <p className="font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:text-white dark:bg-gray-800">
                                   {item.author.name.charAt(0).toUpperCase()}
@@ -212,17 +224,10 @@ const CommentsPage = () => {
                               )}
                               <h1
                                 className="font-semibold text-base ml-2 mr-2"
-
-                                // onClick={() =>
-                                //   navigatetoAuthordetail(item._id,item.author.name)
-                                // }
                               >
                                 {item.author.name}
                               </h1>
-                            </div>
-                          </div>
-
-                          <div className="text-gray-500 text-sm">
+                              <div className="text-gray-500 mt-1 text-xs">
                             .
                             {(
                               (new Date() - new Date(item.createdAt)) /
@@ -232,6 +237,11 @@ const CommentsPage = () => {
                             ).toFixed(0)}{" "}
                             days ago
                           </div>
+                            </div>
+
+                          </div>
+
+                        
                         </div>
                         <div className="flex justify-end mr-0"></div>
                       </div>
@@ -252,18 +262,20 @@ const CommentsPage = () => {
                       </div>
                       <div className="flex mt-3 pb-5 space-x-4">
                         <div className="bg-gray-200 rounded-3xl flex space-x-2 p-1 text-sm dark:bg-zinc-950">
-                          <ArrowUpwardOutlinedIcon
+                          <ThumbUpOutlinedIcon
+                          style={{fontSize:"18px"}}
                             className="hover:text-orange-500 h-1 w-1"
                             onClick={() => upvoteApi(item._id)}
                           />
                           <div>{item.likeCount}</div>
-                          <ArrowDownwardOutlinedIcon
+                          <ThumbDownOutlinedIcon
+                          style={{fontSize:"18px"}}
                             className="hover:text-green-700 h-1 w-1"
                             onClick={() => downvoteApi(item._id)}
                           />
                         </div>
                         <div>
-                          <ChatBubbleOutlineOutlinedIcon className="mr-2" />
+                          <ChatBubbleOutlineOutlinedIcon className="mr-2" style={{fontSize:"18px"}}/>
                           {item.commentCount}
                         </div>
                       </div>
@@ -340,7 +352,7 @@ const CommentsPage = () => {
                             {item.author_details.name === storedData.name ? (
                               <div className="relative">
                                 <button
-                                  className="flex text-sm p-1 pl-1 pr-1 mr-3 hover:bg-gray-700 dark:text-gray-400 rounded-2xl"
+                                  className="flex text-sm p-1 pl-1 pr-1 mr-3 dark:hover:bg-gray-700 dark:text-gray-400 rounded-2xl text-gray-800 hover:bg-gray-500"
                                   onClick={() => deleteComment(item._id)}
                                 >
                                   <DeleteIcon />
