@@ -70,14 +70,14 @@ const PostData = () => {
           {localStorage.getItem("token") && <div className="w-60"></div>}
         </div>
         <div className="">
-          <div className="border-l border-solid border-gray-300 pt-10">
+          <div className="border-l border-solid border-gray-300 pt-10 ">
             <Tippy
               content="Change post view"
               className="text-[10px]"
               placement="bottom"
             >
               <div
-                className={` 2xl:mt-5 flex justify-center items-center xl:mt-8 2xl:mb-1 sm:-mt-24 lg:mt-8 -mt-10 md:-mt-24 relative  2xl:ml-24 sm:ml-14 ml-10 xl:-mt-5  md:ml-14 xl:ml-14 text-gray-500 mb-3 hover:bg-gray-100 w-14 p-1 rounded-2xl ${
+                className={` 2xl:mt-5 flex justify-center items-center xl:mt-8 2xl:mb-1 sm:-mt-24 lg:mt-8 -mt-16 md:-mt-24 relative  2xl:ml-24 sm:ml-14 ml-10 xl:-mt-5  md:ml-14 xl:ml-14 text-gray-500 mb-3 hover:bg-gray-100 w-14 p-1 rounded-2xl ${
                   activeItem === "compact" ? "mr-10" : ""
                 }`}
                 onClick={() => setOpenDrop(!opendrop)}
@@ -131,12 +131,12 @@ const PostData = () => {
               )}
             </div>
             <hr />
-            <div className="md:mt-24 sm:mt-28 mt-28 lg:mt-10">
+            <div className="md:mt-24 sm:mt-28 mt-24 lg:mt-10">
               {postData &&
                 !cardOpen &&
                 postData.map((item) => (
                   <div className="flex justify-center items-center  ml-8 ">
-                    <div className="hover:bg-gray-200 hover:rounded-2xl md:-ml-6 sm:-ml-6  border-b mb-10 w-full sm:w-full 2xl:ml-8 2xl:mr-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[40rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 lg:mr-8 xl:-ml-6 xl:-mr-7 2xl:-mt-3 border border-gray-300 rounded-md">
+                    <div className="hover:bg-gray-200 hover:rounded-2xl  md:-ml-6 sm:-ml-6  border-b mb-32 w-full sm:w-full 2xl:ml-8 2xl:mr-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[40rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 lg:mr-8 xl:-ml-6 xl:-mr-7 2xl:-mt-3 border border-gray-300 rounded-md">
                       <div className="flex items-center">
                         <div className="flex">
                           {item.author.profileImage === null ? (
@@ -185,18 +185,18 @@ const PostData = () => {
                         className="flex mt-3 pb-2 space-x-4"
                         onClick={() => setShowLogIn(!showLogIn)}
                       >
-                        <div className="bg-gray-200 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
+                        <div className="bg-gray-300 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
                           <ThumbUpOutlinedIcon
                             style={{ fontSize: "18px" }}
-                            className="hover:text-orange-500 h-1 w-1 text-gray-800"
+                            className="hover:text-orange-500 h-1 w-1 "
                           />
                           <div>{item.likeCount}</div>
                           <ThumbDownOutlinedIcon
                             style={{ fontSize: "18px" }}
-                            className="hover:text-green-700 h-1 w-1 text-gray-800 "
+                            className="hover:text-green-700 h-1 w-1"
                           />
                         </div>
-                        <div className="mt-1 ml-5 w-14 pl-2 rounded-2xl p-1 bg-gray-200">
+                        <div className="mt-1 ml-5 w-14 pl-2 rounded-2xl p-1 bg-gray-300">
                           <ChatBubbleOutlineOutlinedIcon
                             style={{ fontSize: "18px" }}
                             className="mr-2 text-sm "
@@ -257,18 +257,18 @@ const PostData = () => {
                         className="flex mt-3 pb-2 space-x-4"
                         onClick={() => setShowLogIn(!showLogIn)}
                       >
-                        <div className="bg-gray-200 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
+                        <div className="bg-gray-300 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
                           <ThumbUpOutlinedIcon
                             style={{ fontSize: "18px" }}
-                            className="hover:text-orange-500 h-1 w-1 text-gray-600"
+                            className="hover:text-orange-500 h-1 w-1 "
                           />
                           <div>{item.likeCount}</div>
                           <ThumbDownOutlinedIcon
                             style={{ fontSize: "18px" }}
-                            className="hover:text-green-700 h-1 w-1 text-gray-600 "
+                            className="hover:text-green-700 h-1 w-1 "
                           />
                         </div>
-                        <div className="mt-1 ml-5 w-14 pl-2 bg-gray-200 rounded-2xl p-1">
+                        <div className="mt-1 ml-5 w-14 pl-2 bg-gray-300 rounded-2xl p-1">
                           <ChatBubbleOutlineOutlinedIcon
                             style={{ fontSize: "18px" }}
                             className="mr-2 text-sm "

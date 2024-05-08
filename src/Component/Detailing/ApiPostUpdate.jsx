@@ -278,7 +278,7 @@ const ApiPostUpdate = () => {
                           className="text-[10px]"
                         >
                           <div
-                            className="bg-gray-300 pl-1 pr-1 rounded-xl pt-1 pb-1 dark:bg-zinc-950"
+                            className="bg-gray-300 pl-1 pr-1 rounded-xl  pb-1 dark:bg-zinc-900"
                             onClick={() =>
                               navigatetoCommentsPage(item._id, item.author._id)
                             }
@@ -380,7 +380,7 @@ const ApiPostUpdate = () => {
                             className="text-[10px]"
                           >
                             <div
-                              className="bg-gray-300 pl-1 pr-1 rounded-xl pt-1 pb-1 dark:bg-zinc-950"
+                              className="bg-gray-300 pl-1 pr-1 rounded-xl  pb-1 dark:bg-zinc-900"
                               onClick={() =>
                                 navigatetoCommentsPage(
                                   item._id,

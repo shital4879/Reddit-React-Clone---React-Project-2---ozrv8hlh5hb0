@@ -10,7 +10,7 @@ const DarkTheme = ({ children }) => {
     const newTheme = darkMode === '' ? 'dark' : '';
     // const newTheme = setDarkMode(!darkMode);
     setDarkMode(!darkMode)
-    sessionStorage.setItem("darkMode", newTheme);
+    localStorage.setItem("darkMode", newTheme);
   };
 
   return (

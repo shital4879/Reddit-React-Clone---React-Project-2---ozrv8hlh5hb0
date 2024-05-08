@@ -87,7 +87,7 @@ const handleupvote = (id) =>{
 
   return (
     <div>
-      <div className="bg-gray-300 rounded-3xl flex justify-center items-center space-x-2 p-1 text-sm dark:bg-zinc-950">
+      <div className="bg-gray-300 rounded-3xl flex justify-center items-center space-x-2 p-1 text-sm dark:bg-zinc-900">
         <ThumbUpOutlinedIcon
         
           className={`h-1 w-1`}

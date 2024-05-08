@@ -206,12 +206,12 @@ const Pupular = () => {
                         className="flex mt-3 pb-2 space-x-4"
                         onClick={() => setShowLogIn(!showLogIn)}
                       >
-                        <div className="bg-gray-200 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
+                        <div className="bg-gray-300 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
                           <ThumbUpOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-orange-500 h-1 w-1" />
                           <div>{item.likeCount}</div>
                           <ThumbDownOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-green-700 h-1 w-1 " />
                         </div>
-                        <div className="mt-1 ml-5 w-14 pl-2 bg-gray-200 rounded-2xl p-1">
+                        <div className="mt-1 ml-5 w-14 pl-2 bg-gray-300 rounded-2xl p-1">
                           <ChatBubbleOutlineOutlinedIcon style={{ fontSize: "18px" }} className="mr-2 text-sm " />
                           {item.commentCount}
                         </div>
@@ -272,12 +272,12 @@ const Pupular = () => {
                         className="flex mt-3 pb-2 space-x-4"
                         onClick={() => setShowLogIn(!showLogIn)}
                       >
-                        <div className="bg-gray-200 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
+                        <div className="bg-gray-300 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
                           <ThumbUpOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-orange-500 h-1 w-1 " />
                           <div>{item.likeCount}</div>
                           <ThumbDownOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-green-700 h-1 w-1 " />
                         </div>
-                        <div className="mt-1 ml-5 w-14 pl-2 bg-gray-200 rounded-2xl p-1">
+                        <div className="mt-1 ml-5 w-14 pl-2 bg-gray-300 rounded-2xl p-1">
                           <ChatBubbleOutlineOutlinedIcon style={{ fontSize: "18px" }} className="mr-2 text-sm " />
                           {item.commentCount}
                         </div>

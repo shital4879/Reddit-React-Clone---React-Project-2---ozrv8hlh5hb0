@@ -240,7 +240,7 @@ const BeforeLogInNav = () => {
 
 
   return (
-    <div className="fixed bg-zinc-100 z-50 sm:-mt-16 -mt-8 lg:mt-0 ">
+    <div className="fixed bg-zinc-100 z-50 sm:-mt-16 -mt-8 lg:mt-0 w-dvw ">
       <div className=" flex justify-between pl-12 pt-2 pr-12 pb-10 relative h-14 border-b border-gray-200 xl:-ml-20">
         <div
           className="md:-ml-8 md:visible visible sm:visible lg:invisible xl:invisible 2xl:invisible mr-4 mt-1 lg:mr-10 -ml-10"
@@ -394,7 +394,7 @@ const BeforeLogInNav = () => {
             <div>
             <Tippy content="Open settings menu" className="text-[10px]">
               <div
-                className="pt-1 relative cursor-pointer sm:-ml-3 -ml-24 2xl:-ml-0 md:ml-16  xl:ml-4 sm:mr-48 lg:-ml-1 hover:bg-gray-200 p-1 hover:rounded-2xl"
+                className="pt-1 absolute cursor-pointer sm:-ml-3 -ml-24 2xl:-ml-0   xl:ml-4 sm:mr-48  hover:bg-gray-200 p-1 hover:rounded-2xl"
                 onClick={() => setShowopt(!showopt)}
               >
                 <MoreHorizIcon />
@@ -402,7 +402,10 @@ const BeforeLogInNav = () => {
               </Tippy>
             </div>
             {showopt && (
-              <span className=" absolute md:left-[36rem] sm:left-[28rem] left-[17rem] top-5 m-6 sm:right-10 space-y-2 shadow-xl p-4 rounded-md bg-white cursor-pointer">
+              <span 
+              // className="absolute"
+              className=" absolute top-6 m-6 sm:right-3 space-y-2 shadow-xl p-4 rounded-md bg-white cursor-pointer"
+              >
                 <h2
                   className="text-sm"
                   onClick={() => {
