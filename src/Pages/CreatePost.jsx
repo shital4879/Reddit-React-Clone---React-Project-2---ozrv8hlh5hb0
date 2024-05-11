@@ -240,7 +240,7 @@ const handleItemClick = (itemName) => {
             {!imagestate && (
               <textarea
                 required
-                className="-mt-[16px] ml-4 mr-4 border border-solid border-gray-200 2xl:w-[43rem] h-[10rem] p-2 dark:border-gray-900 dark:bg-black sm:w-[38rem] sm:mr-4 md:w-[46rem] lg:w-[36rem] xl:w-[43rem] w-[26rem]"
+                className="-mt-[16px] ml-4 mr-4 border border-solid border-gray-200 2xl:w-[43rem] h-[10rem] p-2 dark:border-gray-900 dark:bg-black sm:w-[38rem] sm:mr-4 md:w-[46rem] lg:w-[36rem] xl:w-[43rem] w-[17rem]"
                 placeholder="Text(Optional)"
                 value={text}
                 onChange={(e) => setText(e.target.value)}

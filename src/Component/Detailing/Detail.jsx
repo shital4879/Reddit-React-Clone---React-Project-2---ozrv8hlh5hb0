@@ -296,7 +296,7 @@ const Detail = () => {
                           <input
                             type="text"
                             minLength={3}
-                            className="pl-4 mt-5 rounded-md h-10 2xl:w-[34rem] border border-solid border-red-600 sm:w-[40rem] md:w-[45rem] lg:w-[34rem] xl:w-[34rem] w-[26rem]"
+                            className="pl-4 mt-5 rounded-md h-10 2xl:w-[34rem] border border-solid border-red-600 sm:w-[40rem] md:w-[45rem] lg:w-[34rem] xl:w-[34rem] w-[17rem]"
                             value={inputCount}
                             onChange={(e) => setInputCount(e.target.value)}
                           />

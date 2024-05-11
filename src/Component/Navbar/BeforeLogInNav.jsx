@@ -278,7 +278,7 @@ const BeforeLogInNav = () => {
         </div>
         </NavLink>
         </Tippy>
-        <div className="bg-gray-200 h-11 w-52 2xl:w-[45rem] 2xl:ml-0 sm:w-[22rem] lg:w-[34rem] xl:w-[40rem] xl:mr-24  float-start space-x-2 pl-3 rounded-3xl pt-2  md:w-[25rem] md:ml-20 md:-mr-36  lg:-ml-20 lg:mr-4 -ml-10 ">
+        <div className="bg-gray-200 h-11 w-36 -ml-10 2xl:w-[45rem] 2xl:ml-0 sm:w-[22rem] lg:w-[34rem] xl:w-[40rem] xl:mr-24  float-start space-x-2 pl-3 rounded-3xl pt-2  md:w-[25rem] md:ml-20 md:-mr-36  lg:-ml-20 lg:mr-4 ">
           <div className="flex items-center">
             <SearchIcon className="dark:text-slate-400" />
             <input
@@ -286,7 +286,7 @@ const BeforeLogInNav = () => {
               name
               search
               placeholder="Search Reddit"
-              className="bg-gray-200 text-lg border-none outline-none font-thin ml-2  rounded-3xl w-36 sm:w-[20rem] md:w-[22rem] lg:w-[30rem] xl:w-[34rem] 2xl:w-[45rem] "
+              className="bg-gray-200 text-[14px] 2xl:text-lg md:text-lg sm:text-lg lg:text-lg xl:text-lg border-none outline-none font-thin ml-2 w-24 rounded-3xl sm:w-[20rem] md:w-[22rem] lg:w-[30rem] xl:w-[34rem] 2xl:w-[45rem] "
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -394,7 +394,7 @@ const BeforeLogInNav = () => {
             <div>
             <Tippy content="Open settings menu" className="text-[10px]">
               <div
-                className="pt-1 absolute cursor-pointer sm:-ml-3 -ml-24 2xl:-ml-0   xl:ml-4 sm:mr-48  hover:bg-gray-200 p-1 hover:rounded-2xl"
+                className="pt-1 absolute cursor-pointer  sm:-ml-3 -ml-36 2xl:-ml-0   xl:ml-4 sm:mr-48  hover:bg-gray-200 p-1 hover:rounded-2xl"
                 onClick={() => setShowopt(!showopt)}
               >
                 <MoreHorizIcon />

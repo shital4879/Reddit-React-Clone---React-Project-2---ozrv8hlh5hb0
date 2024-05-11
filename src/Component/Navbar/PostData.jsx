@@ -136,7 +136,7 @@ const PostData = () => {
                 !cardOpen &&
                 postData.map((item) => (
                   <div className="flex justify-center items-center  ml-8 ">
-                    <div className="hover:bg-gray-200 hover:rounded-2xl  md:-ml-6 sm:-ml-6  border-b mb-32 w-full sm:w-full 2xl:ml-8 2xl:mr-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[40rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 lg:mr-8 xl:-ml-6 xl:-mr-7 2xl:-mt-3 border border-gray-300 rounded-md">
+                    <div className="hover:bg-gray-200 hover:rounded-2xl -ml-7 md:-ml-6 sm:-ml-6  border-b mb-32 w-full sm:w-full 2xl:ml-8 2xl:mr-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[40rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 lg:mr-8 xl:-ml-6 xl:-mr-7 2xl:-mt-3 border border-gray-300 rounded-md">
                       <div className="flex items-center">
                         <div className="flex">
                           {item.author.profileImage === null ? (

@@ -83,6 +83,14 @@ const NavDetail = () => {
   const navigatetoWorkProgress = () => {
     navigate(`/WorkProgress`);
   };
+  const navigatetoInbox = () => {
+    navigate(`/Inbox`);
+  };
+
+  const navigatetoad = () => {
+    navigate(`/Ad`);
+  };
+
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -107,7 +115,7 @@ const NavDetail = () => {
             </div>
           </Tippy>
         </div>
-        <div className="absolute -ml-[13rem] sm:-ml-[20rem] -mt-7 md:-ml-[30rem] lg:-ml-[42rem]">
+        <div className="absolute -ml-6 sm:-ml-[20rem] -mt-7 md:-ml-[30rem] lg:-ml-[42rem]">
           {openHome && <Community className="z-50 md:-mt-10 " />}
         </div>
         <Tippy content="Go to Reddit Home" className="mt-6 ml-10 text-[10px]">
@@ -122,7 +130,7 @@ const NavDetail = () => {
           </div>
         </Tippy>
 
-        <div className="bg-gray-200 w-[13rem] h-11 2xl:ml-20 2xl:w-[45rem] xl:w-[35rem] -ml-10 float-start space-x-2 pl-3 rounded-3xl pt-2 dark:bg-slate-900 sm:-ml-4 sm:w-[20rem] sm:mr-2 md:-ml-4 md:w-[25rem] md:mr-2 ">
+        <div className="bg-gray-200 w-[5rem]  h-11 2xl:ml-20 2xl:w-[45rem] xl:w-[35rem] -ml-20 float-start space-x-2 pl-3 rounded-3xl pt-2 dark:bg-slate-900 sm:-ml-4 sm:w-[20rem] sm:mr-2 md:-ml-4 md:w-[25rem] md:mr-2 ">
           <div
             className="flex items-center"
             ref={searchiconref}
@@ -209,7 +217,7 @@ const NavDetail = () => {
             <div className="lg:mr-6 flex">
               <div onClick={() => navigate("/CreatePost")}>
                 <Tippy content="Create Post" className="text-xs">
-                  <AddOutlinedIcon className="sm:mr-3  md:mr-3 md:ml-5 cursor-pointer " />
+                  <AddOutlinedIcon className="sm:mr-3  md:mr-3 md:ml-5 cursor-pointer invisible  lg:visible md:visible xl:visible 2xl:visible " />
                 </Tippy>
               </div>
               {/* <div onClick={()=>setOpenPopular(!openPopular)}>
@@ -232,7 +240,7 @@ const NavDetail = () => {
                 <Tippy content="Open inbox" className="text-xs">
                   <NotificationsNoneIcon
                     className="cursor-pointer"
-                    onClick={() => navigatetoWorkProgress()}
+                    onClick={() => navigatetoInbox()}
                   />
                 </Tippy>
               </div>
@@ -240,7 +248,7 @@ const NavDetail = () => {
                 <Tippy content="Advertise" className="text-xs">
                   <PodcastsIcon
                     className="cursor-pointer"
-                    onClick={() => navigatetoWorkProgress()}
+                    onClick={() => navigatetoad()}
                   />
                 </Tippy>
               </div>
@@ -262,7 +270,7 @@ const NavDetail = () => {
             <div
               ref={iconref}
               onClick={(e) => handlefun(e)}
-              className="cursor-pointer flex justify-between items-center border-solid h-10 border-gray-400 border rounded-md 2xl:w-36 pl-2 pr-2 sm:mr-4 sm:w-24 md:mr-4 md:w-24 xl:-mr-24 lg:-mr-14 lg:-ml-10 2xl:-mr-4 mr-2 w-20"
+              className="cursor-pointer flex justify-between items-center border-solid h-10 -ml-8 border-gray-400 border rounded-md 2xl:w-36 pl-2 pr-2 sm:mr-4 sm:w-24 md:mr-4 md:w-24 xl:-mr-24 lg:-mr-14 lg:-ml-10 2xl:-mr-4 mr-2 w-20"
             >
               <img
                 className="h-6 w-6 rounded-lg"

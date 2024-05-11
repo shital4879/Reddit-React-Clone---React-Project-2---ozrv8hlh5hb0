@@ -133,7 +133,7 @@ const ApiPostUpdate = () => {
   return (
     <div>
       {!openPopular && (
-        <div className="flex w-dvw space-x-6 mt-3 bg-white p-3 border-gray-400 border  rounded-sm dark:bg-black dark:text-gray-400 dark:border-gray-900 sm:-ml-[27rem] sm:w-dvw md:-ml-[27rem] md:w-dvw lg:w-[35rem] lg:-ml-12 2xl:w-[48rem] xl:w-[40rem] xl:-ml-24 -ml-[27rem] 2xl:-ml-20">
+        <div className="flex w-dvw sm:space-x-6 md:space-x-6 lg:space-x-6 xl:space-x-6 2xl:space-x-6 mt-3 bg-white p-3 border-gray-400 border  rounded-sm dark:bg-black dark:text-gray-400 dark:border-gray-900 sm:-ml-[27rem] sm:w-dvw md:-ml-[27rem] md:w-dvw lg:w-[35rem] lg:-ml-12 2xl:w-[48rem] xl:w-[40rem] xl:-ml-24 -ml-[27rem] 2xl:-ml-20">
           <div
             value="Best"
             onClick={() => {

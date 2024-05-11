@@ -17,6 +17,8 @@ import Like from "../Component/Context/Like";
 import UpdatePost from "../Pages/UpdatePost";
 import OpenPop from "../Component/Navbar/OpenPop";
 import WorkProgress from "../Pages/WorkProgress";
+import Inbox from "../Pages/Inbox";
+import Ad from "../Pages/Ad";
 
 export const Mycontext = createContext();
 
@@ -45,6 +47,8 @@ const [openHome, setOpenHome] = useState(false);
       <Route path="/UpdatePost/:id/:con/:title" element={<UpdatePost/>}></Route>
       <Route path="/OpenPop" element={<OpenPop/>}></Route>
       <Route path="/WorkProgress" element={<WorkProgress/>}></Route>
+      <Route path="/Inbox" element={<Inbox/>}></Route>
+      <Route path="/Ad" element={<Ad/>}></Route>
     </Routes> 
     </BrowserRouter>
     </Like>
