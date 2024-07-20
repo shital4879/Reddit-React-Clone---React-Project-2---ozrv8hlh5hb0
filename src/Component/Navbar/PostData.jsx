@@ -9,11 +9,15 @@ import ViewAgendaSharpIcon from "@mui/icons-material/ViewAgendaSharp";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
+import { BiMessage } from "react-icons/bi";
+import { LuArrowBigUp } from "react-icons/lu";
+import { LuArrowBigDown } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
 import { Mycontext } from "../../components/App";
 import { contextApi } from "../Context/ApiContext";
 import Tippy from "@tippyjs/react";
+import DateFormatter from "../Detailing/Time";
 
 const PostData = () => {
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(Mycontext);
@@ -59,7 +63,7 @@ const PostData = () => {
               </h1>
 
               <h1
-                className="tracking-tight  text-gray-700 ml-6 dark:bg-zinc-950 dark:text-gray-400 pl-5 pr-4 pt-1 pb-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
+                className="cursor-pointer tracking-tight  text-gray-700 ml-6 dark:bg-zinc-950 dark:text-gray-400 pl-5 pr-4 pt-1 pb-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
                 onClick={() => setShowLogIn(!showLogIn)}
               >
                 <AddOutlinedIcon /> Create a Community
@@ -70,7 +74,7 @@ const PostData = () => {
           {localStorage.getItem("token") && <div className="w-60"></div>}
         </div>
         <div className="">
-          <div className="border-l border-solid border-gray-300 pt-10 ">
+          <div className="border-l border-solid border-gray-300 pt-10 cursor-pointer ">
             <Tippy
               content="Change post view"
               className="text-[10px]"
@@ -155,12 +159,7 @@ const PostData = () => {
                           </h1>
                         </div>
                         <div className="text-gray-500 text-xs mt-1">
-                          .
-                          {(
-                            (new Date() - new Date(item.createdAt)) /
-                            (1000 * 3600 * 24)
-                          ).toFixed(0)}{" "}
-                          days ago
+                        <DateFormatter createdAt={item.createdAt}/>
                         </div>
                       </div>
                       <div>
@@ -185,23 +184,29 @@ const PostData = () => {
                         className="flex mt-3 pb-2 space-x-4"
                         onClick={() => setShowLogIn(!showLogIn)}
                       >
-                        <div className="bg-gray-300 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
-                          <ThumbUpOutlinedIcon
-                            style={{ fontSize: "18px" }}
-                            className="hover:text-orange-500 h-1 w-1 "
-                          />
+                        <div className="h-8 bg-gray-300 pl-2 pr-2 flex items-center rounded-3xl space-x-2  text-sm ">
+                          <div style={{fontSize:"10rem"}}>
+
+                        <LuArrowBigUp
+                            style={{ }}
+                            className="hover:text-orange-500 h-6 w-6 mr-1 "
+                            />
+                            </div>
                           <div>{item.likeCount}</div>
-                          <ThumbDownOutlinedIcon
-                            style={{ fontSize: "18px" }}
-                            className="hover:text-green-700 h-1 w-1"
+                          <LuArrowBigDown
+                            style={{ fontSize: "15rem" }}
+                            className="hover:text-green-700 h-6 w-6 ml-1"
                           />
                         </div>
-                        <div className="mt-1 ml-5 w-14 pl-2 rounded-2xl p-1 bg-gray-300">
-                          <ChatBubbleOutlineOutlinedIcon
+                        <div className="flex items-center justify-center w-14 rounded-2xl bg-gray-300">
+                          <BiMessage
                             style={{ fontSize: "18px" }}
-                            className="mr-2 text-sm "
+                            className="mr-2 mt-1 font-bold "
                           />
+                          <div className="-pt-2">
+
                           {item.commentCount}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -241,12 +246,7 @@ const PostData = () => {
                         <h1 className="font-semibold text-base ml-2 mr-2">
                           {item.author.name}
                         </h1>
-                        .
-                        {(
-                          (new Date() - new Date(item.createdAt)) /
-                          (1000 * 3600 * 24)
-                        ).toFixed(0)}{" "}
-                        days ago
+                        <DateFormatter createdAt={item.createdAt}/>
                       </div>
                       <div>
                         <p className="mb-2 mt-2 2xl:w-[40rem] w-[18rem] sm:w-[30rem]  xl:w-[35rem] lg:w-[28rem] md:w-[37rem] ">
@@ -257,23 +257,29 @@ const PostData = () => {
                         className="flex mt-3 pb-2 space-x-4"
                         onClick={() => setShowLogIn(!showLogIn)}
                       >
-                        <div className="bg-gray-300 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
-                          <ThumbUpOutlinedIcon
-                            style={{ fontSize: "18px" }}
-                            className="hover:text-orange-500 h-1 w-1 "
-                          />
+                        <div className="h-8 bg-gray-300 pl-2 pr-2 flex items-center rounded-3xl space-x-2  text-sm ">
+                          <div style={{fontSize:"10rem"}}>
+
+                        <LuArrowBigUp
+                            style={{ }}
+                            className="hover:text-orange-500 h-6 w-6 mr-1 "
+                            />
+                            </div>
                           <div>{item.likeCount}</div>
-                          <ThumbDownOutlinedIcon
-                            style={{ fontSize: "18px" }}
-                            className="hover:text-green-700 h-1 w-1 "
+                          <LuArrowBigDown
+                            style={{ fontSize: "15rem" }}
+                            className="hover:text-green-700 h-6 w-6 ml-1"
                           />
                         </div>
-                        <div className="mt-1 ml-5 w-14 pl-2 bg-gray-300 rounded-2xl p-1">
-                          <ChatBubbleOutlineOutlinedIcon
+                        <div className="flex items-center justify-center  w-14 rounded-2xl bg-gray-300">
+                          <BiMessage
                             style={{ fontSize: "18px" }}
-                            className="mr-2 text-sm "
+                            className="mr-2 mt-1 font-bold "
                           />
+                          <div className="-pt-2">
+
                           {item.commentCount}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -284,16 +290,16 @@ const PostData = () => {
           </div>
         </div>
 
-        <div className="2xl:mt-20 2xl:ml-10 2xl:w-[17rem] sm:mt-20 xl:w-[15rem] xl:ml-10 lg:-ml-8 bg-gray-200 rounded-xl mt-11  lg:w-[14rem] sm:invisible  md:invisible lg:visible xl:visible h-auto z-index-50">
+        <div className="2xl:mt-20 2xl:ml-10 2xl:w-[17rem] sm:mt-20 xl:w-[15rem] xl:ml-10 lg:-ml-8 mt-11  lg:w-[14rem] sm:invisible  md:invisible lg:visible xl:visible h-auto z-index-50">
           <h1 className="pt-7 pl-5 text-gray-600 text-base h-auto">
             POPULAR COMMUNITIES
           </h1>
-          <div className="xl:w-[16rem] p-4 m-4 lg:w-[12rem] ">
+          <div className="xl:w-[16rem] p-4 m-4 lg:w-[12rem] bg-gray-200  rounded-xl">
             {channelApi &&
               channelApi
                 .slice(0, showMore ? channelApi.length : 8)
                 .map((item) => (
-                  <div className="hover:bg-gray-100 pl-2 pt-1 pb-1 flex space-x-3  mb-2">
+                  <div className="cursor-pointer hover:bg-gray-100 pl-2 pt-1 pb-1 flex space-x-3  mb-2">
                     {item.image == null ? (
                       <p className="mt-2 font-bold h-8 items-center flex justify-center w-8 text-[15px] dark:text-gray-300 bg-gray-300 rounded-2xl">
                         {item.name.charAt(0).toUpperCase()}
@@ -310,13 +316,7 @@ const PostData = () => {
                         r/{item.name}
                       </div>
                       <div className="text-xs text-gray-500">
-                        {(
-                          (new Date() - new Date(item.createdAt)) /
-                          1000 /
-                          3600 /
-                          24
-                        ).toFixed(0)}{" "}
-                        days ago
+                      <DateFormatter createdAt={item.createdAt}/>
                       </div>
                     </div>
                   </div>

@@ -59,7 +59,7 @@ const Community = () => {
       </div>
 
       <div className="mt-14 border-t border-b pb-4 ml-5  mr-4 pt-2 dark:border-gray-800">
-        <div className="flex dark:text-gray-500 justify-between tracking-widest font-extralight pl-4 pr-4 pt-2 pb-2 rounded-md text-gray-600 ml-2 mb-1 hover:bg-gray-100 dark:hover:bg-gray-800 ">
+        <div className="cursor-pointer flex dark:text-gray-500 justify-between tracking-widest font-extralight pl-4 pr-4 pt-2 pb-2 rounded-md text-gray-600 ml-2 mb-1 hover:bg-gray-100 dark:hover:bg-gray-800 ">
           <h1>RECENTS</h1>
           <KeyboardArrowDownOutlinedIcon
             className="dark:text-white"
@@ -70,7 +70,7 @@ const Community = () => {
           !openRecents &&
           channelApi.slice(0, 2).map((item) => (
             <div
-              className="flex space-x-3 space-y-3 dark:text-gray-400  ml-2 pl-4 pr-4 pt-1 pb-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-zinc-950"
+              className="cursor-pointer flex space-x-3 space-y-3 dark:text-gray-400  ml-2 pl-4 pr-4 pt-1 pb-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-zinc-950"
               onClick={() => navigatetoChannel(item._id)}
             >
               {item.image == null ? (
@@ -98,7 +98,7 @@ const Community = () => {
 
       <div className="mr-4 pr-2 p-4  border-b pb-4 ml-4  pt-2 dark:bg-zinc-950  dark:text-white dark:border-gray-800">
         <div className="mt-2 tracking-widest">
-          <h1 className="flex justify-between tracking-widest font-extralight text-gray-500 pl-4 pr-2 pt-2 pb-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-500">
+          <h1 className="cursor-pointer flex justify-between tracking-widest font-extralight text-gray-500 pl-4 pr-2 pt-2 pb-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-500">
             <h1>COMMUNITY </h1>
             <KeyboardArrowDownOutlinedIcon
               className="dark:text-white"
@@ -110,7 +110,7 @@ const Community = () => {
           {!opencommun && (
             <div className="">
               <h1
-                className="tracking-tight  text-gray-700 dark:bg-zinc-950 dark:text-gray-400 pl-2 pr-4 pt-1 pb-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="cursor-pointer tracking-tight  text-gray-700 dark:bg-zinc-950 dark:text-gray-400 pl-2 pr-4 pt-1 pb-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
                 onClick={() => {setCreateCommunity(!createCommunity),setOpenHome(false)}}
               >
                 <AddOutlinedIcon /> Create a Community
@@ -118,7 +118,7 @@ const Community = () => {
               {channelApi &&
                 channelApi.slice(0, 5).map((item) => (
                   <div
-                    className="flex space-x-3 space-y-4  dark:text-gray-400 pl-4 pr-4 pt-1 pb-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="cursor-pointer flex space-x-3 space-y-4  dark:text-gray-400 pl-4 pr-4 pt-1 pb-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
                     onClick={() => {navigatetoChannel(item._id),setOpenHome(false)}}
                   >
                     {item.image == null ? (

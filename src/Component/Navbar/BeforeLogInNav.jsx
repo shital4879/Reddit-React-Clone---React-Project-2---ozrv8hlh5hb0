@@ -25,6 +25,7 @@ import SignOut from "../SignIn/SignOut";
 import PostData from "./PostData";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { IoCloseSharp } from "react-icons/io5";
 import { Mycontext } from "../../components/App";
 import { contextApi } from "../Context/ApiContext";
 import { ThemeContext } from "../Context/DarkTheme";
@@ -32,15 +33,13 @@ import { ThemeContext } from "../Context/DarkTheme";
 const BeforeLogInNav = () => {
   const { showLogIn, setShowLogIn } = useContext(Mycontext);
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
-  const { search, setSearch, fetchingData, setFetchingData, postData } =
-    useContext(contextApi);
+  const { search, setSearch, fetchingData, setFetchingData, postData } = useContext(contextApi);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [showApp, setShowApp] = useState(false);
   const [showopt, setShowopt] = useState(false);
   const [showAppLink, setShowAppLink] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
-
   const searchinput = useRef();
   const [hotelInputPopUp, setHotelInputPopUp] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -61,7 +60,8 @@ const BeforeLogInNav = () => {
   const [error, setError] = useState({});
   const [validsign, setValidSign] = useState(true);
   const [errorsign, setErrorSign] = useState({});
-
+  const refsearch = useRef();
+  const ref = useRef();
   function hotelInputFocus() {
     setHotelInputPopUp(true);
   }
@@ -185,6 +185,7 @@ const BeforeLogInNav = () => {
             email: result.data.user.email,
           })
         );
+        localStorage.setItem("userName",result.data.user.name);
         navigateDetail();
       }
       if (result.status === "fail") {
@@ -286,7 +287,7 @@ const BeforeLogInNav = () => {
               name
               search
               placeholder="Search Reddit"
-              className="bg-gray-200 text-[14px] 2xl:text-lg md:text-lg sm:text-lg lg:text-lg xl:text-lg border-none outline-none font-thin ml-2 w-24 rounded-3xl sm:w-[20rem] md:w-[22rem] lg:w-[30rem] xl:w-[34rem] 2xl:w-[45rem] "
+              className="cursor-pointer bg-gray-200 text-[14px] 2xl:text-lg md:text-lg sm:text-lg lg:text-lg xl:text-lg border-none outline-none font-thin ml-2 w-24 rounded-3xl sm:w-[20rem] md:w-[22rem] lg:w-[30rem] xl:w-[34rem] 2xl:w-[45rem] "
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -302,7 +303,7 @@ const BeforeLogInNav = () => {
           </div>
 
           {openSearch && (
-            <div className="w-[100%] mt-4  p-4 shadow-2xl z-50 overflow-auto h-[30rem] bg-white rounded-lg">
+            <div ref={refsearch} className="w-[100%] mt-4  p-4 shadow-2xl z-50 overflow-auto h-[30rem] bg-white rounded-lg">
               <p className="mb-2 font-normal text-sm">
                 <TrendingUpSharpIcon /> TRENDING TODAY
               </p>
@@ -319,11 +320,13 @@ const BeforeLogInNav = () => {
                         // setSearch(item.author.name), setOpenSearch(!openSearch);
                         setShowLogIn(!showLogIn)
                       }}
+                      style={{}}
+                      className="cursor-pointer"
                     >
-                      <div className="text-base font-semibold pt-2">
+                      <div className="cursor-pointer text-base font-semibold pt-2">
                         {item.author.name}
                       </div>
-                      <div className="flex justify-between text-sm text-gray-600 space-x-7 mr-2 mt-1">
+                      <div className=" flex justify-between text-sm text-gray-600 space-x-7 mr-2 mt-1">
                         <div>{item.content}</div>
                         
                             {item.images == "" ? (
@@ -493,13 +496,13 @@ const BeforeLogInNav = () => {
             <div className="flex m-5 justify-between">
               <h1 className="text-3xl font-bold">Get the Reddit app</h1>
               <button
-                className="text-3xl p-3 rounded-md bg-gray-100"
+                className="text-3xl p-2 rounded-md bg-gray-50"
                 onClick={() => {
                   setShowAppLink(!showAppLink);
                 }}
               >
                 {" "}
-                X{" "}
+                <IoCloseSharp/>{" "}
               </button>
             </div>
             <div className="flex items-center justify-center">
@@ -544,13 +547,13 @@ const BeforeLogInNav = () => {
                   <div className="bg-white relative w-[30rem] h-[90%] rounded-md z-50 ">
                     <div className="flex justify-end mt-4 mr-4">
                       <button
-                        className="text-2xl pl-2 pr-2 rounded-md bg-gray-400 flex"
+                        className="text-2xl p-2 rounded-md bg-gray-50 flex"
                         onClick={() => {
                           setShowLogIn(!showLogIn);
                         }}
                       >
                         {" "}
-                        X{" "}
+                        <IoCloseSharp/>{" "}
                       </button>
                     </div>
                     {!signUpPage1 && (
@@ -643,10 +646,10 @@ const BeforeLogInNav = () => {
                               </div>
                             </div>
                           </div>
-                          <p className="text-xs ml-16 mt-6">
+                          <p className="text-xs ml-16 mt-3">
                             New to Reddit ?{" "}
                             <button
-                              className="cursor-pointer"
+                              className="cursor-pointer text-blue-800 font-semibold"
                               onClick={() => setSignUpPage1(!signUpPage1)}
                             >
                               Sign Up
@@ -655,7 +658,7 @@ const BeforeLogInNav = () => {
 
                           <button
                             type="submit"
-                            className="mt-3 pt-1 text-white cursor-pointer pb-8 text-xl bg-orange-600 h-[40px] rounded-2xl w-[21rem] ml-16 font-bold py-2 px-4 transition-all duration-300"
+                            className="mt-14 pt-1  text-white cursor-pointer pb-8 text-xl bg-orange-600 h-[40px] rounded-2xl w-[21rem] ml-16 font-bold py-2 px-4 transition-all duration-300"
                             // onClick={() => navigateDetail(item._id)}
                             // disabled={registerData.email === "" && registerData.email === null}
                           >
@@ -733,21 +736,21 @@ const BeforeLogInNav = () => {
                                     )}
                                   </div>
                                   <br />
-                                  <p className="text-xs ml-16 ">
+                                  <p className="text-xs ml-16 -mt-3">
                                     Already a Redditor ?{" "}
                                     <button
-                                      className="cursor-pointer"
+                                      className="cursor-pointer text-blue-700 font-semibold"
                                       onClick={() =>
                                         setSignUpPage1(!signUpPage1)
                                       }
                                     >
-                                      Sign In
+                                      Sign In.
                                     </button>
                                   </p>
 
                                   <button
                                     type="submit"
-                                    className="mt-5 pt-1 text-white cursor-pointer pb-8 text-xl bg-orange-600 h-[40px] rounded-2xl w-[21rem] ml-16 font-bold py-2 px-4 transition-all duration-300"
+                                    className="mt-12 pt-1 text-white cursor-pointer pb-8 text-xl bg-orange-600 h-[40px] rounded-2xl w-[21rem] ml-16 font-bold py-2 px-4 transition-all duration-300"
                                     onClick={() =>
                                       // setSignUpPage2(!signUpPage2)
                                       handleEmail()

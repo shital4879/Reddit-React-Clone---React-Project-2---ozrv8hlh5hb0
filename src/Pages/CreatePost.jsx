@@ -11,6 +11,10 @@ import { ThemeContext } from "../Component/Context/DarkTheme";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import ApiContext, { contextApi } from "../Component/Context/ApiContext";
 import { Mycontext } from "../components/App";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 // import { contextApi } from "../components/App";
 
 const CreatePost = () => {
@@ -20,12 +24,84 @@ const CreatePost = () => {
   const [imagestate, setImageState] = useState(false);
   const [draftno, setDraftno] = useState(0);
   const [inputvalue, setInputValue] = useState("");
+  const[channels,setChannels] = useState([]);
   let maxnum = 100;
-  const [community, setCommunity] = useState(false);
+  const [community, setCommunity] = useState(null);
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
   const [postImage,setPostImage] = useState("")
   const [text, setText] = useState("");
   const { showLogIn, setShowLogIn, dataChannel,openPopular,setOpenPopular,createCommunity, setCreateCommunity} = useContext(Mycontext);
+  const [filteredData, setFilteredData] = useState([]);
+
+
+  const navigatedetailpage = () =>{
+    navigate(-1)
+  }
+  
+
+  const fetchPopularCommunities = async (defaultName) => {
+    try {
+      const resp = await fetch(
+        "https://academics.newtonschool.co/api/v1/reddit/channel",
+        {
+          headers: {
+            projectID: "ozrv8hlh5hb0",
+          },
+        }
+      );
+      if (!resp.ok) return;
+      const result = await resp.json();
+      setChannels(result.data);
+      console.log(result.data,"datac");
+
+      const filteredChannels = result.data.map(({ _id, name }) => ({
+        _id,
+        name,
+      }));
+      const defaultUserName = { _id: "1", name: `u/${defaultName}`};
+      if (defaultUserName) {
+        setFilteredData([defaultUserName, ...filteredChannels]);
+        setCommunity(defaultUserName);
+      } else {
+        setFilteredData(filteredChannels);
+        setCommunity(filteredChannels[0]);
+      }
+    } catch (err) {
+      console.log(err.message ? err.message : err);
+    }
+  };
+
+
+
+  const addCommunityPost = async (channelId) => {
+    try {
+      const formData = new FormData();
+      formData.append("title", inputvalue);
+      formData.append("content", text);
+      formData.append("images", postImage);
+      formData.append("channelId", channelId);
+
+      const resp = await fetch(
+        "https://academics.newtonschool.co/api/v1/reddit/post/",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            projectID: "ozrv8hlh5hb0",
+          },
+          body: formData,
+        }
+      );
+      if (!resp.ok) return;
+      const result = await resp.json();
+      navigatedetailpage()
+    } catch (err) {
+      console.log(err.message ? err.message : err);
+    }
+  };
+
+
+
 
   const handleTextChange = (event) => {
     setText(event.target.value);
@@ -38,18 +114,14 @@ const CreatePost = () => {
     }
   };
 
-  // const [signUpData, setSignUpData] = useState({
-  //   postTitle: "",
-  //   postContent: "",
-  //   postImage: "",
-  // })
 
-const createpostdata = async (e) =>{
-e.preventDefault();
+
+const createpostdata = async () =>{
+// e.preventDefault();
 
   const formData = new FormData();
-  formData.append('title', inputvalue);
-  formData.append('content', text);
+  formData.append('title', text);
+  formData.append('content', inputvalue);
   formData.append('images', postImage);
 
   try{
@@ -69,7 +141,7 @@ e.preventDefault();
 
     if(result.status === "success"){
       console.log(result.message);
-      navigatedetailpage()
+      navigate("/Detail");
     }
     if(result.status === "fail"){
       console.log("fail");
@@ -80,35 +152,69 @@ e.preventDefault();
   }
 }
 
+const handleNewPost = () => {
 
-// const updatePost = async ()=>{
-//   try{
-//     const responce = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/:${params.id}`)
-//   }
-// }
+    if (titleInp.length >= 1 && localStorage.getItem("authToken")) {
+      if (isChannelSelected && sessionStorage.getItem("createPostId")) {
+        if (sessionStorage.getItem("editPost")) {
+          editPost(
+            localStorage.getItem("authToken"),
+            sessionStorage.getItem("createPostId")
+          );
+        } else {
+          addCommunityPost(
+            localStorage.getItem("authToken"),
+            sessionStorage.getItem("createPostId")
+          );
+        }
+      } else {
+        if (community._id === "1") {
+          addNewPost(localStorage.getItem("authToken"));
+        } else if (community._id) {
+          addCommunityPost(localStorage.getItem("authToken"), community._id);
+        }
+      }
+    }
+  };
+
+const handlepostclick=(e)=>{
+  e.preventDefault();
+  if (community._id === "1") {
+    createpostdata();
+  } else if (community._id) {
+    addCommunityPost( community._id);
+  }
+}
 
 useEffect(() => {
-  createpostdata;
-}, []);
+  if (localStorage.getItem("userName")) {
+    fetchPopularCommunities(localStorage.getItem("userName"));
+  }
+  else{
+    navigate(-1);
+  }
+  }, []);
 
+const handleCommunityChange = (event, newValue) => {
+  if (newValue) {
+    setCommunity(newValue);
+    }
+  };
 
-const navigatedetailpage = () =>{
-  navigate(-1)
-}
 
 const [activeItem, setActiveItem] = useState("post");
 const handleItemClick = (itemName) => {
   setActiveItem(itemName === activeItem ? null : itemName);
 };
 
-
+const storedData = JSON.parse(localStorage.getItem("UserInfo"));
   return (
     <div className={darkMode ? "dark" : ""}>
       <div className="fixed ">
 
       <NavDetail />
       </div>
-      <form onSubmit={createpostdata}>
+      <form onSubmit={handlepostclick}>
       <div className="bg-gray-300 h-dvh w-dvw flex pt-8 2xl:pl-40 pr-40 justify-between dark:bg-zinc-950 sm:pl-0 lg:pl-8 xl:pl-24">
         <div className="mt-12">
           <div className="flex justify-between border-solid border-white border-b 2xl:w-[50rem] pb-2 dark:text-white dark:border-gray-800 sm:w-[40rem] pr-2 sm:-mt-4 sm:pl-2 md:w-dvw lg:w-[38rem] xl:w-[45rem] w-dvw">
@@ -121,18 +227,30 @@ const handleItemClick = (itemName) => {
             </div>
           </div>
           <div
-            onClick={() => setCommunity(!community)}
+            // onClick={() => setCommunity(!community)}
             className="bg-white flex p-[7px] border bolrder-solid border-gray-400 w-72 mt-2 rounded text-gray-500 dark:bg-black dark:text-gray-400 dark:border-gray-900"
           >
-            <PanoramaFishEyeIcon />
-            <p className=" 2xl:mr-10 2xl:pl-2 ml-2 mr-12">
-              {community ? "Choose a community" : "Search communities"}
+            {/* <PanoramaFishEyeIcon /> */}
+            <p className=" 2xl:mr-10 2xl:pl-2 ml-2 mr-12 h-14">
+
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={filteredData}
+              getOptionLabel={(option) => option.name}
+              value={community}
+              onChange={handleCommunityChange}
+              sx={{ width: 230,height:40}}
+              renderInput={(params) => <TextField {...params} />}
+            />
+
+              {/* {community ? "Choose a community" : "Search communities"} */}
             </p>
-            <p>
+            {/* <p>
               {community ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
-            </p>
+            </p> */}
           </div>
-          {community && (
+          {/* {community && (
             <div className="absolute 2xl:w-72 bg-white p-4 dark:bg-black sm:w-72 md:w-72 lg:w-72 w-44  z-10">
               <div className="border-b bolrder-solid border-gray-400 pb-5">
                 <p className="text-xs text-gray-400">Your profile</p>
@@ -158,7 +276,7 @@ const handleItemClick = (itemName) => {
                 No Community found ! Create one
               </p>
             </div>
-          )}
+          )} */}
 
           <div className="mt-4  border-solid border-gray-400 rounded border bg-white 2xl:h-[28rem] shadow-xl dark:bg-black dark:text-gray-400 dark:border-gray-900 sm:w-dvw lg:w-[38rem] xl:w-[45rem] w-dvw">
             <div className="flex  border-solid border-gray-300 border-b dark:border-gray-600">

@@ -14,8 +14,12 @@ import { likeContext } from "../Component/Context/Like";
 import Community from "../Component/Detailing/Community";
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+import { BiMessage } from "react-icons/bi";
+import { LuArrowBigUp } from "react-icons/lu";
+import { LuArrowBigDown } from "react-icons/lu";
 import { Mycontext } from "../components/App";
 import HomeNav from "../Component/Detailing/HomeNav";
+import DateFormatter from "../Component/Detailing/Time";
 
 const AuthorDetail = () => {
   const navigate = useNavigate();
@@ -111,6 +115,7 @@ const AuthorDetail = () => {
         <NavDetail />
       </div>
       <div className="flex dark:bg-zinc-950 bg-gray-100">
+        
         <HomeNav />
         <div className="2xl:ml-14 pb-36 sm:-ml-[21rem] 2xl:flex md:-ml-[21rem] lg:-ml-[5rem] -ml-[21rem] xl:-ml-[2rem] xl:flex xl:justify-center lg:flex 2xl:justify-center lg:justify-center dark:bg-zinc-950 bg-gray-100">
           <div className="dark:bg-zinc-950">
@@ -141,14 +146,7 @@ const AuthorDetail = () => {
                         </h1>
                       </div>
                       <div className="text-gray-500 text-sm">
-                        .
-                        {(
-                          (new Date() - new Date(item.createdAt)) /
-                          1000 /
-                          3600 /
-                          24
-                        ).toFixed(0)}{" "}
-                        days ago
+                      <DateFormatter createdAt={item.createdAt}/>
                       </div>
                     </div>
                     <div>
@@ -168,26 +166,28 @@ const AuthorDetail = () => {
                     </div>
                     <div className="flex mt-3 pb-5 space-x-4">
                       <div className="bg-gray-200 rounded-3xl flex justify-center items-center space-x-2 p-1 text-sm dark:bg-zinc-950">
-                        <ThumbUpOutlinedIcon
+                        <LuArrowBigUp
                         style={{fontSize:"18px"}}
-                          className="hover:text-orange-500 h-1 w-1"
+                          className="cursor-pointer hover:text-orange-500 h-6 w-6 mr-1 "
                           onClick={() => upvoteApi(item._id)}
                         />
                         <div>{item.likeCount}</div>
-                        <ThumbDownOutlinedIcon
+                        <LuArrowBigDown
                         style={{fontSize:"18px"}}
-                          className="hover:text-green-700 h-1 w-1"
+                          className="cursor-pointer hover:text-green-700 h-6 w-6 ml-1"
                           onClick={() => downvoteApi(item._id)}
                         />
                       </div>
                       <div
-                            className="flex justify-center items-center bg-gray-300 pl-1 pr-1 rounded-xl pt-1 pb-1 dark:bg-zinc-950"
+                            className="flex justify-center items-center  pl-2 pr-2  rounded-xl pt-1 pb-1 bg-gray-200 dark:bg-zinc-950"
                             onClick={() =>
                               navigatetoCommentsPage(item._id, item.author._id)
                             }
                           >
-                            <ChatBubbleOutlineOutlinedIcon className="mr-1 mt-1"  style={{fontSize:"18px"}}/>
+                             {/* <div className="flex items-center justify-center  w-14 rounded-2xl bg-gray-300"> */}
+                            <BiMessage className="cursor-pointer mr-2 mt-1 font-bold " style={{fontSize:"18px"}}/>
                             {item.commentCount}
+                          {/* </div> */}
                           </div>
                     </div>
                   </div>

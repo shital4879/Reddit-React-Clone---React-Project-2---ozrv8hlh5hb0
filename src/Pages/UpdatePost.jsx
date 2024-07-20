@@ -16,18 +16,17 @@ const UpdatePost = () => {
     const navigate = useNavigate();
     const params = useParams();
     const { fetchingData, PostApi } = useContext(contextApi);
-    console.log(params.id);
-    // console.log(params.img);
+    const[hotelId,setHotelId] = useState();
     const {channelApi} = useContext(contextApi) 
     const [mode, setMode] = useState(false);
     const [imagestate, setImageState] = useState(false);
     const [draftno, setDraftno] = useState(0);
-    const [inputvalue, setInputValue] = useState(params.con);
+    const [inputvalue, setInputValue] = useState("");
     let maxnum = 100;
     const [community, setCommunity] = useState(false);
     const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
     const [postImage,setPostImage] = useState("")
-    const [text, setText] = useState(params.title);
+    const [text, setText] = useState("");
   
     const handleTextChange = (event) => {
       setText(event.target.value);
@@ -50,12 +49,12 @@ const UpdatePost = () => {
   e.preventDefault();
   
     const formData = new FormData();
-    formData.append('title', inputvalue);
-    formData.append('content', text);
+    formData.append('title', text);
+    formData.append('content', inputvalue);
     formData.append('images', postImage);
   
     try{
-      const responce = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/${params.id}`,
+      const responce = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/${hotelId}`,
       {
         method: "PATCH",
         headers: {
@@ -83,7 +82,15 @@ const UpdatePost = () => {
   }
   
   useEffect(() => {
-    createpostdata;
+    if(sessionStorage.getItem("id")){
+      setHotelId(sessionStorage.getItem("id"));
+    }
+    if(sessionStorage.getItem("title")){
+      setText(sessionStorage.getItem("title"));
+    }
+    if(sessionStorage.getItem("con")){
+      setInputValue(sessionStorage.getItem("con"));
+    }
   }, []);
   
   const navigatedetailpage = () =>{
@@ -102,14 +109,8 @@ const handleItemClick = (itemName) => {
 
     <NavDetail />
       </div>
-
-    {fetchingData &&
-          fetchingData
-            .filter((item) => params.id == item._id)
-
-            .map((item) => (
            
-    <form onSubmit={createpostdata}>
+    <form onSubmit={(e)=>createpostdata(e)}>
     <div className="bg-gray-300 h-dvh w-dvw flex pt-8 2xl:pl-40 pr-40 justify-between dark:bg-zinc-950 sm:pl-0 lg:pl-8 xl:pl-24">
       <div className="mt-14">
         <div className="flex justify-between border-solid border-white border-b 2xl:w-[50rem] pb-2 dark:text-white dark:border-gray-800 sm:w-[40rem] pr-2 sm:-mt-4 sm:pl-2 md:w-dvw lg:w-[38rem] xl:w-[45rem] w-dvw">
@@ -122,7 +123,7 @@ const handleItemClick = (itemName) => {
             </button>
           </div>
         </div>
-        <div
+        {/* <div
           onClick={() => setCommunity(!community)}
           className="bg-white flex p-[7px] border bolrder-solid border-gray-400 w-72 mt-2 rounded text-gray-500 dark:bg-black dark:text-gray-400 dark:border-gray-900"
         >
@@ -133,7 +134,7 @@ const handleItemClick = (itemName) => {
           <p>
             {community ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
           </p>
-        </div>
+        </div> */}
         {community && (
           <div className=" 2xl:w-72 bg-white p-4 dark:bg-black sm:w-72 md:w-72 lg:w-72 w-44  z-10">
             <div className="border-b bolrder-solid border-gray-400 pb-5">
@@ -271,7 +272,6 @@ const handleItemClick = (itemName) => {
                   : "bg-blue-800 text-white border-blue-800 dark:text-gray-700 dark:bg-gray-400 dark:border-none"
               }`}
               disabled={text.trim() === ""}
-              // onClick={createpostdata}
               type="submit"
             >
               POST
@@ -319,7 +319,7 @@ const handleItemClick = (itemName) => {
       </div>
     </div>
     </form>
-     ))}
+    
   </div>
   )
 }

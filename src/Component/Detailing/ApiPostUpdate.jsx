@@ -16,11 +16,13 @@ import UpgradeIcon from "@mui/icons-material/Upgrade";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
+import { BiMessage } from "react-icons/bi";
 import "tippy.js/dist/tippy.css";
 import Tippy from "@tippyjs/react";
 import { Mycontext } from "../../components/App";
 import LikeCompo from "./LikeCompo";
 import DeletePost from "./DeletePost";
+import DateFormatter from "./Time";
 
 const ApiPostUpdate = () => {
   const [activeItem, setActiveItem] = useState("Best");
@@ -70,7 +72,6 @@ const ApiPostUpdate = () => {
     }
   };
 
-
   const LogInPostApii = async (token) => {
     try {
       const responce = await fetch(
@@ -86,32 +87,31 @@ const ApiPostUpdate = () => {
       );
       const result = await responce.json();
       setPosts(result.data);
-      console.log(result.data, "api");
+      // console.log(result.data, "api");
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if(localStorage.getItem("token")){
+    if (localStorage.getItem("token")) {
       LogInPostApii(localStorage.getItem("token"));
-    }
-    else{
-      PostApii()
+    } else {
+      PostApii();
     }
   }, []);
-
 
   const applyFilter = (filter) => {
     let filteredPosts = [...posts];
     switch (filter) {
       case "Best":
-        filteredPosts.sort((a, b) => b.likeCount - a.likeCount);
+        // filteredPosts.sort((a, b) => b.likeCount - a.likeCount);
+        filteredPosts.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
         break;
       case "Hot":
-        filteredPosts = posts.filter(
-          (item) => item.likeCount == item.likeCount
-        );
+        filteredPosts.sort((a, b) => b.likeCount - a.likeCount);
         break;
       case "New":
         filteredPosts.sort(
@@ -128,7 +128,6 @@ const ApiPostUpdate = () => {
     setFilter(filter);
   };
   
-
 
   return (
     <div>
@@ -191,9 +190,6 @@ const ApiPostUpdate = () => {
         </div>
       )}
 
-
-
-
       <div>
         <div>
           {!openPopular && (
@@ -206,9 +202,15 @@ const ApiPostUpdate = () => {
                         <div className="">
                           <div className="flex w-[44rem] justify-between">
                             <div className="flex ">
-                              {item.author.profileImage === null ? (
-                                <p className="font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:bg-gray-500 dark:text-white">
-                                  {item.author.name.charAt(0).toUpperCase()}
+                              <div>
+                              </div>
+                            
+                              { item.author.profileImage === null ? (
+                                <p className="cursor-pointer font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:bg-gray-500 dark:text-white">
+                                 {item.channel && <>{item.channel.name.charAt(0).toUpperCase()}</>} 
+                                 {!item.channel && <>
+                                 {item.author.name.charAt(0).toUpperCase()}
+                                 </>}
                                 </p>
                               ) : (
                                 <img
@@ -217,32 +219,38 @@ const ApiPostUpdate = () => {
                                   className="h-6 w-6 rounded-3xl"
                                 />
                               )}
-
-                              <h1
-                                className="font-semibold text-base ml-2 mr-2"
-                                onClick={() =>
-                                  navigatetoAuthordetail(
-                                    item._id,
-                                    item.author.name
-                                  )
-                                }
-                              >
-                                {item.author.name}
-                              </h1>
+                              {item.channel && (
+                                <h1
+                                  className="cursor-pointer font-semibold text-base ml-2 mr-2"
+                                 
+                                >
+                                  {item.channel.name}
+                                </h1>
+                              )}
+                              {!item.channel && (
+                                <h1
+                                  className="cursor-pointer font-semibold text-base ml-2 mr-2"
+                                  onClick={() =>
+                                    navigatetoAuthordetail(
+                                      item._id,
+                                      item.author.name
+                                    )
+                                  }
+                                >
+                                  {item.author.name}
+                                </h1>
+                              )}
                               <div className="text-gray-500 mt-1 text-xs">
-                                .
-                                {(
-                                  (new Date() - new Date(item.createdAt)) /
-                                  1000 /
-                                  3600 /
-                                  24
-                                ).toFixed(0)}{" "}
-                                days ago
+                               <DateFormatter createdAt={item.createdAt}/>
                               </div>
                             </div>
                             {item.author.name === storedData.name ? (
-                              <div className="sm:-pl-32 sm:mr-28 mr-64 2xl:-mr-1 lg:mr-60 dark:text-gray-400 p-1 rounded-2xl hover:dark:bg-gray-800">
-                                <DeletePost item={item} key={item._id} setPosts={setPosts}/>
+                              <div className="cursor-pointer sm:-pl-32 sm:mr-28 mr-64 2xl:-mr-1 lg:mr-60 dark:text-gray-400 p-1 rounded-2xl hover:dark:bg-gray-800">
+                                <DeletePost
+                                  item={item}
+                                  key={item._id}
+                                  setPosts={setPosts}
+                                />
                               </div>
                             ) : (
                               <></>
@@ -269,8 +277,11 @@ const ApiPostUpdate = () => {
                         </div>
                       </div>
                       <div className="flex mt-3 pb-5 space-x-4">
-                       
-                      <LikeCompo key={item._id} item={item} setPosts={setPosts}/>
+                        <LikeCompo
+                          key={item._id}
+                          item={item}
+                          setPosts={setPosts}
+                        />
 
                         <Tippy
                           content="Comments"
@@ -283,14 +294,15 @@ const ApiPostUpdate = () => {
                               navigatetoCommentsPage(item._id, item.author._id)
                             }
                           >
-                            <ChatBubbleOutlineOutlinedIcon
-                              className="mr-1 "
+                             <div className="cursor-pointer flex pt-1 items-center justify-center  w-14 rounded-2xl">
+                            <BiMessage
+                              className=" mr-2 mt-1 font-bold "
                               style={{ fontSize: "18px" }}
                             />
                             {item.commentCount}
                           </div>
+                          </div>
                         </Tippy>
-                       
                       </div>
                     </div>
                   </div>
@@ -311,7 +323,7 @@ const ApiPostUpdate = () => {
                             <div className="flex w-[44rem] justify-between">
                               <div className="flex ">
                                 {item.author.profileImage === null ? (
-                                  <p className="font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:bg-gray-500 dark:text-white">
+                                  <p className="cursor-pointer font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:bg-gray-500 dark:text-white">
                                     {item.author.name.charAt(0).toUpperCase()}
                                   </p>
                                 ) : (
@@ -323,7 +335,7 @@ const ApiPostUpdate = () => {
                                 )}
 
                                 <h1
-                                  className="font-semibold text-base ml-2 mr-2"
+                                  className="cursor-pointer font-semibold text-base ml-2 mr-2"
                                   onClick={() =>
                                     navigatetoAuthordetail(
                                       item._id,
@@ -334,19 +346,16 @@ const ApiPostUpdate = () => {
                                   {item.author.name}
                                 </h1>
                                 <div className="text-gray-500 mt-1 text-xs">
-                                  .
-                                  {(
-                                    (new Date() - new Date(item.createdAt)) /
-                                    1000 /
-                                    3600 /
-                                    24
-                                  ).toFixed(0)}{" "}
-                                  days ago
+                                <DateFormatter createdAt={item.createdAt}/>
                                 </div>
                               </div>
                               {item.author.name === storedData.name ? (
-                                <div className="sm:-pl-32 sm:mr-28 mr-64 2xl:-mr-1 lg:mr-60">
-                                  <DeletePost item={item} key={item._id} setPosts={setPosts}/>
+                                <div className="cursor-pointer sm:-pl-32 sm:mr-28 mr-64 2xl:-mr-1 lg:mr-60">
+                                  <DeletePost
+                                    item={item}
+                                    key={item._id}
+                                    setPosts={setPosts}
+                                  />
                                 </div>
                               ) : (
                                 <></>
@@ -373,7 +382,11 @@ const ApiPostUpdate = () => {
                           </div>
                         </div>
                         <div className="flex mt-3 pb-5 space-x-4">
-                        <LikeCompo key={item._id} item={item} setPosts={setPosts}/>
+                          <LikeCompo
+                            key={item._id}
+                            item={item}
+                            setPosts={setPosts}
+                          />
                           <Tippy
                             content="Comments"
                             placement="bottom"
@@ -388,14 +401,15 @@ const ApiPostUpdate = () => {
                                 )
                               }
                             >
-                              <ChatBubbleOutlineOutlinedIcon
-                                className="mr-1 "
-                                style={{ fontSize: "18px" }}
-                              />
-                              {item.commentCount}
-                            </div>
+                             <div className="cursor-pointer flex pt-1 items-center justify-center  w-14 rounded-2xl">
+                            <BiMessage
+                              className="mr-2 mt-1 font-bold "
+                              style={{ fontSize: "18px" }}
+                            />
+                            {item.commentCount}
+                          </div>
+                          </div>
                           </Tippy>
-                          
                         </div>
                       </div>
                     </div>

@@ -57,8 +57,14 @@ const DeletePost = ({ item,setPosts}) => {
   };
   const[open,setOpen]= useState(false); 
   const navigatetoUpdatePost = (id, con, title) => {
-    navigate(`/UpdatePost/${id}/${con}/${title}`);
+    sessionStorage.setItem("id",id);
+    sessionStorage.setItem("con",con);
+    sessionStorage.setItem("title",title);
+    navigate(`/UpdatePost`);
+    console.log(id,con,title,"da");
   };
+  
+  
   
   return (
     <div className={darkMode ? "dark" : ""}>
@@ -76,12 +82,8 @@ const DeletePost = ({ item,setPosts}) => {
       <div
         onClick={(e) => {
             console.log("not working", item);
-            e.stopPropagation();
-            navigatetoUpdatePost(
-              item._id,
-              item.title,
-              item.content
-            );
+          
+            navigatetoUpdatePost(item._id,item.content,item.title);
           }}
           className="mt-2 flex  pl-2 pr-2 pb-1  hover:bg-zinc-300 dark:hover:bg-zinc-800"
       >

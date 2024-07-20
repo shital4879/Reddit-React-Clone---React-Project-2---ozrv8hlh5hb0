@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import { BiMessage } from "react-icons/bi";
+import { LuArrowBigUp } from "react-icons/lu";
+import { LuArrowBigDown } from "react-icons/lu";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 
 const LikeCompo = ({ item,setPosts }) => {
@@ -88,9 +91,9 @@ const handleupvote = (id) =>{
   return (
     <div>
       <div className="bg-gray-300 rounded-3xl flex justify-center items-center space-x-2 p-1 text-sm dark:bg-zinc-900">
-        <ThumbUpOutlinedIcon
+        <LuArrowBigUp
         
-          className={`h-1 w-1`}
+        className="cursor-pointer hover:text-orange-500 h-6 w-6 mr-1 "
           onClick={() => {
             handleupvote(item._id);
           }}
@@ -98,7 +101,8 @@ const handleupvote = (id) =>{
         />
 
         <div>{item.likeCount}</div>
-        <ThumbDownOutlinedIcon
+        <LuArrowBigDown
+         className="cursor-pointer hover:text-green-700 h-6 w-6 ml-1"
           // className="hover:text-green-700 h-1 w-1"
           onClick={() => handledislike(item._id)}
           style={{ fontSize: "18px", color:disliked ? "blue" : ""}}

@@ -94,7 +94,7 @@ const Detail = () => {
         }
       );
       const result = await responce.json();
-      setPosts(result.data);
+      // setPosts(result.data);
       console.log(result.data);
     } catch (error) {
       console.log(error);
@@ -176,7 +176,6 @@ const Detail = () => {
         <div className="fixed bg-white z-50">
           <NavDetail className="fixed" />
         </div>
-
         <div className="">
           <div className="flex  pb-4 dark:bg-zinc-950  bg-gray-100">
             <div className="md:invisible invisible 2xl:visible xl:visible lg:visible sm:invisible">
@@ -190,13 +189,14 @@ const Detail = () => {
                     src="https://www.redditstatic.com/avatars/defaults/v2/avatar_default_3.png"
                     alt=""
                     className="w-9 h-9 mr-8 rounded-2xl "
+                    // onClick={()=>navigate("/Card")}
                   />
                   {fetchingData &&
                     fetchingData.slice(0, 1).map((item) => (
                       <input
                         type="text"
                         value="Create Post"
-                        className="border 2xl:w-[30rem]  pl-3 w-[25rem] rounded-sm bg-gray-100 dark:bg-gray-950 dark:text-gray-400 dark:border-gray-900 lg:w-[35rem] md:w-[40rem] sm:w-[30rem]"
+                        className="cursor-pointer border 2xl:w-[30rem]  pl-3 w-[25rem] rounded-sm bg-gray-100 dark:bg-gray-950 dark:text-gray-400 dark:border-gray-900 lg:w-[35rem] md:w-[40rem] sm:w-[30rem]"
                         onClick={() =>
                           // navigatetoAuthordetail(item._id, item.author.name)
                           navigate("/CreatePost")

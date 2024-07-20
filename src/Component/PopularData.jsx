@@ -13,10 +13,14 @@ import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined";
 import ViewAgendaSharpIcon from "@mui/icons-material/ViewAgendaSharp";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import { BiMessage } from "react-icons/bi";
+import { LuArrowBigUp } from "react-icons/lu";
+import { LuArrowBigDown } from "react-icons/lu";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { contextApi } from "./Context/ApiContext";
 import { ThemeContext } from "./Context/DarkTheme";
 import { Mycontext } from "../components/App";
+import DateFormatter from "./Detailing/Time";
 
 const Pupular = () => {
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -101,17 +105,21 @@ const Pupular = () => {
         </div>
         <div className="">
           <div className="border-l border-solid border-gray-300 pt-10">
-          <Tippy content="Change post view" className="text-[10px]" placement="bottom">
-            <div
-              className={`flex justify-center items-center 2xl:mt-5 xl:mt-8 lg:mt-8 relative -mt-12 2xl:ml-24  sm:-mt-24 sm:ml-14 ml-10 md:-mt-24 md:ml-14 xl:ml-14 text-gray-500 mb-3 hover:bg-gray-100 w-14 p-1 rounded-2xl ${
-                activeItem === "compact" ? "mr-10" : ""
-              }`}
-              onClick={() => setOpenDrop(!opendrop)}
+            <Tippy
+              content="Change post view"
+              className="text-[10px]"
+              placement="bottom"
             >
-              <ViewAgendaOutlinedIcon style={{fontSize:"20px"}}/>
-              <KeyboardArrowDownOutlinedIcon style={{fontSize:"20px"}}/>
-            </div>
-</Tippy>
+              <div
+                className={`flex justify-center items-center 2xl:mt-5 xl:mt-8 lg:mt-8 relative -mt-12 2xl:ml-24  sm:-mt-24 sm:ml-14 ml-10 md:-mt-24 md:ml-14 xl:ml-14 text-gray-500 mb-3 hover:bg-gray-100 w-14 p-1 rounded-2xl ${
+                  activeItem === "compact" ? "mr-10" : ""
+                }`}
+                onClick={() => setOpenDrop(!opendrop)}
+              >
+                <ViewAgendaOutlinedIcon style={{ fontSize: "20px" }} />
+                <KeyboardArrowDownOutlinedIcon style={{ fontSize: "20px" }} />
+              </div>
+            </Tippy>
             <div className={`absolute `}>
               {opendrop && (
                 <div
@@ -130,7 +138,10 @@ const Pupular = () => {
                         setOpenDrop(!opendrop);
                     }}
                   >
-                    <ViewAgendaSharpIcon className="text-gray-500" style={{fontSize:"20px"}}/>
+                    <ViewAgendaSharpIcon
+                      className="text-gray-500"
+                      style={{ fontSize: "20px" }}
+                    />
                     <p>Card</p>
                   </div>
                   <div
@@ -143,7 +154,10 @@ const Pupular = () => {
                         setOpenDrop(!opendrop);
                     }}
                   >
-                    <TableRowsIcon className="text-gray-500" style={{fontSize:"20px"}}/>
+                    <TableRowsIcon
+                      className="text-gray-500"
+                      style={{ fontSize: "20px" }}
+                    />
                     <p>Compact</p>
                   </div>
                 </div>
@@ -154,11 +168,102 @@ const Pupular = () => {
               {postData &&
                 !cardOpen &&
                 postData
-                .filter(item => item.likeCount >= 10)
-                .map((item) => (
-                  <div className="flex justify-center items-center  ml-8 ">
-                    <div className="hover:bg-gray-200 hover:rounded-2xl -ml-7  border-b mb-10 w-full sm:w-full 2xl:ml-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[40rem] 2xl:mr-4 lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 xl:ml-0 2xl:-mt-3 border rounded-md border-gray-300">
-                      <div className="flex items-center">
+                  .filter((item) => item.likeCount >= 10)
+                  .map((item) => (
+                    <div className="flex justify-center items-center  ml-8 ">
+                      <div className="hover:bg-gray-200 hover:rounded-2xl -ml-7  border-b mb-10 w-full sm:w-full 2xl:ml-8 -mt-28  lg:mb-10  xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center justify-center pt-4 pl-7 pr-8  xl:mb-8 md:-mt-24  bg-white lg:w-[40rem] 2xl:mr-4 lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 lg:-ml-8 xl:ml-0 2xl:-mt-3 border rounded-md border-gray-300">
+                        <div className="flex items-center">
+                          <div className="flex">
+                            {item.author.profileImage === null ? (
+                              <p className="font-bold pl-2 pr-2 dark:text-gray-300 bg-gray-300 rounded-xl">
+                                {item.author.name.charAt(0).toUpperCase()}
+                              </p>
+                            ) : (
+                              <img
+                                src={item.author.profileImage}
+                                alt=""
+                                className="h-6 w-6 rounded-3xl"
+                              />
+                            )}
+                            <h1 className="font-semibold text-base ml-2 mr-2">
+                              {item.author.name}
+                            </h1>
+                          </div>
+                          <div className="text-gray-500 text-sm">
+                            <DateFormatter createdAt={item.createdAt} />
+                          </div>
+                        </div>
+                        <div>
+                          <p className="mb-2 w-[20rem] sm:w-[35rem] md:w-[40rem]  ">
+                            {item.content}
+                          </p>
+                          <div className=" flex items-center justify-start ">
+                            <div className="pb-4">
+                              {item.images == "" ? (
+                                <p className="ml-8"></p>
+                              ) : (
+                                <img
+                                  src={item.images}
+                                  alt=""
+                                  className="rounded-xl w-[25rem] h-[20rem] 2xl:w-[45rem] 2xl:h-[25rem] sm:w-[35rem] sm:h-[25rem] md:w-[44rem] md:h-[30rem]"
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                        className="flex mt-3 pb-2 space-x-4"
+                        onClick={() => setShowLogIn(!showLogIn)}
+                      >
+                        <div className="h-8 bg-gray-300 pl-2 pr-2 flex items-center rounded-3xl space-x-2  text-sm ">
+                          <div style={{fontSize:"10rem"}}>
+
+                        <LuArrowBigUp
+                            style={{ }}
+                            className="hover:text-orange-500 h-6 w-6 mr-1 "
+                            />
+                            </div>
+                          <div>{item.likeCount}</div>
+                          <LuArrowBigDown
+                            style={{ fontSize: "15rem" }}
+                            className="hover:text-green-700 h-6 w-6 ml-1"
+                          />
+                        </div>
+                        <div className="flex items-center justify-center  w-14 rounded-2xl bg-gray-300">
+                          <BiMessage
+                            style={{ fontSize: "18px" }}
+                            className="mr-2 mt-1 font-bold "
+                          />
+                          <div className="-pt-2">
+
+                          {item.commentCount}
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                  ))}
+            </div>
+            <div className="md:mt-20 pt-2 sm:mt-24 lg:-mt-2 xl:-mt-10 -mt-28 bg-zinc-100">
+              {cardOpen &&
+                postData
+                  .filter((item) => item.likeCount >= 10)
+                  .map((item) => (
+                    <div className="flex pb-4 mb-4 lg:mr-10 hover:bg-gray-200 hover:rounded-2xl border-b w-full sm:w-full 2xl:ml-12  lg:mb-10  xl:w-[45rem] 2xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center pt-4 pl-7 pr-8  xl:mb-8   bg-white lg:w-[38rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 xl:mr-6 border border-gray-300 rounded-md">
+                      <div className="pb-4">
+                        {item.images == "" ? (
+                          <p className="ml-8"></p>
+                        ) : (
+                          <div className="w-40 h-24 ">
+                            <img
+                              src={item.images}
+                              alt=""
+                              className="w-24 h-28 rounded-md"
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <div className="-ml-10 mt-4">
                         <div className="flex">
                           {item.author.profileImage === null ? (
                             <p className="font-bold pl-2 pr-2 dark:text-gray-300 bg-gray-300 rounded-xl">
@@ -174,166 +279,89 @@ const Pupular = () => {
                           <h1 className="font-semibold text-base ml-2 mr-2">
                             {item.author.name}
                           </h1>
+                          <DateFormatter createdAt={item.createdAt} />
                         </div>
-                        <div className="text-gray-500 text-sm">
-                          .
-                          {(
-                            (new Date() - new Date(item.createdAt)) /
-                            (1000 * 3600 * 24)
-                          ).toFixed(0)}{" "}
-                          days ago
+                        <div>
+                          <p className="mb-2  w-[18rem] sm:w-[30rem]  xl:w-[35rem] lg:w-[28rem] md:w-[37rem] 2xl:w-[39rem] mt-2">
+                            {item.content}
+                          </p>
                         </div>
-                      </div>
-                      <div>
-                        <p className="mb-2 w-[20rem] sm:w-[35rem] md:w-[40rem]  ">
-                          {item.content}
-                        </p>
-                        <div className=" flex items-center justify-start ">
-                          <div className="pb-4">
-                            {item.images == "" ? (
-                              <p className="ml-8"></p>
-                            ) : (
-                              <img
-                                src={item.images}
-                                alt=""
-                                className="rounded-xl w-[25rem] h-[20rem] 2xl:w-[45rem] 2xl:h-[25rem] sm:w-[35rem] sm:h-[25rem] md:w-[44rem] md:h-[30rem]"
-                              />
-                            )}
+                        <div
+                        className="flex mt-3 pb-2 space-x-4"
+                        onClick={() => setShowLogIn(!showLogIn)}
+                      >
+                        <div className="h-8 bg-gray-300 pl-2 pr-2 flex items-center rounded-3xl space-x-2  text-sm ">
+                          <div style={{fontSize:"10rem"}}>
+
+                        <LuArrowBigUp
+                            style={{ }}
+                            className="hover:text-orange-500 h-6 w-6 mr-1 "
+                            />
+                            </div>
+                          <div>{item.likeCount}</div>
+                          <LuArrowBigDown
+                            style={{ fontSize: "15rem" }}
+                            className="hover:text-green-700 h-6 w-6 ml-1"
+                          />
+                        </div>
+                        <div className="flex items-center justify-center  w-14 rounded-2xl bg-gray-300">
+                          <BiMessage
+                            style={{ fontSize: "18px" }}
+                            className="mr-2 mt-1 font-bold "
+                          />
+                          <div className="-pt-2">
+
+                          {item.commentCount}
                           </div>
                         </div>
+                      </div> 
                       </div>
-                      <div
-                        className="flex mt-3 pb-2 space-x-4"
-                        onClick={() => setShowLogIn(!showLogIn)}
-                      >
-                        <div className="bg-gray-300 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
-                          <ThumbUpOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-orange-500 h-1 w-1" />
-                          <div>{item.likeCount}</div>
-                          <ThumbDownOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-green-700 h-1 w-1 " />
-                        </div>
-                        <div className="mt-1 ml-5 w-14 pl-2 bg-gray-300 rounded-2xl p-1">
-                          <ChatBubbleOutlineOutlinedIcon style={{ fontSize: "18px" }} className="mr-2 text-sm " />
-                          {item.commentCount}
-                        </div>
-                      </div>
+                      <hr />
                     </div>
-                  </div>
-                ))}
-            </div>
-            <div
-              className="md:mt-20 pt-2 sm:mt-24 lg:-mt-2 xl:-mt-10 -mt-28 bg-zinc-100">
-              {cardOpen &&
-                postData
-                .filter(item => item.likeCount >= 10)
-                .map((item) => (
-                  <div className="flex pb-4 mb-4 lg:mr-10 hover:bg-gray-200 hover:rounded-2xl border-b w-full sm:w-full 2xl:ml-12  lg:mb-10  xl:w-[45rem] 2xl:w-[49rem] xl:mt-2 lg:-mt-5 items-center pt-4 pl-7 pr-8  xl:mb-8   bg-white lg:w-[38rem] lg:h-auto md:w-full  sm:-mt-28 sm:h-auto sm:mb-36 xl:mr-6 border border-gray-300 rounded-md">
-                    <div className="pb-4">
-                      {item.images == "" ? (
-                        <p className="ml-8"></p>
-                      ) : (
-                        <div className="w-40 h-24 ">
-                          <img
-                            src={item.images}
-                            alt=""
-                            className="w-24 h-28 rounded-md"
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div className="-ml-10 mt-4">
-                      <div className="flex">
-                        {item.author.profileImage === null ? (
-                          <p className="font-bold pl-2 pr-2 dark:text-gray-300 bg-gray-300 rounded-xl">
-                            {item.author.name.charAt(0).toUpperCase()}
-                          </p>
-                        ) : (
-                          <img
-                            src={item.author.profileImage}
-                            alt=""
-                            className="h-6 w-6 rounded-3xl"
-                          />
-                        )}
-                        <h1 className="font-semibold text-base ml-2 mr-2">
-                          {item.author.name}
-                        </h1>
-                        .
-                        {(
-                          (new Date() - new Date(item.createdAt)) /
-                          (1000 * 3600 * 24)
-                        ).toFixed(0)}{" "}
-                        days ago
-                      </div>
-                      <div>
-                        <p className="mb-2  w-[18rem] sm:w-[30rem]  xl:w-[35rem] lg:w-[28rem] md:w-[37rem] 2xl:w-[39rem] mt-2">
-                          {item.content}
-                        </p>
-                      </div>
-                      <div
-                        className="flex mt-3 pb-2 space-x-4"
-                        onClick={() => setShowLogIn(!showLogIn)}
-                      >
-                        <div className="bg-gray-300 pt-2 rounded-3xl flex space-x-2 p-1 text-sm ">
-                          <ThumbUpOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-orange-500 h-1 w-1 " />
-                          <div>{item.likeCount}</div>
-                          <ThumbDownOutlinedIcon style={{ fontSize: "18px" }} className="hover:text-green-700 h-1 w-1 " />
-                        </div>
-                        <div className="mt-1 ml-5 w-14 pl-2 bg-gray-300 rounded-2xl p-1">
-                          <ChatBubbleOutlineOutlinedIcon style={{ fontSize: "18px" }} className="mr-2 text-sm " />
-                          {item.commentCount}
-                        </div>
-                      </div>
-                    </div>
-                    <hr />
-                  </div>
-                ))}
+                  ))}
             </div>
           </div>
         </div>
 
         {!sessionStorage.getItem("token") && (
-          <div className="2xl:mt-20 xl:mt-20 lg:mt-20 xl:w-[19rem] 2xl:w-[17rem] lg:w-[15rem] bg-gray-50 rounded-2xl mt-9 2xl:ml-10 xl:ml-0 sm:invisible  md:invisible lg:visible xl:visible h-[43rem]">
-            <h1 className="pt-7 pl-5 text-gray-600 text-base">
-              POPULAR COMMUNITIES
-            </h1>
-            <div className="xl:w-[16rem] p-4 m-4 lg:w-[14rem]">
-              {channelApi &&
-                channelApi
-                  .slice(0, showMore ? channelApi.length : 8)
-                  .map((item) => (
-                    <div className="hover:bg-gray-100 pl-2 pt-1 pb-1 flex space-x-3  mb-2">
-                      {item.image == null ? (
-                        <p className="mt-2 font-bold pl-2 pr-2 text-sm h-6 dark:text-gray-300 bg-gray-300 rounded-2xl">
-                          {item.name.charAt(0).toUpperCase()}
-                        </p>
-                      ) : (
-                        <img
-                          src={item.image}
-                          alt=""
-                          className="h-6 w-6 rounded-3xl mt-2"
-                        />
-                      )}
-                      <div>
-                        <div className="text-[18px]">r/{item.name}</div>
-                        <div className="text-xs text-gray-600">
-                          {(
-                            (new Date() - new Date(item.createdAt)) /
-                            1000 /
-                            3600 /
-                            24
-                          ).toFixed(0)}{" "}
-                          days ago
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              <button onClick={toggle}>
-                {" "}
-                {showMore ? "Show Less" : "Show More"}
-              </button>
-            </div>
-          </div>
+         <div className="2xl:mt-20 2xl:ml-10 2xl:w-[17rem] sm:mt-20 xl:w-[15rem] xl:ml-10 lg:-ml-8 mt-11  lg:w-[14rem] sm:invisible  md:invisible lg:visible xl:visible h-auto z-index-50">
+         <h1 className="pt-7 pl-5 text-gray-600 text-base h-auto">
+           POPULAR COMMUNITIES
+         </h1>
+         <div className="xl:w-[16rem] p-4 m-4 lg:w-[12rem] bg-gray-200  rounded-xl">
+           {channelApi &&
+             channelApi
+               .slice(0, showMore ? channelApi.length : 8)
+               .map((item) => (
+                 <div className="hover:bg-gray-100 pl-2 pt-1 pb-1 flex space-x-3  mb-2">
+                   {item.image == null ? (
+                     <p className="mt-2 font-bold h-8 items-center flex justify-center w-8 text-[15px] dark:text-gray-300 bg-gray-300 rounded-2xl">
+                       {item.name.charAt(0).toUpperCase()}
+                     </p>
+                   ) : (
+                     <img
+                       src={item.image}
+                       alt=""
+                       className="h-8 w-8 rounded-3xl mt-2"
+                     />
+                   )}
+                   <div>
+                     <div className="text-[18px] text-sm mt-2">
+                       r/{item.name}
+                     </div>
+                     <div className="text-xs text-gray-500">
+                     <DateFormatter createdAt={item.createdAt}/>
+                     </div>
+                   </div>
+                 </div>
+               ))}
+           <button onClick={toggle} className="text-xs font-bold ">
+             {" "}
+             {showMore ? "See Less" : "See More"}
+           </button>
+         </div>
+       </div>
         )}
-       
       </div>
     </div>
   );

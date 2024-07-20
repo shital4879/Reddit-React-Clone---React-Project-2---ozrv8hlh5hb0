@@ -5,17 +5,16 @@ import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
-import HomeIcon from "@mui/icons-material/AddOutlined";
-import OutboundOutlinedIcon from "@mui/icons-material/AddOutlined";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
-import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+import { BiMessage } from "react-icons/bi";
+import { LuArrowBigUp } from "react-icons/lu";
+import { LuArrowBigDown } from "react-icons/lu";
 import { contextApi } from "../Component/Context/ApiContext";
 import { useNavigate, useParams } from "react-router-dom";
 import NavDetail from "../Component/Navbar/NavDetail";
 import { ThemeContext } from "../Component/Context/DarkTheme";
 import CommentApi from "../Component/data/CommentApi";
 import HomeNav from "../Component/Detailing/HomeNav";
+import DateFormatter from "../Component/Detailing/Time";
 
 const CommentsPage = () => {
   const params = useParams();
@@ -212,7 +211,7 @@ const CommentsPage = () => {
                                   )
                                 }>
                               {item.author.profileImage === null ? (
-                                <p className="font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:text-white dark:bg-gray-800">
+                                <p className="cursor-pointer font-bold pl-2 pr-2  bg-gray-300 rounded-xl dark:text-white dark:bg-gray-800">
                                   {item.author.name.charAt(0).toUpperCase()}
                                 </p>
                               ) : (
@@ -223,19 +222,12 @@ const CommentsPage = () => {
                                 />
                               )}
                               <h1
-                                className="font-semibold text-base ml-2 mr-2"
+                                className="cursor-pointer font-semibold text-base ml-2 mr-2"
                               >
                                 {item.author.name}
                               </h1>
                               <div className="text-gray-500 mt-1 text-xs">
-                            .
-                            {(
-                              (new Date() - new Date(item.createdAt)) /
-                              1000 /
-                              3600 /
-                              24
-                            ).toFixed(0)}{" "}
-                            days ago
+                              <DateFormatter createdAt={item.createdAt}/>
                           </div>
                             </div>
 
@@ -262,21 +254,23 @@ const CommentsPage = () => {
                       </div>
                       <div className="flex mt-3 pb-5 space-x-4">
                         <div className="bg-gray-200 rounded-3xl flex space-x-2 p-1 text-sm dark:bg-zinc-950">
-                          <ThumbUpOutlinedIcon
+                          <LuArrowBigUp
                           style={{fontSize:"18px"}}
-                            className="hover:text-orange-500 h-1 w-1"
+                              className="cursor-pointer hover:text-orange-500 h-6 w-6 mr-1 "
                             onClick={() => upvoteApi(item._id)}
                           />
                           <div>{item.likeCount}</div>
-                          <ThumbDownOutlinedIcon
+                          <LuArrowBigDown
                           style={{fontSize:"18px"}}
-                            className="hover:text-green-700 h-1 w-1"
+                            className="cursor-pointer hover:text-green-700 h-6 w-6 ml-1"
                             onClick={() => downvoteApi(item._id)}
                           />
                         </div>
                         <div>
-                          <ChatBubbleOutlineOutlinedIcon className="mr-2" style={{fontSize:"18px"}}/>
+                        <div className="cursor-pointer pt-1 pb-1 flex items-center justify-center w-14 rounded-2xl bg-gray-200">
+                          <BiMessage className="mr-2 mt-1 font-bold " style={{fontSize:"18px"}}/>
                           {item.commentCount}
+                        </div>
                         </div>
                       </div>
                       {/* <textarea name="" id="" cols="30" rows="10" className='w-[60rem] h-[20rem] border border-solid border-gray-500 ' value={commentdata} onChange={(e)=>setCommentData(e.target.value)} ></textarea> */}
@@ -286,7 +280,7 @@ const CommentsPage = () => {
                           placeholder="What are Your Thoughts ?"
                           value={commentdata}
                           onChange={(e) => setCommentData(e.target.value)}
-                          className="w-dvw -ml-10 sm:ml-0 h-[10rem] border border-solid border-gray-500 pb-32 pl-3 sm:w-[35rem] md:w-[40rem] lg:w-[40rem] dark:text-white dark:bg-zinc-900"
+                          className="cursor-pointer w-dvw -ml-10 sm:ml-0 h-[10rem] border border-solid border-gray-500 pb-32 pl-3 sm:w-[35rem] md:w-[40rem] lg:w-[40rem] dark:text-white dark:bg-zinc-900"
                         />
                         <br />
                         <button
@@ -335,14 +329,7 @@ const CommentsPage = () => {
                                   {item.author_details.name}
                                 </div>
                                 <div className="text-xs text-gray-500 mt-1 ml-4">
-                                  .
-                                  {(
-                                    (new Date() - new Date(item.createdAt)) /
-                                    1000 /
-                                    3600 /
-                                    24
-                                  ).toFixed(0)}{" "}
-                                  days ago
+                                <DateFormatter createdAt={item.createdAt}/>
                                 </div>
                               </div>
                               <div className="ml-8 text-base dark:text-gray-400">

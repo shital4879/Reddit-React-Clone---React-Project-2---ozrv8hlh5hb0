@@ -92,6 +92,7 @@ const NavDetail = () => {
   };
 
 
+
   const [isChecked, setIsChecked] = useState(false);
 
   const handleToggle = () => {
@@ -120,7 +121,7 @@ const NavDetail = () => {
         </div>
         <Tippy content="Go to Reddit Home" className="mt-6 ml-10 text-[10px]">
           <div
-            className="flex 2xl:w-12 ml-5 2xl:mr-28 2xl:-ml-36 xl:-ml-64 lg:-ml-40"
+            className="flex 2xl:w-12 ml-5 2xl:mr-28 2xl:-ml-36 xl:-ml-64 lg:-ml-40 cursor-pointer"
             onClick={() => navigate("/Detail")}
           >
             <img src="/logo.webp" alt="" className="h-9 w-9 mr-3" />
@@ -142,7 +143,7 @@ const NavDetail = () => {
               name
               search
               placeholder="Search Reddit"
-              className="bg-gray-200 text-lg border-none outline-none ml-2 dark:text-gray-200 dark:bg-slate-900 w-[100%] rounded-3xl sm:w-[100%] lg:w-[25rem]"
+              className="cursor-pointer bg-gray-200 text-lg border-none outline-none ml-2 dark:text-gray-200 dark:bg-slate-900 w-[100%] rounded-3xl sm:w-[100%] lg:w-[25rem]"
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -273,7 +274,7 @@ const NavDetail = () => {
               className="cursor-pointer flex justify-between items-center border-solid h-10 -ml-8 border-gray-400 border rounded-md 2xl:w-36 pl-2 pr-2 sm:mr-4 sm:w-24 md:mr-4 md:w-24 xl:-mr-24 lg:-mr-14 lg:-ml-10 2xl:-mr-4 mr-2 w-20"
             >
               <img
-                className="h-6 w-6 rounded-lg"
+                 className="h-7 w-7 rounded-2xl"
                 src="https://www.redditstatic.com/avatars/defaults/v2/avatar_default_3.png"
                 alt=""
               />
@@ -292,11 +293,20 @@ const NavDetail = () => {
               className="z-50 bg-white dark:bg-zinc-950 dark:border-gray-700 dark:border absolute w-56  pt-3 top-2/4 mt-7  right-14 space-y-2 shadow-md  rounded-lg sm:-mr-10 md:-mr-10 lg:ml-20"
             >
               <div>
+              <div className="flex ml-4 cursor-pointer" onClick={()=>navigate("/profile")}>
+                <img className="h-7 w-7 rounded-2xl mt-2 mr-2"
+                src="https://www.redditstatic.com/avatars/defaults/v2/avatar_default_3.png"/>
+                <div>
+                  <div className="text-base dark:text-white">View Profile</div>
+                  <div className="text-gray-400 text-sm">u/{storedData.name}</div>
+                </div>
+              </div>
+{/* 
                 <div className="flex space-x-2 text-gray-400 text-lg pl-4">
                   <VisibilitySharpIcon className="mr-2 mt-1 h-12 w-12" />
                   View Options
-                </div>
-                <div className="flex pl-10 mt-3 pt-2 pb-2 text-[17px] hover:bg-gray-200 rounded-md dark:text-white dark:hover:bg-gray-700">
+                </div> */}
+                <div className="cursor-pointer flex pl-10 mt-3 pt-2 pb-2 text-base hover:bg-gray-200 rounded-md dark:text-white dark:hover:bg-gray-700">
                   <NightlightOutlinedIcon/>
                   <h1>Dark Mode</h1>
 
@@ -330,11 +340,11 @@ const NavDetail = () => {
                   </div>
                 </div>
                 <div
-                  className="flex pl-10 mt-3 pt-2 pb-2 text-[17px] hover:bg-gray-200 rounded-md dark:hover:bg-gray-700"
+                  className="flex pl-10 mt-3 pt-2 pb-2 text-base hover:bg-gray-200 rounded-md dark:hover:bg-gray-700 cursor-pointer"
                   onClick={() => signout()}
                 
                 >
-                  <LogoutSharpIcon className="mr-2 mt-1 h-12 w-12 dark:text-white" />
+                  <LogoutSharpIcon className="mr-1 mt-1 h-12 w-12 dark:text-white" />
                   <button className="dark:text-white">Sign Out</button>
                 </div>
               </div>
