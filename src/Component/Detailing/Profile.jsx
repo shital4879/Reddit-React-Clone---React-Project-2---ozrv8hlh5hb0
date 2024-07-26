@@ -41,7 +41,7 @@ export default function Profile() {
         </div>
        
           <div className="mt-20 md:-ml-[19rem] sm:-ml-[19rem] -ml-[20rem] xl:ml-40">
-            <div className="dark:bg-zinc-800 bg-white 2xl:w-[63rem] flex z-50 h-32 -ml-6 pt-6 pb-6  pl-20 sm:w-[100%] md:w-[100%] xl:w-[100%]">
+            <div className="dark:bg-zinc-800 bg-white 2xl:w-[70rem] 2xl:-ml-36 flex z-50 h-32 -ml-6 pt-6 pb-6  pl-20 sm:w-[100%] md:w-[100%] xl:w-[100%]">
                 <p className="mt-1 h-20 w-20 mr-1 text-4xl bg-gray-300 rounded-full flex justify-center items-center font-bold">
                   {storeddata.name.charAt(0).toUpperCase()}
                 </p>

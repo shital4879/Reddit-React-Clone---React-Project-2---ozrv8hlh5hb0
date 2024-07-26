@@ -81,7 +81,7 @@ const PostData = () => {
               placement="bottom"
             >
               <div
-                className={` 2xl:mt-5 flex justify-center items-center xl:mt-8 2xl:mb-1 sm:-mt-24 lg:mt-8 -mt-16 md:-mt-24 relative  2xl:ml-24 sm:ml-14 ml-10 xl:-mt-5  md:ml-14 xl:ml-14 text-gray-500 mb-3 hover:bg-gray-100 w-14 p-1 rounded-2xl ${
+                className={`cursor-pointer 2xl:mt-5 flex justify-center items-center xl:mt-8 2xl:mb-1 sm:-mt-24 lg:mt-8 -mt-16 md:-mt-24 relative  2xl:ml-24 sm:ml-14 ml-10 xl:-mt-5  md:ml-14 xl:ml-14 text-gray-500 mb-3 hover:bg-gray-100 w-14 p-1 rounded-2xl ${
                   activeItem === "compact" ? "mr-10" : ""
                 }`}
                 onClick={() => setOpenDrop(!opendrop)}
@@ -100,7 +100,7 @@ const PostData = () => {
                 >
                   <p className="pl-4">View</p>
                   <div
-                    className={`flex text-gray-800 space-x-3 p-2 pl-4 text-sm ${
+                    className={`cursor-pointer flex text-gray-800 space-x-3 p-2 pl-4 text-sm ${
                       activeItem === "card" ? "bg-gray-200" : ""
                     }`}
                     onClick={() => {
@@ -116,7 +116,7 @@ const PostData = () => {
                     <p>Card</p>
                   </div>
                   <div
-                    className={`flex text-gray-800 space-x-3 pl-4 p-2 text-sm ${
+                    className={`cursor-pointer flex text-gray-800 space-x-3 pl-4 p-2 text-sm ${
                       activeItem === "compact" ? "bg-gray-200 " : ""
                     }`}
                     onClick={() => {
@@ -129,7 +129,7 @@ const PostData = () => {
                       className="text-gray-500"
                       style={{ fontSize: "18px" }}
                     />
-                    <p>Compact</p>
+                    <p >Compact</p>
                   </div>
                 </div>
               )}

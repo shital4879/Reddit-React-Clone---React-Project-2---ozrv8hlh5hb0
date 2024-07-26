@@ -33,7 +33,8 @@ import { ThemeContext } from "../Context/DarkTheme";
 const BeforeLogInNav = () => {
   const { showLogIn, setShowLogIn } = useContext(Mycontext);
   const { darkMode, setDarkMode, toggleDarkMode } = useContext(ThemeContext);
-  const { search, setSearch, fetchingData, setFetchingData, postData } = useContext(contextApi);
+  const { search, setSearch, fetchingData, setFetchingData, postData } =
+    useContext(contextApi);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [showApp, setShowApp] = useState(false);
@@ -185,7 +186,7 @@ const BeforeLogInNav = () => {
             email: result.data.user.email,
           })
         );
-        localStorage.setItem("userName",result.data.user.name);
+        localStorage.setItem("userName", result.data.user.name);
         navigateDetail();
       }
       if (result.status === "fail") {
@@ -200,11 +201,8 @@ const BeforeLogInNav = () => {
     }
   };
 
-
-
-
   const handleSubmitSignIn = (e) => {
-    console.log("Login Method calling.....")
+    console.log("Login Method calling.....");
     e.preventDefault();
     let isValid = true;
     let validationError = {};
@@ -236,8 +234,20 @@ const BeforeLogInNav = () => {
   };
 
   const navigateDetail = () => {
-    navigate(`/Detail`)
+    navigate(`/Detail`);
   };
+
+useEffect(()=>{
+  function handleclickoutside(e){
+    if(searchinput.current && !searchinput.current.contains(e.target) && refsearch.current && !refsearch.current.contains(e.target)){
+       setOpenSearch(false);
+       
+    }
+  }
+  document.body.addEventListener("click",handleclickoutside)
+  return ()=>{
+    document.body.removeEventListener("click",handleclickoutside)}
+})
 
 
   return (
@@ -250,9 +260,9 @@ const BeforeLogInNav = () => {
           <MenuSharpIcon />
         </div>
         {showHam && (
-          <div className="md:flex md:justify-between h-16 absolute top-14 md:-ml-12 z-10 shadow-xl md:pl-2 bg-white -ml-12 ">
+          <div style={{scrollbarWidth:"thin",scrollbarColor:"transparent transparent",userSelect:"none"}} className="overflow-y-scroll overflow-x-hidden md:flex md:justify-between h-16 absolute top-14 md:-ml-12 z-10 shadow-xl md:pl-2 bg-white -ml-12 ">
             {!sessionStorage.getItem("token") && (
-              <div>
+              <div >
                 <ul>
                   <li className="bg-gray-400 mb-2 ">
                     <NavLink to="/" className="p-2 pt-4">
@@ -271,13 +281,13 @@ const BeforeLogInNav = () => {
         )}
         <Tippy content="Go to Reddit Home" className="mt-6 -ml-24 text-[10px]">
           <NavLink to="/">
-        <div className="flex xl:mr-44 xl:-ml-8 lg:mr-36 lg:-ml-14 2xl:-ml-16">
-          <img src="/logo.webp" alt="" className="h-9 w-9 mr-2 xl:ml-20" />
-          <h2 className="text-3xl text-orange-500 font-bold sm:invisible md:visible lg:visible xl:visible invisible ">
-            reddit
-          </h2>
-        </div>
-        </NavLink>
+            <div className="flex xl:mr-44 xl:-ml-8 lg:mr-36 lg:-ml-14 2xl:-ml-16">
+              <img src="/logo.webp" alt="" className="h-9 w-9 mr-2 xl:ml-20" />
+              <h2 className="text-3xl text-orange-500 font-bold sm:invisible md:visible lg:visible xl:visible invisible ">
+                reddit
+              </h2>
+            </div>
+          </NavLink>
         </Tippy>
         <div className="bg-gray-200 h-11 w-36 -ml-10 2xl:w-[45rem] 2xl:ml-0 sm:w-[22rem] lg:w-[34rem] xl:w-[40rem] xl:mr-24  float-start space-x-2 pl-3 rounded-3xl pt-2  md:w-[25rem] md:ml-20 md:-mr-36  lg:-ml-20 lg:mr-4 ">
           <div className="flex items-center">
@@ -303,7 +313,10 @@ const BeforeLogInNav = () => {
           </div>
 
           {openSearch && (
-            <div ref={refsearch} className="w-[100%] mt-4  p-4 shadow-2xl z-50 overflow-auto h-[30rem] bg-white rounded-lg">
+            <div
+              ref={refsearch}
+              className="w-[100%] mt-4  p-4 shadow-2xl z-50 overflow-auto h-[30rem] bg-white rounded-lg"
+            >
               <p className="mb-2 font-normal text-sm">
                 <TrendingUpSharpIcon /> TRENDING TODAY
               </p>
@@ -318,7 +331,7 @@ const BeforeLogInNav = () => {
                     <div
                       onClick={(e) => {
                         // setSearch(item.author.name), setOpenSearch(!openSearch);
-                        setShowLogIn(!showLogIn)
+                        setShowLogIn(!showLogIn);
                       }}
                       style={{}}
                       className="cursor-pointer"
@@ -328,30 +341,29 @@ const BeforeLogInNav = () => {
                       </div>
                       <div className=" flex justify-between text-sm text-gray-600 space-x-7 mr-2 mt-1">
                         <div>{item.content}</div>
-                        
-                            {item.images == "" ? (
-                              <p className="ml-8"></p>
-                            ) : (
-                              <img
-                                src={item.images}
-                                alt=""
-                                className="rounded-xl h-20 w-20"
-                              />
-                            )}
-                          
+
+                        {item.images == "" ? (
+                          <p className="ml-8"></p>
+                        ) : (
+                          <img
+                            src={item.images}
+                            alt=""
+                            className="rounded-xl h-20 w-20"
+                          />
+                        )}
                       </div>
                       <div className="flex mt-3 pb-4 ">
-                      {item.author.profileImage === null ? (
-                                    <p className="font-bold pl-2 pr-2 h-6 mr-2  bg-gray-300  rounded-xl dark:bg-gray-500 dark:text-white">
-                                      {item.author.name.charAt(0).toUpperCase()}
-                                    </p>
-                                  ) : (
-                                    <img
-                                      src={item.author.profileImage}
-                                      alt=""
-                                      className="h-6 w-6 rounded-3xl"
-                                    />
-                                  )}
+                        {item.author.profileImage === null ? (
+                          <p className="font-bold pl-2 pr-2 h-6 mr-2  bg-gray-300  rounded-xl dark:bg-gray-500 dark:text-white">
+                            {item.author.name.charAt(0).toUpperCase()}
+                          </p>
+                        ) : (
+                          <img
+                            src={item.author.profileImage}
+                            alt=""
+                            className="h-6 w-6 rounded-3xl"
+                          />
+                        )}
                         <p className="flex text-sm text-gray-600 space-x-6 ml-2">
                           {item.author.name}
                         </p>
@@ -395,31 +407,33 @@ const BeforeLogInNav = () => {
               </div>
             </Tippy>
             <div>
-            <Tippy content="Open settings menu" className="text-[10px]">
-              <div
-                className="pt-1 absolute cursor-pointer  sm:-ml-3 -ml-36 2xl:-ml-0   xl:ml-4 sm:mr-48  hover:bg-gray-200 p-1 hover:rounded-2xl"
-                onClick={() => setShowopt(!showopt)}
-              >
-                <MoreHorizIcon />
-              </div>
+              <Tippy content="Open settings menu" className="text-[10px]">
+                <div
+                  className="pt-1 absolute cursor-pointer  sm:-ml-3 -ml-36 2xl:-ml-0   xl:ml-4 sm:mr-48  hover:bg-gray-200 p-1 hover:rounded-2xl"
+                  onClick={() => setShowopt(!showopt)}
+                >
+                  <MoreHorizIcon />
+                </div>
               </Tippy>
             </div>
             {showopt && (
-              <span 
-              // className="absolute"
-              className=" absolute top-6 m-6 sm:right-3 space-y-2 shadow-xl p-4 rounded-md bg-white cursor-pointer"
+              <span
+                // className="absolute"
+                className=" absolute top-6 m-6 sm:right-3 space-y-2 shadow-xl p-4 rounded-md bg-white cursor-pointer"
               >
                 <h2
                   className="text-sm"
                   onClick={() => {
-                    setShowLogIn(!showLogIn),setShowopt(false)
+                    setShowLogIn(!showLogIn), setShowopt(false);
                   }}
                 >
                   <LoginIcon className="mr-2 text-sm" /> Log In / Sing Up
                 </h2>
                 <h2
                   className="text-sm "
-                  onClick={() => {setShowAppLink(!showAppLink),setShowopt(false)}}
+                  onClick={() => {
+                    setShowAppLink(!showAppLink), setShowopt(false);
+                  }}
                 >
                   <QrCodeScannerIcon className="mr-2" /> Get App
                 </h2>
@@ -502,7 +516,7 @@ const BeforeLogInNav = () => {
                 }}
               >
                 {" "}
-                <IoCloseSharp/>{" "}
+                <IoCloseSharp />{" "}
               </button>
             </div>
             <div className="flex items-center justify-center">
@@ -540,10 +554,10 @@ const BeforeLogInNav = () => {
       {/* ------------------------OPEN LOG IN FUN [POPUP]------------------------------------------------------------------- */}
       {showLogIn && (
         <div>
-          {postData &&
-            postData.map((item) => (
+          {/* {postData &&
+            postData.map((item) => ( */}
               <div>
-                <div className="bg-gray-700 bg-opacity-80 h-full m-0 fixed top-0 left-0 w-dvw flex justify-center items-center z-40">
+                <div className="bg-gray-700 bg-opacity-80 h-full m-0 fixed top-0 left-0 w-dvw flex justify-center items-center z-10">
                   <div className="bg-white relative w-[30rem] h-[90%] rounded-md z-50 ">
                     <div className="flex justify-end mt-4 mr-4">
                       <button
@@ -553,7 +567,7 @@ const BeforeLogInNav = () => {
                         }}
                       >
                         {" "}
-                        <IoCloseSharp/>{" "}
+                        <IoCloseSharp />{" "}
                       </button>
                     </div>
                     {!signUpPage1 && (
@@ -652,7 +666,7 @@ const BeforeLogInNav = () => {
                               className="cursor-pointer text-blue-800 font-semibold"
                               onClick={() => setSignUpPage1(!signUpPage1)}
                             >
-                              Sign Up
+                              Sign Up.
                             </button>
                           </p>
 
@@ -665,8 +679,12 @@ const BeforeLogInNav = () => {
                             Log In
                           </button>
 
-                          {valid ? <></> : (
-                            <p className="absolute mt-4 ml-36 text-red-600 text-sm">{error.correction}</p>
+                          {valid ? (
+                            <></>
+                          ) : (
+                            <p className="absolute mt-4 ml-36 text-red-600 text-sm">
+                              {error.correction}
+                            </p>
                           )}
                         </div>
                       </form>
@@ -840,7 +858,7 @@ const BeforeLogInNav = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            {/* ))} */}
         </div>
       )}
     </div>

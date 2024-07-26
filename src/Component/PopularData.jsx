@@ -111,7 +111,7 @@ const Pupular = () => {
               placement="bottom"
             >
               <div
-                className={`flex justify-center items-center 2xl:mt-5 xl:mt-8 lg:mt-8 relative -mt-12 2xl:ml-24  sm:-mt-24 sm:ml-14 ml-10 md:-mt-24 md:ml-14 xl:ml-14 text-gray-500 mb-3 hover:bg-gray-100 w-14 p-1 rounded-2xl ${
+                className={`cursor-pointer flex justify-center items-center 2xl:mt-5 xl:mt-8 lg:mt-8 relative -mt-12 2xl:ml-24  sm:-mt-24 sm:ml-14 ml-10 md:-mt-24 md:ml-14 xl:ml-14 text-gray-500 mb-3 hover:bg-gray-100 w-14 p-1 rounded-2xl ${
                   activeItem === "compact" ? "mr-10" : ""
                 }`}
                 onClick={() => setOpenDrop(!opendrop)}
@@ -123,13 +123,13 @@ const Pupular = () => {
             <div className={`absolute `}>
               {opendrop && (
                 <div
-                  className={`bg-gray-50 w-36 space-y-2 rounded-lg shadow-xl 2xl:ml-24 lg:-ml-0 xl:ml-12 h-36 pt-3 ${
+                  className={`cursor-pointer bg-gray-50 w-36 space-y-2 rounded-lg shadow-xl 2xl:ml-24 lg:-ml-0 xl:ml-12 h-36 pt-3 ${
                     activeItem === "compact" ? "ml-12" : ""
                   }`}
                 >
                   <p className="pl-4">View</p>
                   <div
-                    className={`flex text-gray-800 space-x-3 p-2 pl-4 text-sm ${
+                    className={`cursor-pointer flex text-gray-800 space-x-3 p-2 pl-4 text-sm ${
                       activeItem === "card" ? "bg-gray-200" : ""
                     }`}
                     onClick={() => {
@@ -145,7 +145,7 @@ const Pupular = () => {
                     <p>Card</p>
                   </div>
                   <div
-                    className={`flex text-gray-800 space-x-3 pl-4 p-2 text-sm ${
+                    className={`cursor-pointer flex text-gray-800 space-x-3 pl-4 p-2 text-sm ${
                       activeItem === "compact" ? "bg-gray-200 " : ""
                     }`}
                     onClick={() => {
